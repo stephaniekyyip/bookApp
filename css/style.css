@@ -1,0 +1,117 @@
+html, body{
+  font-family: 'Sanchez', sans-serif;
+  background-color: #019D6E;
+  color:white;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+	padding: 0;
+
+  box-sizing: border-box;
+  overflow-x: hidden;
+
+}
+
+footer{
+  padding-left: 20px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  font-size: 15px;
+  bottom: 0;
+}
+
+.container{
+  box-sizing: border-box;
+  min-height: 100%;
+  overflow: none;
+
+  margin: 30px auto auto auto;
+	width: 50%;
+	padding-bottom: 30px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+h1{
+  font-size: 40px;
+  margin-bottom: 0;
+}
+
+p{
+  font-size: 20px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.btn{
+  font-size: 15px;
+  color: #019D6E;
+  background-color: white;
+  font-family: 'Sanchez', sans-serif;
+  padding: 5px 10px 5px 10px;
+  margin-right: 10px;
+  border: 3px solid white;
+  box-sizing: border-box;
+
+}
+
+.btn:hover{
+  background-color: #019D6E;
+  color: white;
+}
+
+#addPanel{
+  display:none;
+}
+
+#addPanel input[type=text]{
+  box-sizing: border-box;
+  color: #019D6E;
+  font-size: 14px;
+  border: 1px solid white;
+  padding: 5px;
+  outline: none;
+  font-family: 'Sanchez', sans-serif;
+  margin-bottom: 15px;
+  margin-top: 5px;
+  margin-right: 15px;
+  width: 100%;
+}
+
+#addPanel input[type=radio]{
+  margin-bottom: 15px;
+  margin-right: 15px;
+}
+
+ul{
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+
+form{
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.requiredFormat{
+  font-size: 12px;
+}
+
+.rightSide{
+  margin-right: 0;
+  margin-left: auto;
+  text-align: right;
+}
+
+.title{
+  font-size: 30px;
+}
+
+.author{
+  font-size: 20px;
+}
+
+.bookInfo{
+  font-size: 15px;
+}
