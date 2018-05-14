@@ -1,313 +1,302 @@
-<html>
-
-  <head>
-
-    <meta charset = "UTF-8">
-    <meta name="viewport" content="width=device-width initial-scale=1.0" />
-
-    <title> Book Tracker </title>
-
-    <link rel= "stylesheet" href="css/style.css"/>
-    <link href="https://fonts.googleapis.com/css?family=Sanchez" rel="stylesheet">
-
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <script src = "js/addBookForm.js"></script>
-
-    <!--Font Awesome  -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
-
-  </head>
 
   <?php
 
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $db_name  = "bookApp";
-    $mysql  = "";
-    $error = 0;
-    $success = FALSE;
+    class bookEntry{
 
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $db_name);
+       protected $mysql  = ""; // store sql queries
+       protected $inputError = FALSE; //check for errors in user input
+       protected $dbAddSuccess = FALSE;
+       protected $displayData; //stores requested data from DB
+       protected $conn; //mysqli connection
 
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    echo "Connected successfully";
+       public $title = "";
+       public $author = "";
+       public $forClass = "";
+       public $reread = "";
+       public $yearRead = "";
+       public $yearPub = "";
+       public $numPgs = "";
 
-    // Create
-    $title = $author = $forClass = $reread = $yearRead = $yearPub = $numPgs = "";
+       protected $titleErr = "";
+       protected $authorErr = "";
+       protected $forClassErr = "";
+       protected $rereadErr = "";
+       protected $yearReadErr = "";
+       protected $yearPubErr = "";
+       protected $numPgsErr = "";
+       protected $errList;
 
-    $titleErr = $authorErr = $forClassErr = $rereadErr = $yearReadErr = $yearPubErr = $numPgsErr = "";
+       public function connectToDatabase(){
+          $servername = "localhost";
+          $username = "root";
+          $password = "";
+          $db_name  = "bookApp";
+          $this->conn = new mysqli($servername, $username, $password, $db_name);
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["addSubmit"])){
-
-      if(empty($_POST["title"])){
-        $titleErr = "Error: Title is missing!";
-      }else{
-        $title = test_input($_POST["title"]);
-        $titleErr = "";
+          // Check connection
+          if ($this->conn->connect_error) {
+              die("Connection failed: " . $this->conn->connect_error);
+          }
+          // echo "Connected successfully";
       }
 
-      if(empty($_POST["author"])){
-        $authorErr = "Error: Author is missing!";
-      }else{
-        $author = test_input($_POST["author"]);
-        $authorErr = "";
+       protected function test_input($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
       }
 
-      if(empty($_POST["yearRead"])){
-        $yearReadErr = "Year Read is missing!";
-      }else if (!is_numeric($_POST["yearRead"])){
-        $yearReadErr = "Error: Year Read. Please enter a number.";
-      }else{
-        $yearRead = test_input($_POST["yearRead"]);
-        $yearReadErr = "";
-      }
-
-      if(isset($_POST["forClass"])){
-        $forClass = $_POST["forClass"];
-      }
-
-      if(isset($_POST["reread"])){
-        $reread = $_POST["reread"];
-      }
-
-      if(!empty($_POST["yearPub"]) && !is_numeric($_POST["yearPub"])){
-        $yearPubErr = "Error: Year Published. Please enter a number.";
-      }else if (!empty($_POST["yearPub"])){
-        $yearPub = test_input($_POST["yearPub"]);
-        $yearPubErr = "";
-      }
-
-      if(!empty($_POST["numPgs"]) && !is_numeric($_POST["numPgs"])){
-        $numPgsErr = "Error: Number of Pages. Please enter a number.";
-      }else if (!empty($_POST["numPgs"])){
-        $numPgs = test_input($_POST["numPgs"]);
-        $numPgsErr = "";
-      }
-
-      // check for errors
-      $errList = array($titleErr, $authorErr, $yearReadErr, $yearPubErr, $numPgsErr , $forClassErr, $rereadErr);
-
-      foreach($errList as $val){
-        if($val != ""){
-          echo "<br>error: " . $val . "<br>";
-          $error = 1;
-        }
-      }
-
-      // if there are no errors, create new entry in mysql table
-      if(!$error){
-        $mysql .= "INSERT INTO book_list";
-        $mysql .= "(title, author, year_read";
-
-        if($yearPub != ""){
-          $mysql .= ", year_pub";
+       protected function validateInput(){
+         //echo "inside validate input <br>";
+        // Validate user input and add error messages when necessary
+        if(empty($_POST["title"])){
+          $this->titleErr = "Error: Title is missing!";
+        }else{
+          $this->title = $this->test_input($_POST["title"]);
+          $this->titleErr = "";
         }
 
-        if($numPgs != ""){
-          $mysql .= ", num_pgs";
+        if(empty($_POST["author"])){
+          $this->authorErr = "Error: Author is missing!";
+        }else{
+          $this->author = $this->test_input($_POST["author"]);
+          $this->authorErr = "";
         }
 
-        if($forClass != ""){
-          $mysql .= ", for_class";
+        if(empty($_POST["yearRead"])){
+          $this->yearReadErr = "Year Read is missing!";
+        }else if (!is_numeric($_POST["yearRead"])){
+          $this->yearReadErr = "Error: Year Read. Please enter a number.";
+        }else{
+          $this->yearRead = $this->test_input($_POST["yearRead"]);
+          $this->yearReadErr = "";
         }
 
-        if ($reread != ""){
-          $mysql .= ", reread";
+        if(isset($_POST["forClass"])){
+          $this->forClass = $_POST["forClass"];
         }
 
-        $mysql .= ") VALUES ('$title', '$author', '$yearRead'";
-
-        if($yearPub != ""){
-          $mysql .= ", '$yearPub'";
+        if(isset($_POST["reread"])){
+          $this->reread = $_POST["reread"];
         }
 
-        if($numPgs != ""){
-          $mysql .= ", '$numPgs'";
+        if(!empty($_POST["yearPub"]) && !is_numeric($_POST["yearPub"])){
+          $this->yearPubErr = "Error: Year Published. Please enter a number.";
+        }else if (!empty($_POST["yearPub"])){
+          $this->yearPub = $this->test_input($_POST["yearPub"]);
+          $this->yearPubErr = "";
         }
 
-        if($forClass != ""){
-          if($forClass == "yes"){
-            $mysql .= ", 1";
-          }else{
-            $mysql .= ", 0";
+        if(!empty($_POST["numPgs"]) && !is_numeric($_POST["numPgs"])){
+          $this->numPgsErr = "Error: Number of Pages. Please enter a number.";
+        }else if (!empty($_POST["numPgs"])){
+          $this->numPgs = $this->test_input($_POST["numPgs"]);
+          $this->numPgsErr = "";
+        }
+
+        // check for errors
+        $this->errList = array($this->titleErr, $this->authorErr, $this->yearReadErr, $this->yearPubErr, $this->numPgsErr , $this->forClassErr, $this->rereadErr);
+        foreach($this->errList as $printErr){
+          if($printErr != ""){
+            //echo "<br>error: " . $printErr . "<br>";
+            $this->inputError = TRUE;
           }
         }
 
-        if($reread != ""){
-          if($reread  == "yes"){
-            $mysql .= ", 1";
+      }
+
+       public function createEntry(){
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["addSubmit"])){
+
+          $this->validateInput();
+
+          // if there are no errors, create new entry in mysql table
+          if(!$this->inputError){
+            $this->mysql .= "INSERT INTO book_list";
+            $this->mysql .= "(title, author, year_read";
+
+            if($this->yearPub != ""){
+              $this->mysql .= ", year_pub";
+            }
+
+            if($this->numPgs != ""){
+              $this->mysql .= ", num_pgs";
+            }
+
+            if($this->forClass != ""){
+              $this->mysql .= ", for_class";
+            }
+
+            if ($this->reread != ""){
+              $this->mysql .= ", reread";
+            }
+
+            $this->mysql .= ") VALUES ('$this->title', '$this->author', '$this->yearRead'";
+
+            if($this->yearPub != ""){
+              $this->mysql .= ", '$this->yearPub'";
+            }
+
+            if($this->numPgs != ""){
+              $this->mysql .= ", '$this->numPgs'";
+            }
+
+            if($this->forClass != ""){
+              if($this->forClass == "yes"){
+                $this->mysql .= ", 1";
+              }else{
+                $this->mysql .= ", 0";
+              }
+            }
+
+            if($this->reread != ""){
+              if($this->reread  == "yes"){
+                $this->mysql .= ", 1";
+              }else{
+                $this->mysql .= ", 0";
+              }
+            }
+
+            $this->mysql .= ")";
+
+            if ($this->conn->query($this->mysql) == TRUE) {
+              $this->dbAddSuccess = TRUE;
+            } else {
+              $this->dbAddSuccess = FALSE;
+              echo "<br>failed " . $this->mysql . " " . mysqli_error($this->conn);
+            }
+
+            header("Location: index.php");
+            exit();
+
+          } // end if no errors
+
+        } //end if POST
+
+
+      } //end function Create
+
+       public function resetInput(){
+        //reset values
+        if (isset($_POST["cancel"])){
+          $this->title = $this->author = $this->forClass = $this->reread = $this->yearRead = $this->yearPub = $this->numPgs = "";
+        }
+      }
+
+       public function readEntries(){
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["sortMenu"])){
+          // ADD different display views
+          if($_POST["sortMenu"] == 'title'){
+            $this->mysql = "SELECT * FROM book_list ORDER BY title";
+          }else if ($_POST['sortMenu'] == 'author'){
+            $this->mysql = "SELECT * FROM book_list ORDER BY author";
+          }else if ($_POST['sortMenu'] == 'yearRead'){
+            $this->mysql = "SELECT * FROM book_list ORDER BY year_read";
+          }else if ($_POST['sortMenu'] == 'yearPub'){
+            $this->mysql = "SELECT * FROM book_list ORDER BY year_pub";
+          }else if ($_POST['sortMenu'] == 'numPgs'){
+            $this->mysql = "SELECT * FROM book_list ORDER BY num_pgs";
+          }else if ($_POST['sortMenu'] == 'forClass'){
+            $this->mysql = "SELECT * FROM book_list ORDER BY for_class";
+          }else if ($_POST['sortMenu'] == 'reread'){
+            $this->mysql = "SELECT * FROM book_list ORDER BY reread";
           }else{
-            $mysql .= ", 0";
+            $this->mysql = "SELECT * FROM book_list";
           }
+        }else{
+          $this->mysql = "SELECT * FROM book_list ORDER BY id DESC";
         }
 
-        $mysql .= ")";
+        $this->displayData = $this->conn->query($this->mysql);
+      }
 
-        if ($conn->query($mysql) == TRUE) {
-          $success = TRUE;
-          echo "<br>success";
-        } else {
-          $success = FALSE;
-          echo "<br>failed " . $mysql . " " . mysqli_error($conn);
+       public function printErr(){
+
+      //   if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["addSubmit"])){
+
+           // if there are errors in the user input, print errors
+           if($this->inputError){
+             $this->errList = array($this->titleErr, $this->authorErr, $this->yearReadErr, $this->yearPubErr, $this->numPgsErr , $this->forClassErr, $this->rereadErr);
+             echo "<ul>";
+             foreach($this->errList as $value){
+               if($value != ""){
+                  echo "<li>$value</li> <br>";
+                }
+             }
+             echo "</ul>";
+             // reset err messages
+             $this->titleErr = $this->authorErr = $this->forClassErr = $this->rereadErr = $this->yearReadErr = $this->yearPubErr = $this->numPgsErr = "";
+          }
+
+          //if successfully added a new entry to db
+           if ($this->dbAddSuccess && !$this->inputError){
+             echo "Successfully added " . $this->title ."! <br>";
+
+             $this->dbAddSuccess  = FALSE;
+             $this->title = $this->author = $this->forClass = $this->reread = $this->yearRead = $this->yearPub = $this->numPgs = "";
+           }
+
+      //  } // end if POST
+      }
+
+       public function printData(){
+        if ($this->displayData->num_rows > 0){
+
+          while($this->row = $this->displayData->fetch_assoc()){
+            echo "<div class = 'year'>" . $this->row["year_read"] .
+            "<span class = 'updateIcons'><i class='fas fa-edit'></i>
+            <i class='fas fa-trash-alt'></i>
+            </div>
+            <div class = 'titleAuthor'>" .
+            $this->row["title"] . " by "  . $this->row["author"] . "</div>";
+
+            echo "<div class = 'bookInfo'>";
+
+            if ($this->row["year_pub"] != ""){
+              echo "Published in " . $this->row["year_pub"] . "<br>";
+            }
+
+            if ($this->row["num_pgs"] != ""){
+             echo $this->row["num_pgs"] . " pages <br>" ;
+            }
+
+            if ($this->row["for_class"] != ""){
+              if($this->row["for_class"] == 1){
+                echo "Read for class <i class='fas fa-check'></i><br>" ;
+              }else{
+                echo "Read for class <i class='fas fa-times'></i><br>" ;
+              }
+            }
+
+            if ($this->row["reread"] != ""){
+              if($this->row["reread"] == 1){
+                echo "Reread <i class='fas fa-check'></i>";
+              }else{
+                echo "Reread <i class='fas fa-times'></i>";
+              }
+            }
+
+            echo "</div><div class = 'line'></div>";
+
+          } //end while
+
+        }else{
+          echo "No books added <i class='far fa-frown'></i>";
         }
 
-        //Prevent form resubmission
-        header("Location:index.php");
+      }
 
-      } // end no errors
+       public function endDbConnection(){
+        $this->conn->close();
+      }
 
-    } //end CREATE
+    } // end class bookEntry
 
+    $myList = new bookEntry;
 
-    // READ
-    $mysql = "SELECT * FROM book_list";
-    $data = $conn->query($mysql);
-
-
-    //reset values
-    if (isset($_POST["cancel"])){
-      $title = $author = $forClass = $reread = $yearRead = $yearPub = $numPgs = "";
-    }
-
-    function test_input($data) {
-      $data = trim($data);
-      $data = stripslashes($data);
-      $data = htmlspecialchars($data);
-      return $data;
-    }
-
-    $conn->close();
+    require_once ("index.view.php");
 
   ?>
-
-
-
-  <body>
-    <div class = "container">
-      <h1>Book Tracker</h1>
-      <p>Keep track of all the books you have read.</p>
-
-      <button id = "addBtn" class = "btn">Add Book <i class="fab fa-readme" alt = "book icon"></i></button>
-      <div id = "addResponse">
-        <?php
-
-        $errList = array($titleErr, $authorErr, $yearReadErr, $yearPubErr, $numPgsErr , $forClassErr, $rereadErr);
-          echo "<ul>";
-          foreach($errList as $value){
-            if($value != ""){
-              echo "<li>$value</li> <br>";
-            }
-          }
-          echo "</ul>";
-
-          if ($success == TRUE && !$error){
-            echo "Successfully added $title! <br>";
-
-            $success  = FALSE;
-            $title = $author = $forClass = $reread = $yearRead = $yearPub = $numPgs = "";
-
-          }
-
-        ?>
-
-      </div>
-
-      <div id = "addPanel">
-        <form action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method = "post">
-
-          Title <span class = "requiredFormat">(Required)</span><input type = "text" name = "title" value="<?php echo htmlspecialchars($title);?>" required> <br>
-          Author <span class = "requiredFormat">(Required)</span><input type = "text" name = "author" value="<?php echo htmlspecialchars($author);?>"  required> <br>
-          Year Read <span class = "requiredFormat">(Required)</span> <input type = "text" name = "yearRead" size = "4" maxlength = "4" value="<?php echo htmlspecialchars($yearRead);?>" required><br>
-          Year Published <input type = "text" size = "4" maxlength = "4" name = "yearPub" value="<?php echo htmlspecialchars($yearPub);?>"> <br>
-          Number of Pages <input type = "text" name = "numPgs" size = "4" value="<?php echo htmlspecialchars($numPgs);?>"><br>
-          Read for class?  <span style = "margin-left: 15px;">Yes</span> <input type = "radio" name = "forClass" value ="yes">
-          No <input type = "radio" name = "forClass" value = "no"> <br>
-          Reread?   <span style = "margin-left: 15px;">Yes</span>  <input type = "radio" name = "reread" value  = "yes">
-          No <input type = "radio" name = "reread" value  = "no"> <br>
-          <div class = "rightSide">
-            <input type = "reset" name = "cancel" class = "btn" id = "cancelBtn" value = 'Cancel'>
-            <input type = "submit" name = "addSubmit" value = "Submit" class = "btn">
-          </div>
-        </form>
-      </div>
-
-      <div id = "displayPanel">
-        <?php
-          if ($data->num_rows > 0){
-            echo "<div class = 'rightSide'>
-              Sort by:
-              <select name = 'sortMenu' id = 'sortMenu'>
-                <option value = '0'>Title</option>
-                <option value = '1'>Author</option>
-                <option value = '2'>Year Read</option>
-                <option value = '3'>Year Published</option>
-                <option value = '4'>Number of Pages</option>
-                <option value = '5'>Read for Class</option>
-                <option value = '6'>Reread</option>
-              </select>
-
-            </div>";
-
-
-            while($row = $data->fetch_assoc()){
-              echo "<div class = 'year'>" . $row["year_read"] . "</div><div class = 'titleAuthor'>" .
-              $row["title"] . " by "  . $row["author"] . "</div>";
-
-              echo "<div class = 'bookInfo'>";
-
-              if ($row["year_pub"] != ""){
-                echo "Published in " . $row["year_pub"];
-              }
-
-              if ($row["num_pgs"] != ""){
-               echo "<br>" . $row["num_pgs"] . " pages" ;
-              }
-
-              if ($row["for_class"] != ""){
-                if($row["for_class"] == 1){
-                  echo "<br> Read for class " ;
-                }
-              }
-
-              if ($row["reread"] != ""){
-                if($row["reread"] == 1){
-                  echo "<br> Reread ";
-                }
-              }
-
-              echo "</div><div class = 'line'></div>";
-
-            } //end while
-
-          }else{
-            echo "No books here <i class='far fa-frown'></i>";
-          }
-
-        ?>
-      </div>
-
-
-
-    </div> <!-- END container -->
-
-
-  </body>
-
-  <footer>
-    Made by Stephanie Yip 2018
-  </footer>
-
-</html>
-
-<?php
-
-
-
-?>
