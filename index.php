@@ -1,14 +1,18 @@
-
   <?php
+    /*
+    Contains the class bookEntry, which contains the data and methods used to
+    insert, update, delete, and read entries from the mySQL database.
+    */
 
     class bookEntry{
 
        protected $mysql  = ""; // store sql queries
        protected $inputError = FALSE; //check for errors in user input
-       protected $dbAddSuccess = FALSE;
+       protected $dbAddSuccess = FALSE; //check if adding new entry to DB was succussful
        protected $displayData; //stores requested data from DB
        protected $conn; //mysqli connection
 
+       // Stores user inputs
        public $title = "";
        public $author = "";
        public $forClass = "";
@@ -17,6 +21,7 @@
        public $yearPub = "";
        public $numPgs = "";
 
+       // Stores error messages for user inputs
        protected $titleErr = "";
        protected $authorErr = "";
        protected $forClassErr = "";
@@ -183,7 +188,7 @@
         if (isset($_POST["cancel"])){
           $this->title = $this->author = $this->forClass = $this->reread = $this->yearRead = $this->yearPub = $this->numPgs = "";
         }
-      }
+       }
 
        public function readEntries(){
 
@@ -211,6 +216,113 @@
         }
 
         $this->displayData = $this->conn->query($this->mysql);
+       }
+
+    public function getUpdateEntry(){
+      //echo "inside the get update entry func";
+      if (!empty($_POST['id'])){
+        $this->mysql = "";
+        $this->mysql .= "SELECT * from book_list WHERE ID = '";
+        $this->mysql .= $_POST['id'];
+        $this->mysql .= "'";
+
+        //echo $this->mysql;
+
+        $this->displayData = $this->conn->query($this->mysql);
+
+        if ($this->displayData->num_rows > 0){
+
+          while($this->row = $this->displayData->fetch_assoc()){
+
+            $jsonData = array($this->row["title"], $this->row["author"],
+            $this->row["year_read"]);
+
+            if($this->row["year_pub"] != ""){
+              array_push($jsonData, $this->row["year_pub"]);
+            }
+
+            if($this->row["num_pgs"] != ""){
+              array_push($jsonData, $this->row["num_pgs"]);
+            }
+
+            if($this->row["for_class"] != ""){
+              array_push($jsonData, $this->row["for_class"]);
+            }
+
+            if($this->row["reread"] != ""){
+              array_push($jsonData, $this->row["reread"]);
+            }
+          }
+
+          print_r($jsonData);
+
+          echo json_encode($jsonData);
+
+        }
+
+      }
+
+    }
+
+      public function updateEntry(){
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["updateSubmit"])){
+          $this->validateInput();
+
+          // if there's no input errors
+          if(!$this->inputError){
+            $this->mysql = "";
+            //UPDATE MyGuests SET lastname='Doe' WHERE id=2
+            $this->mysql .= "UPDATE book_list SET";
+            $this->mysql .= "(title, author, year_read";
+
+            if($this->yearPub != ""){
+              $this->mysql .= ", year_pub";
+            }
+
+            if($this->numPgs != ""){
+              $this->mysql .= ", num_pgs";
+            }
+
+            if($this->forClass != ""){
+              $this->mysql .= ", for_class";
+            }
+
+            if ($this->reread != ""){
+              $this->mysql .= ", reread";
+            }
+
+            $this->mysql .= ") VALUES ('$this->title', '$this->author', '$this->yearRead'";
+
+            if($this->yearPub != ""){
+              $this->mysql .= ", '$this->yearPub'";
+            }
+
+            if($this->numPgs != ""){
+              $this->mysql .= ", '$this->numPgs'";
+            }
+
+            if($this->forClass != ""){
+              if($this->forClass == "yes"){
+                $this->mysql .= ", 1";
+              }else{
+                $this->mysql .= ", 0";
+              }
+            }
+
+            if($this->reread != ""){
+              if($this->reread  == "yes"){
+                $this->mysql .= ", 1";
+              }else{
+                $this->mysql .= ", 0";
+              }
+            }
+
+            $this->mysql .= ")";
+
+          }
+
+        }
+
       }
 
        public function printErr(){
@@ -247,9 +359,10 @@
 
           while($this->row = $this->displayData->fetch_assoc()){
             echo "<div class = 'year'>" . $this->row["year_read"] .
-            "<span class = 'updateIcons'><i class='fas fa-edit'></i>
-            <i class='fas fa-trash-alt'></i>
-            </div>
+            "<span class = 'updateIcons'><i class='fas fa-edit' value = ' "
+            . $this->row["id"] . " '></i>
+            <i class='fas fa-trash-alt' value = ' " . $this->row["id"] . " '></i>
+            </span></div>
             <div class = 'titleAuthor'>" .
             $this->row["title"] . " by "  . $this->row["author"] . "</div>";
 
@@ -297,6 +410,7 @@
 
     $myList = new bookEntry;
 
+    // Displays HTML for the index page
     require_once ("index.view.php");
 
   ?>

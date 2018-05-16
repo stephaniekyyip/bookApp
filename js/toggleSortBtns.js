@@ -1,6 +1,3 @@
-// Count number of times user has clicked button in order to toggle between states
-var numClicked = 0;
-
 //  Toggle sort button for Order Added (change button style + add icons)
 function toggleSortBtn(btnLabel, innerTxt, isBool){
 
@@ -113,7 +110,7 @@ $(document).ready(function(){
 // sort For Class
 $(document).ready(function(){
   $("#sortForClass").click(function(){
-    toggleSortBtn("#sortForClass", "For Class", 1);
+    toggleSortBtn("#sortForClass", "Read for Class", 1);
   });
 });
 

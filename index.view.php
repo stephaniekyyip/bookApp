@@ -22,6 +22,8 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Sanchez" rel="stylesheet">
 
+    <!-- Radio button formatting from https://codepen.io/triss90/pen/XNEdRe-->
+
 
     <script src = "js/showHidePanels.js"></script>
     <script src = "js/toggleSortBtns.js"></script>
@@ -30,7 +32,7 @@
 
 
   <?php $myList->connectToDatabase(); ?>
-    <?php $myList->createEntry(); ?>
+  <?php $myList->createEntry(); ?>
 
   <?php $myList->resetInput(); ?>
 
@@ -49,15 +51,37 @@
       <div id = "addPanel">
         <form action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method = "post">
 
-          Title <span class = "requiredFormat">(Required)</span><input type = "text" name = "title" value="<?php echo htmlspecialchars($myList->title);?>" required> <br>
-          Author <span class = "requiredFormat">(Required)</span><input type = "text" name = "author" value="<?php echo htmlspecialchars($myList->author);?>"  required> <br>
-          Year Read <span class = "requiredFormat">(Required)</span> <input type = "text" name = "yearRead" size = "4" maxlength = "4" value="<?php echo htmlspecialchars($myList->yearRead);?>" required><br>
-          Year Published <input type = "text" size = "4" maxlength = "4" name = "yearPub" value="<?php echo htmlspecialchars($myList->yearPub);?>"> <br>
-          Number of Pages <input type = "text" name = "numPgs" size = "4" value="<?php echo htmlspecialchars($myList->numPgs);?>"><br>
-          Read for class?  <span style = "margin-left: 15px;">Yes</span> <input type = "radio" name = "forClass" value ="yes">
-          No <input type = "radio" name = "forClass" value = "no"> <br>
-          Reread?   <span style = "margin-left: 15px;">Yes</span>  <input type = "radio" name = "reread" value  = "yes">
-          No <input type = "radio" name = "reread" value  = "no"> <br>
+          Title <span class = "requiredFormat">(Required)</span><input type = "text" name = "title" value="" required> <br>
+          Author <span class = "requiredFormat">(Required)</span><input type = "text" name = "author" value=""  required> <br>
+          Year Read <span class = "requiredFormat">(Required)</span> <input type = "text" name = "yearRead" size = "4" maxlength = "4" value="" required><br>
+          Year Published <input type = "text" size = "4" maxlength = "4" name = "yearPub" name = "yearPub" value=""> <br>
+          Number of Pages <input type = "text" name = "numPgs" size = "4" value=""><br>
+
+
+          Read for class?
+          <label class = "labelContainer"> Yes
+            <input type = "radio" name = "forClass" value ="yes" id = "forClassYesAdd">
+            <span class = "checkmark"></span>
+          </label>
+
+          <label class = "labelContainer"> No
+            <input type = "radio" name = "forClass" value = "no" id = "forClassNoAdd">
+            <span class = "checkmark"></span>
+          </label>
+          <br>
+
+          Reread?
+          <label class = "labelContainer"> Yes
+            <input type = "radio" name = "reread" value  = "yes" id = "rereadYesAdd">
+            <span class = "checkmark"></span>
+          </label>
+
+          <label class = "labelContainer"> No
+            <input type = "radio" name = "reread" value  = "no" id = "rereadNoAdd">
+            <span class = "checkmark"></span>
+          </label>
+          <br>
+
           <div class = "rightSide">
             <input type = "reset" name = "cancel" class = "btn" id = "cancelBtn" value = 'Cancel'>
             <input type = "submit" name = "addSubmit" value = "Submit" class = "btn">
@@ -85,7 +109,7 @@
         </div>-->
         Sort by:
         <div id = "sortOptions">
-          <button class = "sortBtn" id = "sortOrder">Order Added</button>
+          <button class = "sortBtnClick" id = "sortOrder">Order Added <i class="fas fa-sort-down"></i></button>
           <button class = "sortBtn" id = "sortTitle">Title</button>
           <button class = "sortBtn" id = "sortAuthor">Author</button>
           <button class = "sortBtn" id = "sortYearRead">Year Read</button>
@@ -93,21 +117,42 @@
           <button class = "sortBtn" id = "sortNumPgs">Number of Pages</button>
           <button class = "sortBtn" id = "sortForClass">Read for Class</button>
           <button class = "sortBtn" id = "sortReread">Reread</button>
-
         </div>
 
         <div id = "updateOverlay">
+          <div id = "updateResponse"></div>
           <div id = "updatePanel">
-            <form method = "post">
-              Title <span class = "requiredFormat">(Required)</span><input type = "text" name = "titleUpdate" value="" required> <br>
-              Author <span class = "requiredFormat">(Required)</span><input type = "text" name = "authorUpdate" value=""  required> <br>
-              Year Read <span class = "requiredFormat">(Required)</span><input type = "text" name = "yearReadUpdate" size = "4" maxlength = "4" value="" required><br>
-              Year Published <input type = "text" size = "4" maxlength = "4" name = "yearPubUpdate" value=""> <br>
-              Number of Pages <input type = "text" name = "numPgsUpdate" size = "4" value=""><br>
-              Read for class?  <span style = "margin-left: 15px;">Yes</span> <input type = "radio" name = "forClass" value ="yes">
-              No <input type = "radio" name = "forClassUpdate" value = "no"> <br>
-              Reread?   <span style = "margin-left: 15px;">Yes</span>  <input type = "radio" name = "rereadUpdate" value  = "yes">
-              No <input type = "radio" name = "rereadUpdate" value  = "no"> <br>
+            <form method = "post" id = "updateForm" action= "php/update.php">
+              Title <span class = "requiredFormat">(Required)</span><input type = "text" name = "titleUpdate" id = "titleUpdate" value="" required> <br>
+              Author <span class = "requiredFormat">(Required)</span><input type = "text" name = "authorUpdate" id = "authorUpdate" value="" required> <br>
+              Year Read <span class = "requiredFormat">(Required)</span><input type = "text" name = "yearReadUpdate" id = "yearReadUpdate" size = "4" maxlength = "4" value="" required><br>
+              Year Published <input type = "text" size = "4" maxlength = "4" name = "yearPub" id = "yearPubUpdate" value=""> <br>
+              Number of Pages <input type = "text" name = "numPgs" name = "numPgs" id = "numPgsUpdate"  size = "4" value=""><br>
+
+              Read for class?
+              <label class = "labelContainer"> Yes
+                <input type = "radio" name = "forClass" id = "forClassYes" value ="yes">
+                <span class = "checkmark"></span>
+              </label>
+
+              <label class = "labelContainer">No
+                <input type = "radio" name = "forClass" value = "no" id = "forClassNo">
+                <span class = "checkmark"></span>
+              </label>
+              <br>
+
+              Reread?
+              <label class = "labelContainer"> Yes
+                <input type = "radio" name = "reread" value  = "yes" id = "rereadYes">
+                <span class = "checkmark"></span>
+              </label>
+
+              <label class = "labelContainer"> No
+                <input type = "radio" name = "reread" value  = "no" id = "rereadNo">
+                <span class = "checkmark"></span>
+              </label>
+              <br>
+
               <div class = "rightSide">
                 <input type = "reset" name = "cancel" class = "btn" id = "cancelUpdateBtn" value = 'Cancel'>
                 <input type = "submit" name = "updateSubmit" value = "Update" class = "btn">
@@ -120,7 +165,7 @@
           <div id = "deletePanel">
             <form>
               Are you sure you want to delete this? <br><br>
-              <input type = "submit" name = "deleteSubmit" value = "Delete " class = "btn">
+              <input type = "submit" name = "deleteSubmit" value = "Delete" class = "btn">
               <input type = "reset" name = "cancel" class = "btn" id = "cancelDeleteBtn" value = 'Cancel'>
             </form>
           </div>
