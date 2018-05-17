@@ -358,7 +358,7 @@
         if ($this->displayData->num_rows > 0){
 
           while($this->row = $this->displayData->fetch_assoc()){
-            echo "<div class = 'year'>" . $this->row["year_read"] .
+            echo "<div class = 'year'> Read in " . $this->row["year_read"] .
             "<span class = 'updateIcons'><i class='fas fa-edit' value = ' "
             . $this->row["id"] . " '></i>
             <i class='fas fa-trash-alt' value = ' " . $this->row["id"] . " '></i>

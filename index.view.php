@@ -120,14 +120,18 @@
         </div>
 
         <div id = "updateOverlay">
-          <div id = "updateResponse"></div>
+          <div id = "updateSuccessPanel">
+            <div class = "updateSuccessClose"><i class='far fa-window-close' id = "closeUpdateBtn"></i></div>
+            Successfully updated!
+          </div>
           <div id = "updatePanel">
-            <form method = "post" id = "updateForm" action= "php/update.php">
+            <div id = "updateFailed"></div>
+            <form method = "post" id = "updateForm" action = "php/update.php">
               Title <span class = "requiredFormat">(Required)</span><input type = "text" name = "titleUpdate" id = "titleUpdate" value="" required> <br>
               Author <span class = "requiredFormat">(Required)</span><input type = "text" name = "authorUpdate" id = "authorUpdate" value="" required> <br>
-              Year Read <span class = "requiredFormat">(Required)</span><input type = "text" name = "yearReadUpdate" id = "yearReadUpdate" size = "4" maxlength = "4" value="" required><br>
-              Year Published <input type = "text" size = "4" maxlength = "4" name = "yearPub" id = "yearPubUpdate" value=""> <br>
-              Number of Pages <input type = "text" name = "numPgs" name = "numPgs" id = "numPgsUpdate"  size = "4" value=""><br>
+              Year Read <span class = "requiredFormat">(Required)</span><input type = "text" name = "yearReadUpdate" id = "yearReadUpdate" size = "4" maxlength = "4" value="" required pattern = "\d*" oninvalid="setCustomValidity('Please enter a number.')"  oninput="setCustomValidity('')"><br>
+              Year Published <input type = "text" size = "4" maxlength = "4" name = "yearPub" id = "yearPubUpdate" value="" pattern = "\d*" oninvalid="setCustomValidity('Please enter a number.')"  oninput="setCustomValidity('')"> <br>
+              Number of Pages <input type = "text" name = "numPgs" name = "numPgs" id = "numPgsUpdate"  size = "4" value="" pattern = "\d*" oninvalid="setCustomValidity('Please enter a number.')"  oninput="setCustomValidity('')"><br>
 
               Read for class?
               <label class = "labelContainer"> Yes
@@ -155,7 +159,7 @@
 
               <div class = "rightSide">
                 <input type = "reset" name = "cancel" class = "btn" id = "cancelUpdateBtn" value = 'Cancel'>
-                <input type = "submit" name = "updateSubmit" value = "Update" class = "btn">
+                <input type = "submit" name = "updateSubmit" id = "updateSubmit" value = "Update" class = "btn">
               </div>
             </form>
           </div>
@@ -163,7 +167,7 @@
 
         <div id = "deleteOverlay">
           <div id = "deletePanel">
-            <form>
+            <form id = "deleteForm">
               Are you sure you want to delete this? <br><br>
               <input type = "submit" name = "deleteSubmit" value = "Delete" class = "btn">
               <input type = "reset" name = "cancel" class = "btn" id = "cancelDeleteBtn" value = 'Cancel'>

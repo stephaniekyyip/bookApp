@@ -23,15 +23,23 @@ $(document).ready(function(){
   });
 });
 
+// Stores ID of selected entry
+var entryId;
 
-// Show update window when edit button is clicked
+// Show update window and data of selected entry when edit button is clicked
 $(document).ready(function(){
   $(".fa-edit").click(function(){
-    var entryId = $(this).attr("value");
+    entryId = $(this).attr("value");
+
+    // Reset update panel
+    $("#updatePanel").css("display", "block");
+    $("#updateFailed").text("");
+    $("#updatePanel").css({"max-height": "520px", "margin": "100px auto"});
+
     console.log("id=" + entryId);
     $.ajax({
       type: 'POST',
-      url: 'php/update.php',
+      url: 'php/displayUpdate.php',
       data: {id: entryId},
       success: function(response){
         var entryData = JSON.parse(response);
@@ -81,36 +89,70 @@ $(document).ready(function(){
 
 });
 
-/*
-// Update entry using user input
-$(function updateEntry(){
-  var updateForm = $('#updateForm');
-  var updateResponse = $('#updateResponse');
+// Update selected entry
+$(document).ready(function(){
+  $("#updateForm").submit(function(event){
+    console.log("val: " + entryId);
 
-  $(updateForm).submit(function(event){
-
-    // Stop browser from submitting form
+    // Prevent from from being submitted
     event.preventDefault();
 
-    // Converts user input into AJAX request compatible format
-    var formData = $(updateForm).serialize();
+    var $form = $(this);
+    var url = $form.attr('action');
+    var forClassVal, rereadVal;
 
-    $.ajax({
-      type: 'POST',
-      url: $(form).attr('action'),
-      data: formData;
+    if($('#forClassYes').is(':checked')){
+      forClassVal = "1";
+    }
 
-    })
+    if($('#forClassNo').is(':checked')){
+      forClassVal = "0";
+    }
+
+    if($('#rereadYes').is(':checked')){
+      rereadVal = "1";
+    }
+
+    if($('#rereadNo').is(':checked')){
+      rereadVal  = "0";
+    }
+
+    var data = $.post(url, { id: entryId, title: $('#titleUpdate').val() ,
+    author: $('#authorUpdate').val(), yearRead: $('#yearReadUpdate').val(),
+    yearPub: $('#yearPubUpdate').val(), numPgs: $('#numPgsUpdate').val(),
+    forClass: forClassVal, reread: rereadVal});
+
+    data.done(function(response){
+      console.log(response);
+
+      if(response == "Success"){
+        $("#updatePanel").css("display", "none");
+        //$("#updateResponse").html("<div class = 'updateIcons'><i class='far fa-window-close'></i></div> Successfully updated!");
+        $("#updateSuccessPanel").fadeIn(300);
+      }else{
+        $("#updatePanel").css({"max-height": "550px", "margin": "80px auto"});
+        $("#updateFailed").text("Error! " + response);
+      }
+    });
+
 
   });
 
-});*/
+});
 
 //Close update window when cancel button is clicked
 $(document).ready(function(){
   $("#cancelUpdateBtn").click(function(){
     $('#updateOverlay').slideUp(300);
-    //$('#updatePanel').css({"visibility":"hidden","display":"none"});
+  });
+
+});
+
+//Close update window when updated successfully and "x" is clicked
+$(document).ready(function(){
+  $("#closeUpdateBtn").click(function(){
+    $('#updateOverlay').fadeOut(300);
+    $("#updateSuccessPanel").css("display", "none");
   });
 
 });
