@@ -7,19 +7,72 @@ $(document).ready(function(){
   });
 });
 
+// Adds new entry when Add New Book form is submitted
+$(document).ready(function(){
+  $("#addForm").submit(function(event){
+
+    // Prevent form from being submitted normally
+    event.preventDefault();
+
+    var $form = $(this);
+    var url = $form.attr('action');
+    var forClassVal, rereadVal;
+
+    if($('#forClassYesAdd').is(':checked')){
+      forClassVal = "1";
+    }
+
+    if($('#forClassNoAdd').is(':checked')){
+      forClassVal = "0";
+    }
+
+    if($('#rereadYesAdd').is(':checked')){
+      rereadVal = "1";
+    }
+
+    if($('#rereadNoAdd').is(':checked')){
+      rereadVal  = "0";
+    }
+
+    var data = $.post(url, {title: $("input[name=title]").val(),
+    author: $("input[name=author]").val(), yearRead: $("input[name=yearRead]").val(),
+    yearPub: $("input[name=yearPub").val(), numPgs: $("input[name=numPgs]").val(),
+    forClass: forClassVal, reread: rereadVal});
+
+    data.done(function(response){
+      console.log(response);
+      $("#addResponse").show();
+
+      if(response == "Success"){
+        $("#addPanel").hide();
+        $("#addResponse").text("Sucessfully added " + $("input[name=title]").val() + "!");
+        $("#addResponse").delay(1000).fadeOut('slow');
+        $("#addForm")[0].reset();
+      }else{
+        $("#addResponse").text("Add failed! " + response);
+      }
+
+
+    });
+
+
+  });
+
+});
+
 // Show add panel when add book button is clicked
 $(document).ready(function(){
   $("#addBtn").click(function(){
     $("#addPanel").slideToggle();
-    $("#addResponse").hide();
+    $("#addResponse").text("");
   });
 });
 
 //Hide add panel when cancel button is clicked
 $(document).ready(function(){
-  $("#cancelBtn").click(function(){
+  $("#cancelAddBtn").click(function(){
     $("#addPanel").slideUp();
-
+    $("#addResponse").text("");
   });
 });
 
@@ -36,14 +89,14 @@ $(document).ready(function(){
     $("#updateFailed").text("");
     $("#updatePanel").css({"max-height": "520px", "margin": "100px auto"});
 
-    console.log("id=" + entryId);
+    //console.log("id=" + entryId);
     $.ajax({
       type: 'POST',
       url: 'php/displayUpdate.php',
       data: {id: entryId},
       success: function(response){
+        console.log("response: " + response);
         var entryData = JSON.parse(response);
-        console.log(entryData);
 
         $('#titleUpdate').attr('value', entryData[0].title);
         $('#authorUpdate').attr('value', entryData[0].author);
@@ -80,7 +133,7 @@ $(document).ready(function(){
           $('#rereadNo').removeAttr("checked");
         }
 
-      }
+      }// end success func
 
     })
 
@@ -94,7 +147,7 @@ $(document).ready(function(){
   $("#updateForm").submit(function(event){
     console.log("val: " + entryId);
 
-    // Prevent from from being submitted
+    // Prevent form from being submitted normally
     event.preventDefault();
 
     var $form = $(this);
@@ -131,7 +184,7 @@ $(document).ready(function(){
         $("#updateSuccessPanel").fadeIn(300);
       }else{
         $("#updatePanel").css({"max-height": "550px", "margin": "80px auto"});
-        $("#updateFailed").text("Error! " + response);
+        $("#updateFailed").text("Update failed! " + response);
       }
     });
 

@@ -1,22 +1,5 @@
 <?php
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$db_name  = "bookApp";
-$conn = new mysqli($servername, $username, $password, $db_name);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-function test_input($data) {
- $data = trim($data);
- $data = stripslashes($data);
- $data = htmlspecialchars($data);
- return $data;
-}
+  /* Updates the selected entry in database using user input */
 
   // Stores user inputs
   $title = "";
@@ -37,148 +20,106 @@ function test_input($data) {
   $rereadErr = "";
   $inputError = FALSE;
 
-  $displayData = "";
+  $entryData = ""; // Stores current data in selected entry
 
- // Validate user input and add error messages when necessary
- if(empty($_POST["title"])){
-   $titleErr = "Error: Title is missing!";
- }else{
-   $title = test_input($_POST["title"]);
- }
+  require_once ('functions.php' );
 
- if(empty($_POST["author"])){
-   $authorErr = "Error: Author is missing!";
- }else{
-   $author = test_input($_POST["author"]);
- }
+  $conn = connectToDatabase();
 
- if(empty($_POST["yearRead"])){
-   $yearReadErr = "Year Read is missing!";
- }else if (!is_numeric($_POST["yearRead"])){
-   $yearReadErr = "Error: Year Read. Please enter a number.";
- }else{
-   $yearRead = test_input($_POST["yearRead"]);
- }
+  // Validate user input
+  validateInput();
 
- if(isset($_POST["forClass"])){
-   $forClass = $_POST["forClass"];
- }
+  // Check for errors
+  $inputError = printErr();
 
- if(isset($_POST["reread"])){
-   $reread = $_POST["reread"];
- }
+  if (!empty($_POST['id']) && $inputError == FALSE){
+    //Query for entry to be edited using id
+    $mysql = "SELECT * from book_list WHERE ID = '";
+    $mysql .= $_POST['id'];
+    $mysql .= "'";
 
- if(!empty($_POST["yearPub"]) && !is_numeric($_POST["yearPub"])){
-   $yearPubErr = "Error: Year Published. Please enter a number.";
- }else if (!empty($_POST["yearPub"])){
-   $yearPub = test_input($_POST["yearPub"]);
- }
+    $entryData = $conn->query($mysql);
 
- if(!empty($_POST["numPgs"]) && !is_numeric($_POST["numPgs"])){
-   $numPgsErr = "Error: Number of Pages. Please enter a number.";
- }else if (!empty($_POST["numPgs"])){
-   $numPgs = test_input($_POST["numPgs"]);
- }
+    // Stores list of user inputs
+    $inputList = array("title" => $title, "author" => $author,
+    "year_read" => $yearRead, "year_pub" => $yearPub, "num_pgs" => $numPgs,
+    "for_class" => $forClass, "reread" => $reread);
 
- // check for errors
- $errList = array($titleErr, $authorErr, $yearReadErr, $yearPubErr, $numPgsErr , $forClassErr, $rereadErr);
- foreach($errList as $printErr){
-   if($printErr != ""){
-     echo "<br>error: " . $printErr . "<br>";
-     $inputError = TRUE;
-   }
- }
+    // Stores whether the inputs have been changed by the user
+    $changeList = array("title" => FALSE, "author" => FALSE,
+    "year_read" => FALSE, "year_pub" => FALSE, "num_pgs" => FALSE,
+    "for_class" => FALSE, "reread" => FALSE);
 
- if (!empty($_POST['id'])){
-  //Query for entry to be edited using id
-  $mysql = "SELECT * from book_list WHERE ID = '";
-  $mysql .= $_POST['id'];
-  $mysql .= "'";
+    if ($entryData->num_rows > 0){
 
-  $displayData = $conn->query($mysql);
+      // Check if the values in the entry have been edited
+      while($row = $entryData->fetch_assoc()){
 
-  $inputList = array("title" => $title, "author" => $author,
-  "year_read" => $yearRead, "year_pub" => $yearPub, "num_pgs" => $numPgs,
-  "for_class" => $forClass, "reread" => $reread);
+        if ($title != $row["title"]){
+          $changeList["title"] = TRUE;
+        }
+        if($author != $row["author"]){
+          $changeList["author"] = TRUE;
+        }
+        if($yearRead != $row["year_read"]){
+          $changeList["year_read"]= TRUE;
+        }
+        if($yearPub != $row["year_pub"]){
+          $changeList["year_pub"] = TRUE;
+        }
+        if($numPgs != $row["num_pgs"]){
+          $changeList["num_pgs"] = TRUE;
+        }
+        if($forClass != $row["for_class"]){
+          $changeList["for_class"] = TRUE;
+        }
+        if($reread != $row["reread"]){
+          $changeList["reread"] = TRUE;
+        }
 
-  $changeList = array("title" => FALSE, "author" => FALSE,
-  "year_read" => FALSE, "year_pub" => FALSE, "num_pgs" => FALSE,
-  "for_class" => FALSE, "reread" => FALSE);
+      } // end while
+    } // end if num_rows > 0
 
-  if ($displayData->num_rows > 0){
+    // Begin SQL update query
+    $mysql = "UPDATE book_list SET ";
+    $needComma = FALSE; // Determines whether a comma is needed in the SQL query
 
-    // Check if the values in the entry have been edited
-    while($row = $displayData->fetch_assoc()){
+    foreach($changeList as $input => $val){
+      // if input has been changed, add to SQL query
+      if($val == TRUE){
 
-      if ($title != $row["title"]){
-        $changeList["title"] = TRUE;
+        if($needComma == TRUE){
+          $mysql .= ", ";
+        }
+
+        $mysql .= $input;
+        $mysql .= " = ";
+
+        if($inputList[$input] != ""){
+          $mysql .= "'";
+          $mysql .= $inputList[$input];
+          $mysql .= "' ";
+        }else{
+          $mysql .= "NULL ";
+        }
+
+        $needComma = TRUE;
       }
-      if($author != $row["author"]){
-        $changeList["author"] = TRUE;
-      }
-      if($yearRead != $row["year_read"]){
-        $changeList["year_read"]= TRUE;
-      }
-      if($yearPub != $row["year_pub"]){
-        $changeList["year_pub"] = TRUE;
-      }
-      if($numPgs != $row["num_pgs"]){
-        $changeList["num_pgs"] = TRUE;
-      }
-      if($forClass != $row["for_class"]){
-        $changeList["for_class"] = TRUE;
-      }
-      if($reread != $row["reread"]){
-        $changeList["reread"] = TRUE;
-      }
+    } // end foreach
 
-    } // end while
-  } // end if num_rows > 0
+    $mysql .= "WHERE ID = '";
+    $mysql .= $_POST['id'];
+    $mysql .= "'";
 
-  $needComma = FALSE;
-  $mysql = "UPDATE book_list SET ";
-
-  foreach($changeList as $input => $val){
-    if($val == TRUE){
-
-      if($needComma == TRUE){
-        $mysql .= ", ";
-      }
-
-      $mysql .= $input;
-      $mysql .= " = ";
-
-      if($inputList[$input] != ""){
-        $mysql .= "'";
-        $mysql .= $inputList[$input];
-        $mysql .= "' ";
-      }else{
-        $mysql .= "NULL ";
-      }
-
-      $needComma = TRUE;
+    if($conn->query($mysql)== TRUE){
+      echo "Success";
+    }else{
+      echo "Update failed!";
     }
-  }
 
-  $mysql .= "WHERE ID = '";
-  $mysql .= $_POST['id'];
-  $mysql .= "'";
+  } //end if id is not empty
 
-  // $mysql;
-
-  if($conn->query($mysql)== TRUE){
-    echo "Success";
-  }else{
-    echo "Update failed!";
-  }
-
-} //end if id is not empty
-
-
-/*
-  if(!$inputError){
-    echo "SUCCESS";
-  }*/
-
+  //Close mySQL connection
+  $conn->close();
 
 ?>

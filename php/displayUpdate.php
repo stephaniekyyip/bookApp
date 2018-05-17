@@ -1,53 +1,40 @@
 <?php
 
-/*require_once ( '../index.php' );
+  /* Displays the saved data of selected entry.
+  This allows the user to see what they have previously entered for that entry as
+  they make changes.  */
 
-$myList->connectToDatabase();
-$myList->getUpdateEntry();*/
+  require_once ( 'functions.php' );
 
-/* Displays the saved data of selected entry, which is fetched from the database.
-This allows the user to see what they have previously entered for that entry as
-they make changes.  */
+  //mysqli connection
+  $conn = connectToDatabase();
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$db_name  = "bookApp";
-$conn = new mysqli($servername, $username, $password, $db_name);
+  if (!empty($_POST['id'])){
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+    // Query for selected entry using ID
+    $mysql = "SELECT * from book_list WHERE ID = '";
+    $mysql .= $_POST['id'];
+    $mysql .= "'";
 
-if (!empty($_POST['id'])){
-  // Query for selected entry using ID
-  $mysql = "";
-  $mysql .= "SELECT * from book_list WHERE ID = '";
-  $mysql .= $_POST['id'];
-  $mysql .= "'";
+    //echo $mysql;
+    $displayData = $conn->query($mysql);
 
-  //echo $mysql;
+    if ($displayData->num_rows > 0){
 
-  $displayData = $conn->query($mysql);
+      while($row = $displayData->fetch_assoc()){
+        $jsonData[] = array('title' => $row["title"], 'author' => $row["author"],
+        'yearRead' => $row["year_read"], 'yearPub' => $row["year_pub"],
+        'numPgs' => $row["num_pgs"], 'forClass' => $row["for_class"],
+        'reread' => $row["reread"]);
+      }
 
-  if ($displayData->num_rows > 0){
+      echo json_encode($jsonData);
 
-    while($row = $displayData->fetch_assoc()){
-
-      $jsonData[] = array('title' => $row["title"], 'author' => $row["author"],
-      'yearRead' => $row["year_read"], 'yearPub' => $row["year_pub"],
-      'numPgs' => $row["num_pgs"], 'forClass' => $row["for_class"],
-      'reread' => $row["reread"]);
     }
 
-    echo json_encode($jsonData);
+  } //end if
 
-  }
-
-}
-
-  //Close connection
+  // Close mySQL connection
   $conn->close();
 
 ?>
