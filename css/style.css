@@ -58,6 +58,10 @@ p{
   text-align: right;
 }
 
+.highlightColor{
+  color: #F9E784;
+}
+
 .btn{
   font-size: 15px;
   color: #019D6E;
@@ -74,6 +78,7 @@ p{
   background-color: #019D6E;
   color: white;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 /************ Add Panel *************/
@@ -86,7 +91,7 @@ ul{
   margin-bottom: 10px;
 }
 
-/************ Update/ Delete Panel *************/
+/************ Update/ Delete Panels *************/
 #updateOverlay, #deleteOverlay{
   position: fixed;
   height: 100%;
@@ -123,18 +128,17 @@ ul{
   display: none;
 }
 
-#updateSuccessPanel{
+#updateSuccessPanel, #deleteResponsePanel{
   font-size: 30px;
   max-width: 550px;
   width: 80%;
-  max-height: 520px;
-  height: 120px;
+  height: 100px;
   position: relative;
-  padding-top: 10px;
+  padding-top: 50px;
   background:#019D6E;
   border-radius: 5px;
   text-align: center;
-  margin: 100px auto;
+  margin: 250px auto;
   display: none;
 }
 
@@ -142,10 +146,15 @@ ul{
   font-size: 20px;
 }
 
-.updateSuccessClose{
+.updateSuccessClose, .deleteSuccessClose{
   text-align: right;
   margin-right: 10px;
 }
+
+#addResponse{
+  color: #F9E784;
+}
+
 
 /************ Form *************/
 form{
@@ -171,6 +180,11 @@ input[type=text]{
   width: 100%;
 }
 
+.requiredFormat{
+  font-size: 12px;
+}
+
+/************ Radio button formatting  *************/
 .labelContainer{
   display: inline;
   position: relative;
@@ -235,21 +249,13 @@ input[type=text]{
 	background: #019D6E;
 }
 
-
-
 input[type=radio]{
   /*margin-bottom: 15px;
   margin-right: 15px;*/
   display: none;
 }
 
-
-
-.requiredFormat{
-  font-size: 12px;
-}
-
-/************ Display Data Table* ************/
+/************ Display Data Table *************/
 #displayPanel{
   margin-top: 30px;
 }
@@ -268,7 +274,7 @@ input[type=radio]{
 }
 
 .fa-edit:hover, .fa-trash-alt:hover, .fa-window-close:hover{
-  /*color: #EEDC22;*/
+  color: #F9E784;
   cursor: pointer;
 }
 
@@ -295,7 +301,7 @@ input[type=radio]{
   line-height: 24px;
 }
 
-/************ Sorting Options* ************/
+/************ Sorting Options *************/
 /*#sortMenu{
   font-family: 'Sanchez', sans-serif;
   font-size: 14px;
@@ -322,6 +328,10 @@ select {
   color: white;
   background: none;
   font-size: 15px;
+}
+
+.sortBtn:hover{
+  cursor: pointer;
 }
 
 .sortBtnClick{

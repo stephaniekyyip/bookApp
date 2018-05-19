@@ -24,11 +24,8 @@
 
   $conn = connectToDatabase();
 
-  // Validate user input
-  validateInput();
-
-  // Check for errors
-  $inputError = printErr();
+  // Validate user input and check for errors
+  $inputError = validateInput();
 
   if($inputError == FALSE){
 

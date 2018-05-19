@@ -26,11 +26,8 @@
 
   $conn = connectToDatabase();
 
-  // Validate user input
-  validateInput();
-
-  // Check for errors
-  $inputError = printErr();
+  // Validate user input and check for errors
+  $inputError = validateInput();
 
   if (!empty($_POST['id']) && $inputError == FALSE){
     //Query for entry to be edited using id
@@ -83,10 +80,12 @@
     // Begin SQL update query
     $mysql = "UPDATE book_list SET ";
     $needComma = FALSE; // Determines whether a comma is needed in the SQL query
+    $isChanged = FALSE; // Checks if any of the user inputs have been changed
 
     foreach($changeList as $input => $val){
       // if input has been changed, add to SQL query
       if($val == TRUE){
+        $isChanged = TRUE;
 
         if($needComma == TRUE){
           $mysql .= ", ";
@@ -107,17 +106,22 @@
       }
     } // end foreach
 
-    $mysql .= "WHERE ID = '";
-    $mysql .= $_POST['id'];
-    $mysql .= "'";
+    // If entry inputs have been changed
+    if($isChanged){
+      $mysql .= "WHERE ID = '";
+      $mysql .= $_POST['id'];
+      $mysql .= "'";
 
-    if($conn->query($mysql)== TRUE){
-      echo "Success";
+      if($conn->query($mysql)== TRUE){
+        echo "Success";
+      }else{
+        echo "Update failed!";
+      }
     }else{
-      echo "Update failed!";
+      echo "No changes have been made!";
     }
 
-  } //end if id is not empty
+  }//end if id is not empty and no input errors
 
   //Close mySQL connection
   $conn->close();
