@@ -9,12 +9,11 @@
     $mysql .= $_POST['id'];
     $mysql .= "'";
 
-    if($conn->query($mysql)){
-      echo "Success";
+    if($conn->query($mysql) == TRUE){
+      echo "200";
     }else{
-      echo "Failed";
+      echo "404";
     }
-
 
     //Close mySQL connection
     $conn->close();

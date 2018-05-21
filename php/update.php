@@ -1,9 +1,13 @@
 <?php
-  /* Updates the selected entry in database using user input */
+  /*
+    Updates the selected entry in the database using user input, if any changes
+    have been made.
+  */
 
   // Stores user inputs
   $title = "";
-  $author = "";
+  $authorFirst = "";
+  $authorLast = "";
   $yearRead = "";
   $yearPub = "";
   $numPgs = "";
@@ -12,7 +16,8 @@
 
   // Errors messages for user input
   $titleErr = "";
-  $authorErr = "";
+  $authorFirstErr = "";
+  $authorLastErr = "";
   $yearReadErr = "";
   $yearPubErr = "";
   $numPgsErr = "";
@@ -38,14 +43,15 @@
     $entryData = $conn->query($mysql);
 
     // Stores list of user inputs
-    $inputList = array("title" => $title, "author" => $author,
-    "year_read" => $yearRead, "year_pub" => $yearPub, "num_pgs" => $numPgs,
-    "for_class" => $forClass, "reread" => $reread);
+    $inputList = array("title" => $title, "author_first" => $authorFirst,
+      "author_last" => $authorLast, "year_read" => $yearRead,
+      "year_pub" => $yearPub, "num_pgs" => $numPgs, "for_class" => $forClass,
+      "reread" => $reread);
 
     // Stores whether the inputs have been changed by the user
-    $changeList = array("title" => FALSE, "author" => FALSE,
-    "year_read" => FALSE, "year_pub" => FALSE, "num_pgs" => FALSE,
-    "for_class" => FALSE, "reread" => FALSE);
+    $changeList = array("title" => FALSE, "author_first" => FALSE,
+      "author_last" => FALSE, "year_read" => FALSE, "year_pub" => FALSE,
+      "num_pgs" => FALSE, "for_class" => FALSE, "reread" => FALSE);
 
     if ($entryData->num_rows > 0){
 
@@ -55,8 +61,11 @@
         if ($title != $row["title"]){
           $changeList["title"] = TRUE;
         }
-        if($author != $row["author"]){
-          $changeList["author"] = TRUE;
+        if($authorFirst != $row["author_first"]){
+          $changeList["author_first"] = TRUE;
+        }
+        if($authorLast != $row["author_last"]){
+          $changeList["author_last"] = TRUE;
         }
         if($yearRead != $row["year_read"]){
           $changeList["year_read"]= TRUE;
@@ -83,21 +92,18 @@
     $isChanged = FALSE; // Checks if any of the user inputs have been changed
 
     foreach($changeList as $input => $val){
-      // if input has been changed, add to SQL query
+      // if current input has been changed, add to SQL query
       if($val == TRUE){
-        $isChanged = TRUE;
+        $isChanged = TRUE; //at least one of the user inputs have been changed
 
         if($needComma == TRUE){
           $mysql .= ", ";
         }
 
-        $mysql .= $input;
-        $mysql .= " = ";
+        $mysql .= $input . " = ";
 
         if($inputList[$input] != ""){
-          $mysql .= "'";
-          $mysql .= $inputList[$input];
-          $mysql .= "' ";
+          $mysql .= "'" . $inputList[$input] . "' ";
         }else{
           $mysql .= "NULL ";
         }
@@ -108,17 +114,15 @@
 
     // If entry inputs have been changed
     if($isChanged){
-      $mysql .= "WHERE ID = '";
-      $mysql .= $_POST['id'];
-      $mysql .= "'";
+      $mysql .= "WHERE ID = '" . $_POST['id'] . "'";
 
       if($conn->query($mysql)== TRUE){
-        echo "Success";
+        echo "200";
       }else{
-        echo "Update failed!";
+        echo "404";
       }
     }else{
-      echo "No changes have been made!";
+      echo "204";
     }
 
   }//end if id is not empty and no input errors

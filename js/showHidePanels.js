@@ -20,10 +20,10 @@ function getData(sortOption = "none", order = "none"){
   $.ajax({
     url: 'php/display.php',
     data: {sortMenu: sortOption, order: order},
-    type: 'post',
+    type: 'get',
     success: function(response){
-      if (response == "FAILED"){
-        console.log(response);
+      if (response == "404"){
+        $("#dataTable").html("Error displaying book entries.");
       }else{
         $("#dataTable").fadeOut(10);
         $("#dataTable").fadeIn(500);
@@ -45,8 +45,6 @@ $(document).ready(function(){
     // Prevent form from being submitted normally
     event.preventDefault();
 
-    var $form = $(this);
-    var url = $form.attr('action');
     var forClassVal, rereadVal;
 
     if($('#forClassYesAdd').is(':checked')){
@@ -65,32 +63,35 @@ $(document).ready(function(){
       rereadVal  = "0";
     }
 
-    var data = $.post(url, {title: $("input[name=title]").val(),
-    author: $("input[name=author]").val(), yearRead: $("input[name=yearRead]").val(),
-    yearPub: $("input[name=yearPub").val(), numPgs: $("input[name=numPgs]").val(),
-    forClass: forClassVal, reread: rereadVal});
+    $.ajax({
+      url: 'php/create.php',
+      type: 'POST',
+      data: {title: $("input[name=title]").val(),
+      authorFirst: $("input[name=authorFirst]").val(),
+      authorLast: $("input[name=authorLast]").val(),
+      yearRead: $("input[name=yearRead]").val(),
+      yearPub: $("input[name=yearPub").val(),
+      numPgs: $("input[name=numPgs]").val(), forClass: forClassVal,
+      reread: rereadVal},
+      success: function(response){
+        $("#addResponse").show();
 
-    data.done(function(response){
-      console.log(response);
-      $("#addResponse").show();
+        if(response == "200"){
+          $("#addPanel").hide();
+          $("#addResponse").text("Added " + $("input[name=title]").val() + "!");
+            /*+ " by "
+            + $("input[name=authorFirst]").val() + " "
+            + $("input[name=authorLast]").val() + "!");*/
+          $("#addResponse").delay(3000).fadeOut('5000');
+          $("#addForm")[0].reset();
+          getData(sortState, orderState);
+        }else{
+          $("#addResponse").text("Add failed! " + response);
+        }
 
-      if(response == "Success"){
-        $("#addPanel").hide();
-        $("#addResponse").text("Added " + $("input[name=title]").val() + " by "
-          + $("input[name=author]").val() + "!");
-        $("#addResponse").delay(3000).fadeOut('5000');
-        $("#addForm")[0].reset();
-        getData(sortState, orderState);
-      }else{
-        $("#addResponse").text("Add failed! " + response);
       }
-
-
-    });
-
-
-  });
-
+    }); //end ajax
+  }); // end submit add form
 });
 
 // Show add panel when add book button is clicked
@@ -118,58 +119,63 @@ $(document).on("click",".fa-edit", function(){
   //Get ID of selected entry to query DB
   entryId = $(this).attr("value");
 
-  // Reset update panel
   $("#updatePanel").show();
-  $("#updateFailed").text("");
-  $("#updatePanel").css({"max-height": "520px", "margin": "100px auto"});
-  $("#updateSuccessPanel").css("display", "none");
-  $('#updateForm')[0].reset(); //reset form
 
-  //console.log("id=" + entryId);
+  // Reset update panel
+  $("#updateFailed").text(""); // clears any previous error messages
+  $("#updatePanel").css({"max-height": "600px"}); // reset height of update form
+  $("#updateSuccessPanel").css("display", "none"); // hide sucess panel
+  $('#updateForm')[0].reset(); //reset form
+  $('#updateOverlay').scrollTop(0); // reset scroll bar to top
+
   $.ajax({
-    type: 'POST',
+    type: 'GET',
     url: 'php/displayUpdate.php',
     data: {id: entryId},
     success: function(response){
       //console.log("response: " + response);
-      var entryData = JSON.parse(response);
 
-      $('#titleUpdate').attr('value', entryData[0].title);
-      $('#authorUpdate').attr('value', entryData[0].author);
-      $('#yearReadUpdate').attr('value', entryData[0].yearRead);
-      $('#yearPubUpdate').attr('value', entryData[0].yearPub);
-      $('#numPgsUpdate').attr('value', entryData[0].numPgs);
-
-      if(entryData[0].forClass == 1){
-        console.log("forClass= yes");
-        $('#forClassNo').removeAttr("checked");
-        $('#forClassYes').attr('checked', "true");
-      }else if (entryData[0].forClass == 0){
-        console.log("forClass= no");
-        $('#forClassYes').removeAttr("checked");
-        $('#forClassNo').attr('checked', "true");
+      if(response == "404"){
+        console.log("Cannot find selected entry in database.")
       }else{
-        console.log("forClass= not selected");
-        $('#forClassYes').removeAttr("checked");
-        $('#forClassNo').removeAttr("checked");
-      }
+        var entryData = JSON.parse(response);
 
-      if(entryData[0].reread == 1){
-        console.log("reread= yes");
-        $('#rereadNo').removeAttr("checked");
-        $('#rereadYes').attr('checked', "true");
-      }else if (entryData[0].reread == 0){
-        console.log("reread = no");
-        $('#rereadYes').removeAttr("checked");
-        $('#rereadNo').attr('checked', "true");
-      }else{
-        console.log("reread= not selected");
-        $('#rereadYes').removeAttr("checked");
-        $('#rereadNo').removeAttr("checked");
-      }
+        $('#titleUpdate').attr('value', entryData[0].title);
+        $('#authorFirstUpdate').attr('value', entryData[0].authorFirst);
+        $('#authorLastUpdate').attr('value', entryData[0].authorLast);
+        $('#yearReadUpdate').attr('value', entryData[0].yearRead);
+        $('#yearPubUpdate').attr('value', entryData[0].yearPub);
+        $('#numPgsUpdate').attr('value', entryData[0].numPgs);
 
+        if(entryData[0].forClass == 1){
+          console.log("forClass= yes");
+          $('#forClassNo').removeAttr("checked");
+          $('#forClassYes').attr('checked', "true");
+        }else if (entryData[0].forClass == 0){
+          console.log("forClass= no");
+          $('#forClassYes').removeAttr("checked");
+          $('#forClassNo').attr('checked', "true");
+        }else{
+          console.log("forClass= not selected");
+          $('#forClassYes').removeAttr("checked");
+          $('#forClassNo').removeAttr("checked");
+        }
+
+        if(entryData[0].reread == 1){
+          console.log("reread= yes");
+          $('#rereadNo').removeAttr("checked");
+          $('#rereadYes').attr('checked', "true");
+        }else if (entryData[0].reread == 0){
+          console.log("reread = no");
+          $('#rereadYes').removeAttr("checked");
+          $('#rereadNo').attr('checked', "true");
+        }else{
+          console.log("reread= not selected");
+          $('#rereadYes').removeAttr("checked");
+          $('#rereadNo').removeAttr("checked");
+        }
+      } //end if
     }// end success func
-
   }) //end ajax
 
   $('#updateOverlay').slideDown(300);
@@ -179,13 +185,11 @@ $(document).on("click",".fa-edit", function(){
 // Update selected entry when update form is submitted
 $(document).ready(function(){
   $("#updateForm").submit(function(event){
-    console.log("val: " + entryId);
+    //console.log("val: " + entryId);
 
     // Prevent form from being submitted normally
     event.preventDefault();
 
-    var $form = $(this);
-    var url = $form.attr('action');
     var forClassVal, rereadVal;
 
     if($('#forClassYes').is(':checked')){
@@ -204,31 +208,35 @@ $(document).ready(function(){
       rereadVal  = "0";
     }
 
-    var data = $.post(url, { id: entryId, title: $('#titleUpdate').val() ,
-    author: $('#authorUpdate').val(), yearRead: $('#yearReadUpdate').val(),
-    yearPub: $('#yearPubUpdate').val(), numPgs: $('#numPgsUpdate').val(),
-    forClass: forClassVal, reread: rereadVal});
+    $.ajax({
+      url: 'php/update.php',
+      type: 'POST',
+      data : { id: entryId, title: $('#titleUpdate').val() ,
+        authorFirst: $('#authorFirstUpdate').val(),
+        authorLast: $('#authorLastUpdate').val(),
+        yearRead: $('#yearReadUpdate').val(), yearPub: $('#yearPubUpdate').val(),
+        numPgs: $('#numPgsUpdate').val(),
+        forClass: forClassVal, reread: rereadVal},
+      success: function(response){
+        if(response == "200"){
+          $("#updatePanel").css("display", "none");
+          //$("#updateResponse").html("<div class = 'updateIcons'>
+          // <i class='far fa-window-close'></i></div> Successfully updated!");
+          $("#updateSuccessPanel").fadeIn(300);
 
-    data.done(function(response){
-      console.log(response);
+          $('#updateOverlay').delay(1000).fadeOut(500);
+          setTimeout(function(){getData(sortState, orderState);}, 1500);
+        }else if (response == "404"){
+            $("#updatePanel").css({"max-height": "620px", "margin": "50px auto"});
+            $("#updateFailed").text("Unable to update entry.");
+        }else{
+          $("#updatePanel").css({"max-height": "620px", "margin": "50px auto"});
+          $("#updateFailed").text("No changes have been made!");
+        }
+      } // end success func
 
-      if(response == "Success"){
-        $("#updatePanel").css("display", "none");
-        //$("#updateResponse").html("<div class = 'updateIcons'>
-        // <i class='far fa-window-close'></i></div> Successfully updated!");
-        $("#updateSuccessPanel").fadeIn(300);
-
-        $('#updateOverlay').delay(1000).fadeOut(500);
-        setTimeout(function(){getData(sortState, orderState);}, 1500);
-      }else{
-        $("#updatePanel").css({"max-height": "550px", "margin": "80px auto"});
-        $("#updateFailed").text(response);
-      }
-    });
-
-
-  });
-
+    }); //end ajax
+  }); // end update form submit
 });
 
 //Close update window when cancel button is clicked
@@ -261,24 +269,28 @@ $(document).on("click", ".fa-trash-alt", function(){
 // Deletes selected entry from the database when delete form is submitted
 $(document).ready(function(){
   $("#deleteForm").submit(function(event){
-
+    console.log("id: " + entryId);
     // Prevent form from being submitted normally
     event.preventDefault();
 
     $.ajax({
       url: 'php/delete.php',
       data: {id: entryId},
-      type: 'post',
+      type: 'POST',
       success: function(response){
-        if(response == "Failed"){
-          console.log(response);
-        }else{
-          console.log(response);
+        console.log(response);
+        if(response == "200"){
           $("#deletePanel").hide();
           $("#deleteResponsePanel").fadeIn(300);
 
           $("#deleteOverlay").delay(1000).fadeOut(500);
           setTimeout(function(){getData(sortState, orderState);}, 1500);
+        }else{
+          $("#deletePanel").hide();
+          $("#deleteResponsePanel").fadeIn(300);
+          $("#deleteResponsePanel").text("Deleted failed.");
+
+          $("#deleteOverlay").delay(1000).fadeOut(500);
         }
       }
 
@@ -348,13 +360,13 @@ function toggleSortBtn(btnLabel, innerTxt, isBool){
   //console.log("has active class: " + $(btnLabel).hasClass("sortBtnClick"));
 
   // Set button active color + ascending/ descending icon
-  // Default to Ascending
+  // Inactive to Ascending
   if ($(btnLabel).html() == innerTxt  ){ //|| $(btnLabel).html() == (innerTxt + " ")
     console.log("set to ascending");
     $(btnLabel).html(innerTxt + ascendIcon);
 
-    if(ascendIcon == "upArrow"){
-      sortOrder = "ascending";
+    if(ascendIcon == upArrow){
+      sortOrder = "ascend";
     }else{
       sortOrder = "yes";
     }
@@ -364,19 +376,19 @@ function toggleSortBtn(btnLabel, innerTxt, isBool){
     console.log("set to descending");
     $(btnLabel).html(innerTxt + descendIcon);
 
-    if(descendIcon == "downArrow"){
-      sortOrder = "descending";
+    if(descendIcon == downArrow){
+      sortOrder = "descend";
     }else{
       sortOrder = "no";
     }
 
-  // Descending back to default (inactive state)
+  // Descending back to inactive
   }else {
     console.log("back to default");
     $(btnLabel).html(innerTxt);
     $(btnLabel).removeClass("sortBtnClick");
     $(btnLabel).addClass("sortBtn");
-    sortOrder = "off";
+    sortOrder = "none";
   }
 
   return sortOrder;
@@ -390,12 +402,10 @@ $(document).ready(function(){
     sortState = "orderAdded";
     orderState = toggleSortBtn("#sortOrder", "Order Added", 0);
 
-    if(orderState == "ascending"){
-      getData("orderAdded", "ascend");
-    }else if (orderState == "descending"){
-      getData("orderAdded", "descend");
-    }else{
+    if(orderState == "none"){
       getData();
+    }else{
+      getData(sortState, orderState);
     }
 
   });
@@ -407,12 +417,10 @@ $(document).ready(function(){
     sortState = "title";
     orderState = toggleSortBtn("#sortTitle", "Title", 0);
 
-    if(orderState == "ascending"){
-      getData("title", "ascend");
-    }else if (orderState == "descending"){
-      getData("title", "descend");
-    }else{
+    if(orderState == "none"){
       getData();
+    }else{
+      getData(sortState, orderState);
     }
   });
 });
@@ -423,12 +431,10 @@ $(document).ready(function(){
     sortState = "author";
     orderState = toggleSortBtn("#sortAuthor", "Author", 0);
 
-    if(orderState == "ascending"){
-      getData("author", "ascend");
-    }else if (orderState == "descending"){
-      getData("author", "descend");
-    }else{
+    if(orderState == "none"){
       getData();
+    }else{
+      getData(sortState, orderState);
     }
   });
 });
@@ -439,12 +445,10 @@ $(document).ready(function(){
     sortState = "yearRead";
     orderState = toggleSortBtn("#sortYearRead", "Year Read", 0);
 
-    if(orderState == "ascending"){
-      getData("yearRead", "ascend");
-    }else if (orderState == "descending"){
-      getData("yearRead", "descend");
-    }else{
+    if(orderState == "none"){
       getData();
+    }else{
+      getData(sortState, orderState);
     }
   });
 });
@@ -455,12 +459,10 @@ $(document).ready(function(){
     sortState = "yearPub";
     orderState = toggleSortBtn("#sortYearPub", "Year Published", 0);
 
-    if(orderState == "ascending"){
-      getData("yearPub", "ascend");
-    }else if (orderState == "descending"){
-      getData("yearPub", "descend");
-    }else{
+    if(orderState == "none"){
       getData();
+    }else{
+      getData(sortState, orderState);
     }
   });
 });
@@ -471,12 +473,10 @@ $(document).ready(function(){
     sortState = "numPgs";
     orderState = toggleSortBtn("#sortNumPgs", "Number of Pages", 0);
 
-    if(orderState == "ascending"){
-      getData("numPgs", "ascend");
-    }else if (orderState == "descending"){
-      getData("numPgs", "descend");
-    }else{
+    if(orderState == "none"){
       getData();
+    }else{
+      getData(sortState, orderState);
     }
   });
 });
@@ -487,12 +487,10 @@ $(document).ready(function(){
     sortState = "forClass";
     orderState = toggleSortBtn("#sortForClass", "Read for Class", 1);
 
-    if(orderState == "yes"){
-      getData("forClass", "yes");
-    }else if (orderState == "no"){
-      getData("forClass", "no");
-    }else{
+    if(orderState == "none"){
       getData();
+    }else{
+      getData(sortState, orderState);
     }
   });
 });
@@ -503,12 +501,10 @@ $(document).ready(function(){
     sortState = "reread";
     orderState = toggleSortBtn("#sortReread", "Reread", 1);
 
-    if(orderState == "yes"){
-      getData("reread", "yes");
-    }else if (orderState == "no"){
-      getData("reread", "no");
-    }else{
+    if(orderState == "none"){
       getData();
+    }else{
+      getData(sortState, orderState);
     }
   });
 });

@@ -31,9 +31,9 @@
      $startErrList = TRUE; // start an error <ul> if there is an error
 
       // if there are errors in the user input, print errors
-     $errList = array($GLOBALS['titleErr'], $GLOBALS['authorErr'],
-      $GLOBALS['yearReadErr'],$GLOBALS['yearPubErr'], $GLOBALS['numPgsErr'] ,
-      $GLOBALS['forClassErr'], $GLOBALS['rereadErr']);
+     $errList = array($GLOBALS['titleErr'], $GLOBALS['authorFirstErr'],
+      $GLOBALS['authorLastErr'],$GLOBALS['yearReadErr'],$GLOBALS['yearPubErr'],
+      $GLOBALS['numPgsErr'], $GLOBALS['forClassErr'], $GLOBALS['rereadErr']);
 
      foreach($errList as $printErr){
        if($printErr != ""){
@@ -55,9 +55,9 @@
      return $inputError;
 
      // reset err messages
-     $GLOBALS['titleErr'] = $GLOBALS['authorErr'] = $GLOBALS['forClassErr'] =
-      $GLOBALS['rereadErr'] = $GLOBALS['yearReadErr'] = $GLOBALS['yearPubErr'] =
-      $GLOBALS['numPgsErr'] = "";
+     $GLOBALS['titleErr'] = $GLOBALS['authorFirstErr'] = $GLOBALS['authorLastErr']
+      = $GLOBALS['forClassErr'] = $GLOBALS['rereadErr'] = $GLOBALS['yearReadErr']
+      = $GLOBALS['yearPubErr'] = $GLOBALS['numPgsErr'] = "";
 
    }
 
@@ -69,10 +69,16 @@
        $GLOBALS['title'] = test_input($_POST["title"]);
      }
 
-     if(empty($_POST["author"])){
-       $GLOBALS['authorErr'] = "Error: Author is missing!";
+     if(empty($_POST["authorFirst"])){
+       $GLOBALS['authorFirstErr'] = "Error: Author first name is missing!";
      }else{
-       $GLOBALS['author'] = test_input($_POST["author"]);
+       $GLOBALS['authorFirst'] = test_input($_POST["authorFirst"]);
+     }
+
+     if(empty($_POST["authorLast"])){
+       $GLOBALS['authorLastErr'] = "Error: Author last name is missing!";
+     }else{
+       $GLOBALS['authorLast'] = test_input($_POST["authorLast"]);
      }
 
      if(empty($_POST["yearRead"])){

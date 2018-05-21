@@ -38,16 +38,21 @@
       <div id = "addPanel">
 
         <!-- Form for adding a new entry -->
-        <form id = "addForm" action = "php/add.php" method = "post">
+        <form id = "addForm" action = "php/create.php" method = "post">
           Title <span class = "requiredFormat">(Required)</span>
             <input type = "text"
             name = "title" value="" required
             oninvalid="setCustomValidity('Please enter the title of the book.')"
             oninput="setCustomValidity('')"> <br>
-          Author <span class = "requiredFormat">(Required)</span>
+          Author First Name <span class = "requiredFormat">(Required)</span>
             <input type = "text"
-            name = "author" value=""  required
-            oninvalid="setCustomValidity('Please enter the author of the book.')"
+            name = "authorFirst" value=""  required
+            oninvalid="setCustomValidity('Please enter the author's first name.')"
+            oninput="setCustomValidity('')"> <br>
+          Author Last Name <span class = "requiredFormat">(Required)</span>
+            <input type = "text"
+            name = "authorLast" value=""  required
+            oninvalid="setCustomValidity('Please enter the author's last name.')"
             oninput="setCustomValidity('')"> <br>
           Year Read <span class = "requiredFormat">(Required)</span>
             <input type = "text"
@@ -125,10 +130,17 @@
               name = "titleUpdate" id = "titleUpdate" value="" required
               oninvalid="setCustomValidity('Please enter the title of the book.')"
               oninput="setCustomValidity('')"> <br>
-            Author <span class = "requiredFormat">(Required)</span>
+            Author's First Name <span class = "requiredFormat">(Required)</span>
               <input type = "text"
-              name = "authorUpdate" id = "authorUpdate" value="" required
-              oninvalid="setCustomValidity('Please enter the author of the book.')"
+              name = "authorFirstUpdate" id = "authorFirstUpdate" value=""
+              required
+              oninvalid="setCustomValidity('Please enter the author's first name.')"
+              oninput="setCustomValidity('')"> <br>
+            Author's Last Name <span class = "requiredFormat">(Required)</span>
+              <input type = "text"
+              name = "authorLastUpdate" id = "authorLastUpdate" value=""
+              required
+              oninvalid="setCustomValidity('Please enter the author's last name.')"
               oninput="setCustomValidity('')"> <br>
             Year Read <span class = "requiredFormat">(Required)</span>
               <input type = "text"

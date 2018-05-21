@@ -1,61 +1,63 @@
 <?php
 
+/*
+  Displays all entries in the database according to the selected sorting
+  option (either user-selected or by default- sorted by most recently added).
+*/
+
   require_once ( 'functions.php' );
 
   function readEntries(){
 
     $conn = connectToDatabase();
 
-    if (isset($_POST["sortMenu"]) && isset($_POST["order"])){
-    // ADD different display views
+    if (isset($_GET["sortMenu"]) && isset($_GET["order"])){
 
-      if($_POST["sortMenu"] == 'title'){
+      // Sorting options
+      if($_GET["sortMenu"] == 'title'){
         $mysql = "SELECT * FROM book_list ORDER BY title";
-      }else if ($_POST['sortMenu'] == 'author'){
-        $mysql = "SELECT * FROM book_list ORDER BY author";
-      }else if ($_POST['sortMenu'] == 'yearRead'){
+      }else if ($_GET['sortMenu'] == 'author'){
+        $mysql = "SELECT * FROM book_list ORDER BY author_last";
+      }else if ($_GET['sortMenu'] == 'yearRead'){
         $mysql = "SELECT * FROM book_list ORDER BY year_read";
-      }else if ($_POST['sortMenu'] == 'yearPub'){
+      }else if ($_GET['sortMenu'] == 'yearPub'){
         $mysql = "SELECT * FROM book_list ORDER BY";
-      }else if ($_POST['sortMenu'] == 'numPgs'){
+      }else if ($_GET['sortMenu'] == 'numPgs'){
         $mysql = "SELECT * FROM book_list ORDER BY";
-      }else if($_POST['sortMenu'] == 'forClass'){
+      }else if($_GET['sortMenu'] == 'forClass'){
         $mysql = "SELECT * FROM book_list WHERE for_class = ";
-      }else if ($_POST['sortMenu'] == 'reread'){
+      }else if ($_GET['sortMenu'] == 'reread'){
         $mysql = "SELECT * FROM book_list WHERE reread =  ";
       }else{
         $mysql = "SELECT * FROM book_list ORDER BY id";
       }
 
-      // Sort descending order/ default
-      if($_POST["order"] == "descend" || $_POST["sortMenu"] == "none"){
+      // Sort descending order or  default
+      if($_GET["order"] == "descend" || $_GET["sortMenu"] == "none"){
 
-        if($_POST['sortMenu'] == 'yearPub'){
+        if($_GET['sortMenu'] == 'yearPub'){
           $mysql .= " year_pub DESC";
-        }else if ($_POST['sortMenu'] == 'numPgs'){
+        }else if ($_GET['sortMenu'] == 'numPgs'){
           $mysql .= " num_pgs DESC";
         }else{
           $mysql .= " DESC";
         }
 
-      }else if ($_POST["order"] == "ascend"){ // Sort ascending order
+      }else if ($_GET["order"] == "ascend"){ // Sort ascending order
 
-        if($_POST['sortMenu'] == 'yearPub'){
+        if($_GET['sortMenu'] == 'yearPub'){
           $mysql .= " -year_pub DESC";
-        }else if ($_POST['sortMenu'] == 'numPgs'){
+        }else if ($_GET['sortMenu'] == 'numPgs'){
           $mysql .= " -num_pgs DESC";
         }else{
           $mysql .= " ASC";
         }
 
-      }else if($_POST["order"] == "yes"){ // Sorting "yes": for_class & reread
+      }else if($_GET["order"] == "yes"){ // Sorting "yes": for_class & reread
         $mysql .= "1";
-      }else if ($_POST["order"] == "no"){ // Sorting "no": for_class & reread
+      }else if ($_GET["order"] == "no"){ // Sorting "no": for_class & reread
         $mysql .= "0";
       }
-
-      // Ascending w/ nulls last: SELECT * FROM book_list ORDER BY -year_pub DESC
-      // Descending w/ nulls last: SELECT * FROM book_list ORDER BY year_pub DESC
 
       $displayData = $conn->query($mysql);
 
@@ -74,7 +76,7 @@
     $displayData = readEntries();
 
     if($displayData == "error" ){
-      echo "displayData error";
+      echo "404";
     }else if ($displayData->num_rows > 0){
       while($row = $displayData->fetch_assoc()){
         echo "<div class = \"year\"> Read in " . $row["year_read"] .
@@ -83,7 +85,8 @@
         <i class=\"fas fa-trash-alt\" value = \" " . $row["id"] . " \"></i>
         </span></div>
         <div class = \"titleAuthor\">" .
-        $row["title"] . " by "  . $row["author"] . "</div>";
+        $row["title"] . " by "  . $row["author_first"] . " "
+        . $row["author_last"] . "</div>";
 
         echo "<div class = \"bookInfo\">";
 
@@ -116,12 +119,11 @@
       } //end while
 
     }else{
-      echo "No books added <i class=\"far fa-frown\"></i>";
+      echo "No books here <i class=\"far fa-frown\"></i>";
     }
 
   }
 
   printData();
-
 
 ?>

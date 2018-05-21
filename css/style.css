@@ -108,13 +108,14 @@ ul{
 #updatePanel, #deletePanel{
   max-width: 550px;
   width: 80%;
-  max-height: 520px;
-  height: 80%;
+  max-height: 600px;
+  /*height: 80%;*/
   padding: 20px;
   position: relative;
   background:#019D6E;
   border-radius: 5px;
-  margin: 100px auto;
+  margin: 50px auto auto auto;
+  overflow: auto;
 }
 
 #deletePanel{

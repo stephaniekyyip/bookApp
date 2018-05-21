@@ -1,9 +1,12 @@
 <?php
-  /* Create new entry in database using user input */
+  /*
+    Creates a new entry in the database after validating user input.
+  */
 
   // Stores user inputs
   $title = "";
-  $author = "";
+  $authorFirst = "";
+  $authorLast = "";
   $yearRead = "";
   $yearPub = "";
   $numPgs = "";
@@ -12,7 +15,8 @@
 
   // Errors messages for user input
   $titleErr = "";
-  $authorErr = "";
+  $authorFirstErr = "";
+  $authorLastErr = "";
   $yearReadErr = "";
   $yearPubErr = "";
   $numPgsErr = "";
@@ -30,7 +34,7 @@
   if($inputError == FALSE){
 
     $mysql = "INSERT INTO book_list";
-    $mysql .= "(title, author, year_read";
+    $mysql .= "(title, author_first, author_last, year_read";
 
     if($yearPub != ""){
       $mysql .= ", year_pub";
@@ -48,7 +52,7 @@
       $mysql .= ", reread";
     }
 
-    $mysql .= ") VALUES ('$title', '$author', '$yearRead'";
+    $mysql .= ") VALUES ('$title', '$authorFirst', '$authorLast', '$yearRead'";
 
     if($yearPub != ""){
       $mysql .= ", '$yearPub'";
@@ -79,9 +83,9 @@
     //echo $mysql;
 
     if ($conn->query($mysql) == FALSE) {
-      echo "<br>failed " . $mysql . " " . mysqli_error($conn);
+      echo $mysql . " " . mysqli_error($conn);
     }else{
-      echo "Success";
+      echo "200";
     }
 
   }// end no input errors
