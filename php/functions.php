@@ -31,7 +31,9 @@
      $startErrList = TRUE; // start an error <ul> if there is an error
 
       // if there are errors in the user input, print errors
-     $errList = array($GLOBALS['titleErr'], $GLOBALS['authorErr'], $GLOBALS['yearReadErr'],$GLOBALS['yearPubErr'], $GLOBALS['numPgsErr'] , $GLOBALS['forClassErr'], $GLOBALS['rereadErr']);
+     $errList = array($GLOBALS['titleErr'], $GLOBALS['authorErr'],
+      $GLOBALS['yearReadErr'],$GLOBALS['yearPubErr'], $GLOBALS['numPgsErr'] ,
+      $GLOBALS['forClassErr'], $GLOBALS['rereadErr']);
 
      foreach($errList as $printErr){
        if($printErr != ""){
@@ -53,7 +55,9 @@
      return $inputError;
 
      // reset err messages
-     $GLOBALS['titleErr'] = $GLOBALS['authorErr'] = $GLOBALS['forClassErr'] = $GLOBALS['rereadErr'] = $GLOBALS['yearReadErr'] = $GLOBALS['yearPubErr'] = $GLOBALS['numPgsErr'] = "";
+     $GLOBALS['titleErr'] = $GLOBALS['authorErr'] = $GLOBALS['forClassErr'] =
+      $GLOBALS['rereadErr'] = $GLOBALS['yearReadErr'] = $GLOBALS['yearPubErr'] =
+      $GLOBALS['numPgsErr'] = "";
 
    }
 

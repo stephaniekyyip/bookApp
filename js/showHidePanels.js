@@ -7,9 +7,14 @@ $(document).ready(function(){
   });
 });
 
+var sortState; // stores currently selected sorting option
+var orderState; // stores whether sorting is ascending or descending
+
 // Fetch the data from the database
 function getData(sortOption = "none", order = "none"){
 
+  console.log("sortOption: " + sortOption);
+  console.log("sortOrder: " + order);
   $("#dataTable").html("");
 
   $.ajax({
@@ -71,10 +76,11 @@ $(document).ready(function(){
 
       if(response == "Success"){
         $("#addPanel").hide();
-        $("#addResponse").text("Added " + $("input[name=title]").val() + " by " + $("input[name=author]").val() + "!");
+        $("#addResponse").text("Added " + $("input[name=title]").val() + " by "
+          + $("input[name=author]").val() + "!");
         $("#addResponse").delay(3000).fadeOut('5000');
         $("#addForm")[0].reset();
-        getData();
+        getData(sortState, orderState);
       }else{
         $("#addResponse").text("Add failed! " + response);
       }
@@ -146,7 +152,6 @@ $(document).on("click",".fa-edit", function(){
         console.log("forClass= not selected");
         $('#forClassYes').removeAttr("checked");
         $('#forClassNo').removeAttr("checked");
-
       }
 
       if(entryData[0].reread == 1){
@@ -209,11 +214,12 @@ $(document).ready(function(){
 
       if(response == "Success"){
         $("#updatePanel").css("display", "none");
-        //$("#updateResponse").html("<div class = 'updateIcons'><i class='far fa-window-close'></i></div> Successfully updated!");
+        //$("#updateResponse").html("<div class = 'updateIcons'>
+        // <i class='far fa-window-close'></i></div> Successfully updated!");
         $("#updateSuccessPanel").fadeIn(300);
 
         $('#updateOverlay').delay(1000).fadeOut(500);
-        setTimeout(getData, 1500);
+        setTimeout(function(){getData(sortState, orderState);}, 1500);
       }else{
         $("#updatePanel").css({"max-height": "550px", "margin": "80px auto"});
         $("#updateFailed").text(response);
@@ -272,7 +278,7 @@ $(document).ready(function(){
           $("#deleteResponsePanel").fadeIn(300);
 
           $("#deleteOverlay").delay(1000).fadeOut(500);
-          setTimeout(getData, 1500);
+          setTimeout(function(){getData(sortState, orderState);}, 1500);
         }
       }
 
@@ -346,13 +352,23 @@ function toggleSortBtn(btnLabel, innerTxt, isBool){
   if ($(btnLabel).html() == innerTxt  ){ //|| $(btnLabel).html() == (innerTxt + " ")
     console.log("set to ascending");
     $(btnLabel).html(innerTxt + ascendIcon);
-    sortOrder = "ascending";
+
+    if(ascendIcon == "upArrow"){
+      sortOrder = "ascending";
+    }else{
+      sortOrder = "yes";
+    }
 
   // Ascending to descending
   }else if ($(btnLabel).html() == innerTxt + ascendIcon){
     console.log("set to descending");
     $(btnLabel).html(innerTxt + descendIcon);
-    sortOrder = "descending";
+
+    if(descendIcon == "downArrow"){
+      sortOrder = "descending";
+    }else{
+      sortOrder = "no";
+    }
 
   // Descending back to default (inactive state)
   }else {
@@ -371,12 +387,12 @@ function toggleSortBtn(btnLabel, innerTxt, isBool){
 // sort Order Added
 $(document).ready(function(){
   $("#sortOrder").click(function(){
-    var sort;
-    sort = toggleSortBtn("#sortOrder", "Order Added", 0);
+    sortState = "orderAdded";
+    orderState = toggleSortBtn("#sortOrder", "Order Added", 0);
 
-    if(sort == "ascending"){
+    if(orderState == "ascending"){
       getData("orderAdded", "ascend");
-    }else if (sort == "descending"){
+    }else if (orderState == "descending"){
       getData("orderAdded", "descend");
     }else{
       getData();
@@ -388,12 +404,12 @@ $(document).ready(function(){
 // sort Title
 $(document).ready(function(){
   $("#sortTitle").click(function(){
-    var sort;
-    sort = toggleSortBtn("#sortTitle", "Title", 0);
+    sortState = "title";
+    orderState = toggleSortBtn("#sortTitle", "Title", 0);
 
-    if(sort == "ascending"){
+    if(orderState == "ascending"){
       getData("title", "ascend");
-    }else if (sort == "descending"){
+    }else if (orderState == "descending"){
       getData("title", "descend");
     }else{
       getData();
@@ -404,12 +420,12 @@ $(document).ready(function(){
 // sort Author
 $(document).ready(function(){
   $("#sortAuthor").click(function(){
-    var sort;
-    sort = toggleSortBtn("#sortAuthor", "Author", 0);
+    sortState = "author";
+    orderState = toggleSortBtn("#sortAuthor", "Author", 0);
 
-    if(sort == "ascending"){
+    if(orderState == "ascending"){
       getData("author", "ascend");
-    }else if (sort == "descending"){
+    }else if (orderState == "descending"){
       getData("author", "descend");
     }else{
       getData();
@@ -420,12 +436,12 @@ $(document).ready(function(){
 // sort Year Read
 $(document).ready(function(){
   $("#sortYearRead").click(function(){
-    var sort;
-    sort = toggleSortBtn("#sortYearRead", "Year Read", 0);
+    sortState = "yearRead";
+    orderState = toggleSortBtn("#sortYearRead", "Year Read", 0);
 
-    if(sort == "ascending"){
+    if(orderState == "ascending"){
       getData("yearRead", "ascend");
-    }else if (sort == "descending"){
+    }else if (orderState == "descending"){
       getData("yearRead", "descend");
     }else{
       getData();
@@ -436,12 +452,12 @@ $(document).ready(function(){
 // sort Year Read
 $(document).ready(function(){
   $("#sortYearPub").click(function(){
-    var sort;
-    sort = toggleSortBtn("#sortYearPub", "Year Published", 0);
+    sortState = "yearPub";
+    orderState = toggleSortBtn("#sortYearPub", "Year Published", 0);
 
-    if(sort == "ascending"){
+    if(orderState == "ascending"){
       getData("yearPub", "ascend");
-    }else if (sort == "descending"){
+    }else if (orderState == "descending"){
       getData("yearPub", "descend");
     }else{
       getData();
@@ -449,15 +465,15 @@ $(document).ready(function(){
   });
 });
 
-// sort Num Pgs
+// orderState Num Pgs
 $(document).ready(function(){
   $("#sortNumPgs").click(function(){
-    var sort;
-    sort = toggleSortBtn("#sortNumPgs", "Number of Pages", 0);
+    sortState = "numPgs";
+    orderState = toggleSortBtn("#sortNumPgs", "Number of Pages", 0);
 
-    if(sort == "ascending"){
+    if(orderState == "ascending"){
       getData("numPgs", "ascend");
-    }else if (sort == "descending"){
+    }else if (orderState == "descending"){
       getData("numPgs", "descend");
     }else{
       getData();
@@ -468,12 +484,12 @@ $(document).ready(function(){
 // sort For Class
 $(document).ready(function(){
   $("#sortForClass").click(function(){
-    var sort;
-    sort = toggleSortBtn("#sortForClass", "Read for Class", 1);
+    sortState = "forClass";
+    orderState = toggleSortBtn("#sortForClass", "Read for Class", 1);
 
-    if(sort == "ascending"){
+    if(orderState == "yes"){
       getData("forClass", "yes");
-    }else if (sort == "descending"){
+    }else if (orderState == "no"){
       getData("forClass", "no");
     }else{
       getData();
@@ -484,12 +500,12 @@ $(document).ready(function(){
 // sort Reread
 $(document).ready(function(){
   $("#sortReread").click(function(){
-    var sort;
-    sort = toggleSortBtn("#sortReread", "Reread", 1);
+    sortState = "reread";
+    orderState = toggleSortBtn("#sortReread", "Reread", 1);
 
-    if(sort == "ascending"){
+    if(orderState == "yes"){
       getData("reread", "yes");
-    }else if (sort == "descending"){
+    }else if (orderState == "no"){
       getData("reread", "no");
     }else{
       getData();

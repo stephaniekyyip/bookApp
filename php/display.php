@@ -61,6 +61,8 @@
 
       // Close mySQL connection
       $conn->close();
+    }else{
+      $displayData = "error";
     }
 
   return $displayData;
@@ -71,7 +73,9 @@
 
     $displayData = readEntries();
 
-    if ($displayData->num_rows > 0){
+    if($displayData == "error" ){
+      echo "displayData error";
+    }else if ($displayData->num_rows > 0){
       while($row = $displayData->fetch_assoc()){
         echo "<div class = \"year\"> Read in " . $row["year_read"] .
         "<span class = \"updateIcons\"><i class=\"fas fa-edit\" value = \" "
