@@ -18,7 +18,7 @@
     //Close mySQL connection
     $conn->close();
   }else{
-    echo "Failed";
+    echo "404";
   }
 
 ?>

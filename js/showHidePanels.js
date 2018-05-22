@@ -82,7 +82,7 @@ $(document).ready(function(){
             /*+ " by "
             + $("input[name=authorFirst]").val() + " "
             + $("input[name=authorLast]").val() + "!");*/
-          $("#addResponse").delay(3000).fadeOut('5000');
+          $("#addResponse").delay(2000).fadeOut('5000');
           $("#addForm")[0].reset();
           getData(sortState, orderState);
         }else{
@@ -118,8 +118,6 @@ $(document).on("click",".fa-edit", function(){
 
   //Get ID of selected entry to query DB
   entryId = $(this).attr("value");
-
-  $("#updatePanel").show();
 
   // Reset update panel
   $("#updateFailed").text(""); // clears any previous error messages
@@ -179,6 +177,7 @@ $(document).on("click",".fa-edit", function(){
   }) //end ajax
 
   $('#updateOverlay').slideDown(300);
+  $("#updatePanel").show();
 
 });
 
@@ -210,7 +209,7 @@ $(document).ready(function(){
 
     $.ajax({
       url: 'php/update.php',
-      type: 'POST',
+      type: 'post',
       data : { id: entryId, title: $('#titleUpdate').val() ,
         authorFirst: $('#authorFirstUpdate').val(),
         authorLast: $('#authorLastUpdate').val(),
@@ -223,7 +222,6 @@ $(document).ready(function(){
           //$("#updateResponse").html("<div class = 'updateIcons'>
           // <i class='far fa-window-close'></i></div> Successfully updated!");
           $("#updateSuccessPanel").fadeIn(300);
-
           $('#updateOverlay').delay(1000).fadeOut(500);
           setTimeout(function(){getData(sortState, orderState);}, 1500);
         }else if (response == "404"){
@@ -259,7 +257,7 @@ $(document).ready(function(){
 
 // Show delete window when delete button is clicked
 $(document).on("click", ".fa-trash-alt", function(){
-  entryId = $(this).attr("value");
+  entryId = $(this).attr("value"); //get id of selected entry
 
   $("#deletePanel").show();
   $("#deleteResponsePanel").hide();
@@ -276,7 +274,7 @@ $(document).ready(function(){
     $.ajax({
       url: 'php/delete.php',
       data: {id: entryId},
-      type: 'POST',
+      type: 'post',
       success: function(response){
         console.log(response);
         if(response == "200"){
@@ -292,6 +290,7 @@ $(document).ready(function(){
 
           $("#deleteOverlay").delay(1000).fadeOut(500);
         }
+
       }
 
     }); //end ajax
@@ -316,6 +315,57 @@ $(document).ready(function(){
 
 });
 
+// Search when user hits enter on search bar
+$(document).ready(function(){
+  $("#searchForm").submit(function(event){
+    // Prevent form from being submitted normally
+    event.preventDefault();
+
+    $.ajax({
+      url: 'php/search.php',
+      data: {query: $('#searchInput').val()},
+      type: 'get',
+      success: function(response){
+
+        if(response == "404"){
+          $("#dataTable").html("No results <i class=\"far fa-frown\"></i>");
+        }else{
+          $("#dataTable").fadeOut(10);
+          $("#dataTable").fadeIn(500);
+          $("#dataTable").html(response);
+        }
+      }//end success func
+
+    }); //end ajax
+  });
+});
+
+// Show default sorting when user clears search bar by clicking "x"
+$("#searchInput").on("mouseup", function(){
+   var $input = $(this),
+   oldValue = $input.val();
+
+   if (oldValue == "") return;
+
+   // When this event is fired after clicking on the clear button
+   // the value is not cleared yet. We have to wait for it.
+   setTimeout(function(){
+     var newValue = $input.val();
+
+      if (newValue == ""){
+         // capture the clear
+         $input.trigger("cleared");
+         getData();
+      }
+    }, 1);
+});
+
+// Show default sorting when user clears search bar manually
+$("#searchInput").on('input', function(e){
+  if(this.value == ""){
+    getData();
+  }
+});
 
 /**************************** Sorting **************************************/
 //  Toggle sort button for Order Added (change button style + add icons)
@@ -396,6 +446,7 @@ function toggleSortBtn(btnLabel, innerTxt, isBool){
 
 }
 
+/******************** Sorting Buttons **********************/
 // sort Order Added
 $(document).ready(function(){
   $("#sortOrder").click(function(){

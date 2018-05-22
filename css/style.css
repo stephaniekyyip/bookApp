@@ -1,5 +1,5 @@
 html, body{
-  font-family: 'Sanchez', sans-serif;
+  font-family: 'Sanchez', sans-serif !important;
   /*letter-spacing: 1px;*/
   background-color: #019D6E;
   color:white;
@@ -11,6 +11,7 @@ html, body{
   box-sizing: border-box;
   overflow-x: hidden;
 }
+
 
 footer{
   padding-left: 20px;
@@ -103,6 +104,7 @@ ul{
   left: 0;
   background: rgba(0,0,0,0.8);
   display: none;
+  z-index: 2;
 }
 
 #updatePanel, #deletePanel{
@@ -116,6 +118,7 @@ ul{
   border-radius: 5px;
   margin: 50px auto auto auto;
   overflow: auto;
+  z-index: 2;
 }
 
 #deletePanel{
@@ -125,9 +128,10 @@ ul{
 }
 
 #addResponse{
-  font-size: 20px;
+  font-size: 25px;
   margin-top: 20px;
   display: none;
+  color: #F9E784;
 }
 
 #updateSuccessPanel, #deleteResponsePanel{
@@ -142,6 +146,7 @@ ul{
   text-align: center;
   margin: 250px auto;
   display: none;
+  z-index: 2;
 }
 
 #updateFailed{
@@ -153,13 +158,8 @@ ul{
   margin-right: 10px;
 }
 
-#addResponse{
-  color: #F9E784;
-}
-
-
 /************ Form *************/
-form{
+form {
   font-size: 20px;
   margin-top: 20px;
 }
@@ -175,7 +175,7 @@ input[type=text]{
   border: 1px solid white;
   padding: 5px;
   outline: none;
-  font-family: 'Sanchez', sans-serif;
+  font-family: 'Sanchez', sans-serif !important;
   margin-bottom: 15px;
   margin-top: 5px;
   margin-right: 15px;
@@ -266,10 +266,6 @@ input[type=radio]{
   font-size: 18px;
 }
 
-#dataTable{
-  margin-top: 30px;
-}
-
 .updateIcons{
   float: right;
   padding-left: 10px;
@@ -311,12 +307,13 @@ input[type=radio]{
 }*/
 
 #sortOptions{
+  margin-top: 30px;
   line-height: 20px;
 }
 
 select {
   width: 150px;
-  font-family: 'Sanchez', sans-serif;
+  font-family: 'Sanchez', sans-serif !important;
   font-size: 14px;
   color: #019D6E;
 }
@@ -326,7 +323,7 @@ select {
   margin-right: 10px;
   margin-top: 10px;
   border-radius: 5px;
-  font-family: 'Sanchez', sans-serif;
+  font-family: 'Sanchez', sans-serif !important;
   color: white;
   background: none;
   font-size: 15px;
@@ -341,13 +338,70 @@ select {
   margin-right: 10px;
   margin-top: 10px;
   border-radius: 5px;
-  font-family: 'Sanchez', sans-serif;
+  font-family: 'Sanchez', sans-serif !important;
   color: #019D6E;
   background: white;
   font-size: 15px;
 }
 
+/************ Search Bar *************/
 
+#searchBar{
+  position: relative;
+}
+
+.searchResult{
+  color: #F9E784;
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+
+#searchForm input[type=search]{
+  border: 3px solid white;
+  /* background-color: #019D6E; */
+  box-sizing: border-box;
+  font-size: 14px;
+  padding: 5px 5px 5px 35px;
+  /* color: white; */
+  color: #019D6E;
+  outline: none;
+  font-family: 'Sanchez', sans-serif !important;
+  margin-bottom: 0;
+  margin-top: 0;
+  margin-right: 0px;
+  border-radius: 5px;
+  position: relative;
+}
+
+#searchForm {
+  margin-top: 30px;
+}
+
+#searchForm ::placeholder{
+  /* color: white; */
+  opacity: 0.5;
+}
+
+#searchBar i{
+  color: #019D6E;
+  /* color: white; */
+  position: absolute;
+  top: 37px;
+  left: 10px;
+}
+
+
+/* #searchSubmit{
+  box-sizing: border-box;
+  font-size: 14px;
+  padding: 5px 10px 5px 10px;
+  border-radius: 5px;
+  margin-left: 0;
+  margin-right: 0;
+} */
+
+
+/************ Back to Top *************/
 
 #backToTop{
   margin-top: 20px;

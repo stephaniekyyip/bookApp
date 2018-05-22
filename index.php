@@ -17,6 +17,7 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Sanchez" rel="stylesheet">
+    <!--<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">-->
 
   </head>
 
@@ -106,7 +107,6 @@
         </form>
 
       </div>
-      <!-- END Add New Entry section -->
 
       <!-- Update Entry section -->
       <div id = "updateOverlay">
@@ -124,7 +124,7 @@
           <div id = "updateFailed"></div>
 
           <!-- Form for update entry  -->
-          <form method = "post" id = "updateForm" action = "php/update.php">
+          <form method = "put" id = "updateForm" action = "php/update.php">
             Title <span class = "requiredFormat">(Required)</span>
               <input type = "text"
               name = "titleUpdate" id = "titleUpdate" value="" required
@@ -198,7 +198,6 @@
 
         </div>
       </div>
-      <!-- END update Entry section -->
 
       <!-- Delete entry section -->
       <div id = "deleteOverlay">
@@ -210,7 +209,7 @@
         <div id = "deletePanel">
 
           <!-- Form for delete entry -->
-          <form id = "deleteForm">
+          <form id = "deleteForm" method = "delete">
             Are you sure you want to delete this entry? <br><br>
 
             <!-- Form buttons: delete + cancel -->
@@ -222,28 +221,36 @@
 
         </div>
       </div>
-      <!-- END delete entry section -->
+
+      <!-- Sort Options section -->
+      <div id = "sortOptions">
+        Sort by: <br>
+        <button class = "sortBtnClick" id = "sortOrder"> Order Added
+          <i class="fas fa-sort-down"></i></button>
+        <button class = "sortBtn" id = "sortTitle">Title</button>
+        <button class = "sortBtn" id = "sortAuthor">Author</button>
+        <button class = "sortBtn" id = "sortYearRead">Year Read</button>
+        <button class = "sortBtn" id = "sortYearPub">Year Published</button>
+        <button class = "sortBtn" id = "sortNumPgs">Number of Pages</button>
+        <button class = "sortBtn" id = "sortForClass">Read for Class</button>
+        <button class = "sortBtn" id = "sortReread">Reread</button>
+      </div>
+
+      <div id = "searchBar">
+        <form id = "searchForm" method = "get" action= "php/search.php">
+          <input type = "search" placeholder = "Type to search . . ."
+            id = "searchInput" name = "searchInput" class = "fullWidth"
+            required oninvalid="setCustomValidity('Please enter a search query')">
+          <i class="fas fa-search"></i>
+        </form>
+      </div>
 
       <!-- Display entries section -->
       <div id = "displayPanel">
 
-        Sort by:
-        <div id = "sortOptions">
-          <button class = "sortBtnClick" id = "sortOrder"> Order Added
-            <i class="fas fa-sort-down"></i></button>
-          <button class = "sortBtn" id = "sortTitle">Title</button>
-          <button class = "sortBtn" id = "sortAuthor">Author</button>
-          <button class = "sortBtn" id = "sortYearRead">Year Read</button>
-          <button class = "sortBtn" id = "sortYearPub">Year Published</button>
-          <button class = "sortBtn" id = "sortNumPgs">Number of Pages</button>
-          <button class = "sortBtn" id = "sortForClass">Read for Class</button>
-          <button class = "sortBtn" id = "sortReread">Reread</button>
-        </div>
-
          <div id = "dataTable"></div>
 
-      </div> <!-- END displayPanel -->
-      <!-- END display entries section -->
+      </div>
 
       <button id = "backToTop" class = "btn fullWidth">
 

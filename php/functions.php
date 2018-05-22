@@ -28,7 +28,7 @@
 
    function printErr(){
      $inputError = FALSE; //check for errors in user input
-     $startErrList = TRUE; // start an error <ul> if there is an error
+     $startErrList = TRUE; // start <ul> if there is an error
 
       // if there are errors in the user input, print errors
      $errList = array($GLOBALS['titleErr'], $GLOBALS['authorFirstErr'],
@@ -110,6 +110,58 @@
      }
 
      printErr();
+
+   }
+
+   function printData($displayData){
+
+     if($displayData == "404" ){
+       echo "404";
+     }else if ($displayData->num_rows > 0){
+       while($row = $displayData->fetch_assoc()){
+         echo "<div class = \"year\"> Read in " . $row["year_read"] .
+         "<span class = \"updateIcons\"><i class=\"fas fa-edit\" value = \" "
+         . $row["id"] . " \"></i>
+         <i class=\"fas fa-trash-alt\" value = \" " . $row["id"] . " \"></i>
+         </span></div>
+         <div class = \"titleAuthor\">" .
+         $row["title"] . " by "  . $row["author_first"] . " "
+         . $row["author_last"] . "</div>";
+
+         echo "<div class = \"bookInfo\">";
+
+         if ($row["year_pub"] != ""){
+           echo "Published in " . $row["year_pub"] . "<br>";
+         }
+
+         if ($row["num_pgs"] != ""){
+          echo $row["num_pgs"] . " pages <br>" ;
+         }
+
+         if ($row["for_class"] != ""){
+           if($row["for_class"] == 1){
+             echo "Read for class <i class=\"fas fa-check\"></i><br>" ;
+           }else{
+             echo "Read for class <i class=\"fas fa-times\"></i><br>" ;
+           }
+         }
+
+         if ($row["reread"] != ""){
+           if($row["reread"] == 1){
+             echo "Reread <i class=\"fas fa-check\"></i>";
+           }else{
+             echo "Reread <i class=\"fas fa-times\"></i>";
+           }
+         }
+
+         echo "</div><div class = \"line\"></div>";
+
+       } //end while
+
+     }else{
+       echo "<div style = 'font-size: 20px;'>No books here
+        <i class=\"far fa-frown\"></i></div>";
+     }
 
    }
 
