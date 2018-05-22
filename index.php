@@ -260,11 +260,7 @@
 
       </div>
 
-      <button id = "backToTop" class = "btn fullWidth">
-
-        Back to Top <i class="fas fa-level-up-alt"></i>
-
-      </button>
+      <button id = "scrollBtn"><i class="fas fa-arrow-up"></i></button>
 
     </div> <!-- END container -->
 

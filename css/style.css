@@ -12,6 +12,14 @@ html, body{
   overflow-x: hidden;
 }
 
+html{
+  overflow: hidden;
+}
+
+body{
+  overflow: auto;
+}
+
 
 footer{
   padding-left: 20px;
@@ -403,7 +411,23 @@ select {
 
 
 /************ Back to Top *************/
+#scrollBtn{
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  /* background: #019D6E;
+  color: white; */
+  color: #019D6E;
+  background: white;
+  border: 3px solid white;
+  border-radius: 10px;
+  font-size: 25px;
+  padding: 5px 10px 5px 10px;
+  opacity: 0.6;
 
-#backToTop{
-  margin-top: 20px;
+  display: none;
+}
+
+#scrollBtn:hover{
+  opacity: 1;
 }

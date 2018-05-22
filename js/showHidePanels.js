@@ -1,11 +1,34 @@
 // Smooth scroll to top when back to top button is clicked
 $(document).ready(function(){
-  $("#backToTop").click(function(){
+  $("#scrollBtn").click(function(){
     $('body,html').animate({
         scrollTop:0 }, 200);
         return false;
   });
 });
+
+// Scroll to top button fades in when user scrolls down from the top of the
+// page and fades out when users scrolls to the top of the page
+function scrollBtnFade(){
+  var ypos = document.body.scrollTop;
+
+  // user scrolls to bottom of page
+  if (document.body.scrollHeight == document.body.scrollTop + window.innerHeight){
+    // $("#scrollBtn").html('<i class="fas fa-arrow-up"></i>');
+
+  // User scrolls past top of page
+  }else if(ypos > 100 ){
+      // $("#scrollBtn").html('<i class="fas fa-arrow-down"></i>');
+      $("#scrollBtn").fadeIn(300);
+
+  // user at top of page
+  }else{
+    $("#scrollBtn").fadeOut(300);
+  }
+}
+
+window.addEventListener("wheel", scrollBtnFade);
+window.addEventListener("scroll", scrollBtnFade);
 
 var sortState; // stores currently selected sorting option
 var orderState; // stores whether sorting is ascending or descending
@@ -245,16 +268,6 @@ $(document).ready(function(){
 
 });
 
-//Close update window when updated successfully and "x" is clicked
-/*$(document).ready(function(){
-  $("#closeUpdateBtn").click(function(){
-    $('#updateOverlay').fadeOut(300);
-    $("#updateSuccessPanel").css("display", "none");
-    getData();
-  });
-
-});*/
-
 // Show delete window when delete button is clicked
 $(document).on("click", ".fa-trash-alt", function(){
   entryId = $(this).attr("value"); //get id of selected entry
@@ -290,29 +303,16 @@ $(document).ready(function(){
 
           $("#deleteOverlay").delay(1000).fadeOut(500);
         }
-
-      }
-
+      }// end success func
     }); //end ajax
-
   });
 });
-
-// Close delete window after successful deletion and "x" is clicked
-/*$(document).ready(function(){
-  $("#closeDeleteBtn").click(function(){
-    $("#deleteOverlay").fadeOut(300);
-    $("#deleteResponsePanel").hide();
-    getData();
-  });
-});*/
 
 //Close delete window when cancel button is clicked
 $(document).ready(function(){
   $("#cancelDeleteBtn").click(function(){
     $('#deleteOverlay').slideUp(300);
   });
-
 });
 
 /***************************** Search *****************************************/
@@ -359,26 +359,26 @@ $(document).ready(function(){
 });
 
 // Show default sorting when user clears search bar by clicking "x"
-$("#searchInput").on("mouseup", function(){
-   var $input = $(this),
-   oldValue = $input.val();
+// $("#searchInput").on("mouseup", function(){
+//    var $input = $(this),
+//    oldValue = $input.val();
+//
+//    if (oldValue == "") return;
+//
+//    // When this event is fired after clicking on the clear button
+//    // the value is not cleared yet. We have to wait for it.
+//    setTimeout(function(){
+//      var newValue = $input.val();
+//
+//       if (newValue == ""){
+//          // capture the clear
+//          $input.trigger("cleared");
+//          getData();
+//       }
+//     }, 1);
+// });
 
-   if (oldValue == "") return;
-
-   // When this event is fired after clicking on the clear button
-   // the value is not cleared yet. We have to wait for it.
-   setTimeout(function(){
-     var newValue = $input.val();
-
-      if (newValue == ""){
-         // capture the clear
-         $input.trigger("cleared");
-         getData();
-      }
-    }, 1);
-});
-
-// Show default sorting when user clears search bar manually
+// Show default sorting when user clears search bar
 $("#searchInput").on('input', function(e){
   if(this.value == ""){
     getData();
