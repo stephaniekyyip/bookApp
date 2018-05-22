@@ -28,7 +28,7 @@
     $results = $conn->query($mysql);
 
     echo "<div class = 'searchResult'>Search results for " .
-      test_input($_GET['query']) . "</div>";
+      $_GET['query'] . "</div>";
 
     printData($results);
 

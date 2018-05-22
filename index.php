@@ -226,14 +226,22 @@
       <div id = "sortOptions">
         Sort by: <br>
         <button class = "sortBtnClick" id = "sortOrder"> Order Added
-          <i class="fas fa-sort-down"></i></button>
-        <button class = "sortBtn" id = "sortTitle">Title</button>
-        <button class = "sortBtn" id = "sortAuthor">Author</button>
-        <button class = "sortBtn" id = "sortYearRead">Year Read</button>
-        <button class = "sortBtn" id = "sortYearPub">Year Published</button>
-        <button class = "sortBtn" id = "sortNumPgs">Number of Pages</button>
-        <button class = "sortBtn" id = "sortForClass">Read for Class</button>
-        <button class = "sortBtn" id = "sortReread">Reread</button>
+          <span class id = "sortOrderIcon"><i class="fas fa-sort-down"></i>
+          </span></button>
+        <button class = "sortBtn" id = "sortTitle">Title
+          <span id = "sortTitleIcon"></span></button>
+        <button class = "sortBtn" id = "sortAuthor">Author
+          <span id = "sortAuthorIcon"></span></button>
+        <button class = "sortBtn" id = "sortYearRead">Year Read
+          <span id = "sortYearReadIcon"></span></button>
+        <button class = "sortBtn" id = "sortYearPub">Year Published
+          <span id = "sortYearPubIcon"></span></button>
+        <button class = "sortBtn" id = "sortNumPgs">Number of Pages
+          <span id = "sortNumPgsIcon"></span></button>
+        <button class = "sortBtn" id = "sortForClass">Read for Class
+          <span id = "sortForClassIcon"></span></button>
+        <button class = "sortBtn" id = "sortReread">Reread
+          <span id = "sortRereadIcon"></span></button>
       </div>
 
       <div id = "searchBar">
@@ -263,10 +271,6 @@
     <!-- SCRIPTS -->
       <!-- jQuery -->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-      <!-- jQuery UI -->
-      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
       <script src = "js/showHidePanels.js"></script>
 

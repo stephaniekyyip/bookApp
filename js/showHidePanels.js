@@ -315,6 +315,23 @@ $(document).ready(function(){
 
 });
 
+/***************************** Search *****************************************/
+
+// Set any active sorting button to inactive when search is used
+function deactivateSort(){
+  // Change all sorting buttons to inactive style
+  $(".sortBtnClick").addClass('sortBtn');
+  $(".sortBtnClick").removeClass('sortBtnClick');
+
+  // Removes icon from sorting btn
+  var iconList = ["#sortOrderIcon", "#sortTitleIcon", "#sortAuthorIcon",
+    "#sortYearReadIcon", "#sortYearPubIcon", "#sortNumPgsIcon",
+    "#sortForClassIcon","#sortRereadIcon"];
+  for(i = 0; i < iconList.length; i++){
+    $(iconList[i]).html("");
+  }
+}
+
 // Search when user hits enter on search bar
 $(document).ready(function(){
   $("#searchForm").submit(function(event){
@@ -333,6 +350,7 @@ $(document).ready(function(){
           $("#dataTable").fadeOut(10);
           $("#dataTable").fadeIn(500);
           $("#dataTable").html(response);
+          setTimeout(deactivateSort, 100); //set sorting options to inactive
         }
       }//end success func
 
@@ -368,20 +386,23 @@ $("#searchInput").on('input', function(e){
 });
 
 /**************************** Sorting **************************************/
-//  Toggle sort button for Order Added (change button style + add icons)
-function toggleSortBtn(btnLabel, innerTxt, isBool){
+// Toggle sort button for Order Added (change button style + add icons)
+// Parameters:
+function toggleSortBtn(btnLabel){
 
-  var upArrow = ' <i class="fas fa-sort-up"></i>';
-  var downArrow = " <i class='fas fa-sort-down'></i>";
+  var btnIcon = btnLabel + "Icon";
 
-  var yes = ' <i class="fas fa-check"></i>';
-  var no = ' <i class="fas fa-times"></i>';
+  var upArrow = '<i class="fas fa-sort-up"></i>';
+  var downArrow = '<i class="fas fa-sort-down"></i>';
 
-  var sortOrder; // return value, either ascending or descending
+  var yes = '<i class="fas fa-check"></i>';
+  var no = '<i class="fas fa-times"></i>';
+
+  var sortOrder; // return value: either ascending or descending
 
   // Determine ascending + descending icons depending on sort type
   var ascendIcon, descendIcon;
-  if (isBool){
+  if (btnLabel == "#sortForClass" || btnLabel == "#sortReread" ){
     ascendIcon = yes;
     descendIcon = no;
   }else{
@@ -389,7 +410,7 @@ function toggleSortBtn(btnLabel, innerTxt, isBool){
     descendIcon = downArrow;
   }
 
-  // Deselect the other buttons
+  // Change the other buttons to inactive style
   $(".sortBtnClick").addClass('sortBtn');
   $(".sortBtnClick").removeClass('sortBtnClick');
 
@@ -400,20 +421,24 @@ function toggleSortBtn(btnLabel, innerTxt, isBool){
   }
 
   // Remove sort icons from the other buttons (default text)
-  var sortBtnList = document.getElementsByClassName("sortBtn");
-  for(var i = 0; i < sortBtnList.length; i++){
-    sortBtnList[i].innerText = sortBtnList[i].innerText.split('<')[0].trim();
+  var iconList = ["#sortOrderIcon", "#sortTitleIcon", "#sortAuthorIcon",
+    "#sortYearReadIcon", "#sortYearPubIcon", "#sortNumPgsIcon",
+    "#sortForClassIcon","#sortRereadIcon"];
+  for(i = 0; i < iconList.length; i++){
+    if(iconList[i] != btnIcon){
+      $(iconList[i]).html("");
+    }
   }
 
   //console.log("start");
-  //console.log("html: " + $(btnLabel).html());
+  console.log( btnIcon + " html:" + $(btnIcon).html() + "test");
   //console.log("has active class: " + $(btnLabel).hasClass("sortBtnClick"));
 
   // Set button active color + ascending/ descending icon
   // Inactive to Ascending
-  if ($(btnLabel).html() == innerTxt  ){ //|| $(btnLabel).html() == (innerTxt + " ")
+  if ($(btnIcon).html() == "" ){
     console.log("set to ascending");
-    $(btnLabel).html(innerTxt + ascendIcon);
+    $(btnIcon).html(ascendIcon);
 
     if(ascendIcon == upArrow){
       sortOrder = "ascend";
@@ -422,9 +447,9 @@ function toggleSortBtn(btnLabel, innerTxt, isBool){
     }
 
   // Ascending to descending
-  }else if ($(btnLabel).html() == innerTxt + ascendIcon){
+}else if ($(btnIcon).html() == ascendIcon){
     console.log("set to descending");
-    $(btnLabel).html(innerTxt + descendIcon);
+    $(btnIcon).html(descendIcon);
 
     if(descendIcon == downArrow){
       sortOrder = "descend";
@@ -435,7 +460,7 @@ function toggleSortBtn(btnLabel, innerTxt, isBool){
   // Descending back to inactive
   }else {
     console.log("back to default");
-    $(btnLabel).html(innerTxt);
+    $(btnIcon).html("");
     $(btnLabel).removeClass("sortBtnClick");
     $(btnLabel).addClass("sortBtn");
     sortOrder = "none";
@@ -446,12 +471,13 @@ function toggleSortBtn(btnLabel, innerTxt, isBool){
 
 }
 
+
 /******************** Sorting Buttons **********************/
 // sort Order Added
 $(document).ready(function(){
   $("#sortOrder").click(function(){
     sortState = "orderAdded";
-    orderState = toggleSortBtn("#sortOrder", "Order Added", 0);
+    orderState = toggleSortBtn("#sortOrder");
 
     if(orderState == "none"){
       getData();
@@ -466,7 +492,7 @@ $(document).ready(function(){
 $(document).ready(function(){
   $("#sortTitle").click(function(){
     sortState = "title";
-    orderState = toggleSortBtn("#sortTitle", "Title", 0);
+    orderState = toggleSortBtn("#sortTitle");
 
     if(orderState == "none"){
       getData();
@@ -480,7 +506,7 @@ $(document).ready(function(){
 $(document).ready(function(){
   $("#sortAuthor").click(function(){
     sortState = "author";
-    orderState = toggleSortBtn("#sortAuthor", "Author", 0);
+    orderState = toggleSortBtn("#sortAuthor");
 
     if(orderState == "none"){
       getData();
@@ -494,7 +520,7 @@ $(document).ready(function(){
 $(document).ready(function(){
   $("#sortYearRead").click(function(){
     sortState = "yearRead";
-    orderState = toggleSortBtn("#sortYearRead", "Year Read", 0);
+    orderState = toggleSortBtn("#sortYearRead");
 
     if(orderState == "none"){
       getData();
@@ -508,7 +534,7 @@ $(document).ready(function(){
 $(document).ready(function(){
   $("#sortYearPub").click(function(){
     sortState = "yearPub";
-    orderState = toggleSortBtn("#sortYearPub", "Year Published", 0);
+    orderState = toggleSortBtn("#sortYearPub");
 
     if(orderState == "none"){
       getData();
@@ -522,7 +548,7 @@ $(document).ready(function(){
 $(document).ready(function(){
   $("#sortNumPgs").click(function(){
     sortState = "numPgs";
-    orderState = toggleSortBtn("#sortNumPgs", "Number of Pages", 0);
+    orderState = toggleSortBtn("#sortNumPgs");
 
     if(orderState == "none"){
       getData();
@@ -536,7 +562,7 @@ $(document).ready(function(){
 $(document).ready(function(){
   $("#sortForClass").click(function(){
     sortState = "forClass";
-    orderState = toggleSortBtn("#sortForClass", "Read for Class", 1);
+    orderState = toggleSortBtn("#sortForClass");
 
     if(orderState == "none"){
       getData();
@@ -550,7 +576,7 @@ $(document).ready(function(){
 $(document).ready(function(){
   $("#sortReread").click(function(){
     sortState = "reread";
-    orderState = toggleSortBtn("#sortReread", "Reread", 1);
+    orderState = toggleSortBtn("#sortReread");
 
     if(orderState == "none"){
       getData();

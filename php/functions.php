@@ -159,8 +159,7 @@
        } //end while
 
      }else{
-       echo "<div style = 'font-size: 20px;'>No books here
-        <i class=\"far fa-frown\"></i></div>";
+       echo "No books here <i class=\"far fa-frown\"></i>";
      }
 
    }
