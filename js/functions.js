@@ -12,7 +12,7 @@ $(document).ready(function(){
 function scrollBtnFade(){
   var ypos = document.body.scrollTop;
 
-  // user scrolls to bottom of page
+  // User scrolls to bottom of page
   if (document.body.scrollHeight == document.body.scrollTop + window.innerHeight){
     // $("#scrollBtn").html('<i class="fas fa-arrow-up"></i>');
 
@@ -21,23 +21,23 @@ function scrollBtnFade(){
       // $("#scrollBtn").html('<i class="fas fa-arrow-down"></i>');
       $("#scrollBtn").fadeIn(300);
 
-  // user at top of page
+  // User at top of page
   }else{
     $("#scrollBtn").fadeOut(300);
   }
 }
-
 window.addEventListener("wheel", scrollBtnFade);
 window.addEventListener("scroll", scrollBtnFade);
 
+/**************************** CRUD Operations ********************************/
 var sortState; // stores currently selected sorting option
 var orderState; // stores whether sorting is ascending or descending
 
 // Fetch the data from the database
 function getData(sortOption = "none", order = "none"){
 
-  console.log("sortOption: " + sortOption);
-  console.log("sortOrder: " + order);
+  // console.log("sortOption: " + sortOption);
+  // console.log("sortOrder: " + order);
   $("#dataTable").html("");
 
   $.ajax({
@@ -56,7 +56,7 @@ function getData(sortOption = "none", order = "none"){
   });
 }
 
-// Display data fetched from database
+// Display data fetched from database on page load
 $(document).ready(function(){
   getData();
 });
@@ -73,15 +73,12 @@ $(document).ready(function(){
     if($('#forClassYesAdd').is(':checked')){
       forClassVal = "1";
     }
-
     if($('#forClassNoAdd').is(':checked')){
       forClassVal = "0";
     }
-
     if($('#rereadYesAdd').is(':checked')){
       rereadVal = "1";
     }
-
     if($('#rereadNoAdd').is(':checked')){
       rereadVal  = "0";
     }
@@ -102,9 +99,6 @@ $(document).ready(function(){
         if(response == "200"){
           $("#addPanel").hide();
           $("#addResponse").text("Added " + $("input[name=title]").val() + "!");
-            /*+ " by "
-            + $("input[name=authorFirst]").val() + " "
-            + $("input[name=authorLast]").val() + "!");*/
           $("#addResponse").delay(2000).fadeOut('5000');
           $("#addForm")[0].reset();
           getData(sortState, orderState);
@@ -144,8 +138,8 @@ $(document).on("click",".fa-edit", function(){
 
   // Reset update panel
   $("#updateFailed").text(""); // clears any previous error messages
-  $("#updatePanel").css({"max-height": "600px"}); // reset height of update form
-  $("#updateSuccessPanel").css("display", "none"); // hide sucess panel
+  $("#updatePanel").css({"max-height": "600px"}); // reset height of update form due to error message
+  $("#updateSuccessPanel").css("display", "none"); // hide sucesss panel
   $('#updateForm')[0].reset(); //reset form
   $('#updateOverlay').scrollTop(0); // reset scroll bar to top
 
@@ -154,8 +148,6 @@ $(document).on("click",".fa-edit", function(){
     url: 'php/displayUpdate.php',
     data: {id: entryId},
     success: function(response){
-      //console.log("response: " + response);
-
       if(response == "404"){
         console.log("Cannot find selected entry in database.")
       }else{
@@ -169,29 +161,23 @@ $(document).on("click",".fa-edit", function(){
         $('#numPgsUpdate').attr('value', entryData[0].numPgs);
 
         if(entryData[0].forClass == 1){
-          console.log("forClass= yes");
           $('#forClassNo').removeAttr("checked");
           $('#forClassYes').attr('checked', "true");
         }else if (entryData[0].forClass == 0){
-          console.log("forClass= no");
           $('#forClassYes').removeAttr("checked");
           $('#forClassNo').attr('checked', "true");
         }else{
-          console.log("forClass= not selected");
           $('#forClassYes').removeAttr("checked");
           $('#forClassNo').removeAttr("checked");
         }
 
         if(entryData[0].reread == 1){
-          console.log("reread= yes");
           $('#rereadNo').removeAttr("checked");
           $('#rereadYes').attr('checked', "true");
         }else if (entryData[0].reread == 0){
-          console.log("reread = no");
           $('#rereadYes').removeAttr("checked");
           $('#rereadNo').attr('checked', "true");
         }else{
-          console.log("reread= not selected");
           $('#rereadYes').removeAttr("checked");
           $('#rereadNo').removeAttr("checked");
         }
@@ -207,7 +193,6 @@ $(document).on("click",".fa-edit", function(){
 // Update selected entry when update form is submitted
 $(document).ready(function(){
   $("#updateForm").submit(function(event){
-    //console.log("val: " + entryId);
 
     // Prevent form from being submitted normally
     event.preventDefault();
@@ -217,15 +202,12 @@ $(document).ready(function(){
     if($('#forClassYes').is(':checked')){
       forClassVal = "1";
     }
-
     if($('#forClassNo').is(':checked')){
       forClassVal = "0";
     }
-
     if($('#rereadYes').is(':checked')){
       rereadVal = "1";
     }
-
     if($('#rereadNo').is(':checked')){
       rereadVal  = "0";
     }
@@ -241,16 +223,18 @@ $(document).ready(function(){
         forClass: forClassVal, reread: rereadVal},
       success: function(response){
         if(response == "200"){
-          $("#updatePanel").css("display", "none");
-          //$("#updateResponse").html("<div class = 'updateIcons'>
-          // <i class='far fa-window-close'></i></div> Successfully updated!");
-          $("#updateSuccessPanel").fadeIn(300);
-          $('#updateOverlay').delay(1000).fadeOut(500);
+          $("#updatePanel").css("display", "none"); // hide update form
+          $("#updateSuccessPanel").fadeIn(300); // show update success panel
+          $('#updateOverlay').delay(1000).fadeOut(500); // fade out update panel
+
+          // update entries displayed
           setTimeout(function(){getData(sortState, orderState);}, 1500);
         }else if (response == "404"){
-            $("#updatePanel").css({"max-height": "620px", "margin": "50px auto"});
-            $("#updateFailed").text("Unable to update entry.");
+          //change size of update panel to add error message
+          $("#updatePanel").css({"max-height": "620px", "margin": "50px auto"});
+          $("#updateFailed").text("Unable to update entry.");
         }else{
+          //change size of update panel to add "no changes" message
           $("#updatePanel").css({"max-height": "620px", "margin": "50px auto"});
           $("#updateFailed").text("No changes have been made!");
         }
@@ -280,7 +264,6 @@ $(document).on("click", ".fa-trash-alt", function(){
 // Deletes selected entry from the database when delete form is submitted
 $(document).ready(function(){
   $("#deleteForm").submit(function(event){
-    console.log("id: " + entryId);
     // Prevent form from being submitted normally
     event.preventDefault();
 
@@ -289,17 +272,18 @@ $(document).ready(function(){
       data: {id: entryId},
       type: 'post',
       success: function(response){
-        console.log(response);
         if(response == "200"){
           $("#deletePanel").hide();
           $("#deleteResponsePanel").fadeIn(300);
-
           $("#deleteOverlay").delay(1000).fadeOut(500);
+          $("#deleteResponsePanel").text("Sucessfully deleted!");
+
+          // update entries displayed
           setTimeout(function(){getData(sortState, orderState);}, 1500);
         }else{
           $("#deletePanel").hide();
           $("#deleteResponsePanel").fadeIn(300);
-          $("#deleteResponsePanel").text("Deleted failed.");
+          $("#deleteResponsePanel").text("Delete failed.");
 
           $("#deleteOverlay").delay(1000).fadeOut(500);
         }
@@ -314,6 +298,34 @@ $(document).ready(function(){
     $('#deleteOverlay').slideUp(300);
   });
 });
+
+// Show upload panel when upload csv file button is clicked
+$(document).ready(function(){
+  $("#uploadBtn").click(function(){
+    $("#uploadOverlay").slideDown(300);
+  });
+});
+
+// Hide upload panel when cancel button is clicked
+$(document).ready(function(){
+  $("#cancelUploadBtn").click(function(){
+    $("#uploadOverlay").slideUp(300);
+  });
+});
+
+// Show analytics page when reading analytics button is clicked
+// $(document).ready(function(){
+//   $("#analyticsBtn").click(function(){
+//     $("#analyticsOverlay").slideDown(300);
+//   });
+// });
+
+// Hide analytics page when ....... ???
+// $(document).ready(function(){
+//   $("#").click(function(){
+//     $("#analyticsOverlay").slideUp(300);
+//   });
+// });
 
 /***************************** Search *****************************************/
 
@@ -385,12 +397,12 @@ $("#searchInput").on('input', function(e){
   }
 });
 
-/**************************** Sorting **************************************/
+/****************************** Sorting ***************************************/
 // Toggle sort button for Order Added (change button style + add icons)
-// Parameters:
+// btnLabel is the id of the selected sort button
 function toggleSortBtn(btnLabel){
 
-  var btnIcon = btnLabel + "Icon";
+  var btnIcon = btnLabel + "Icon"; // stores id of the button's icon
 
   var upArrow = '<i class="fas fa-sort-up"></i>';
   var downArrow = '<i class="fas fa-sort-down"></i>';
@@ -430,14 +442,9 @@ function toggleSortBtn(btnLabel){
     }
   }
 
-  //console.log("start");
-  console.log( btnIcon + " html:" + $(btnIcon).html() + "test");
-  //console.log("has active class: " + $(btnLabel).hasClass("sortBtnClick"));
-
   // Set button active color + ascending/ descending icon
   // Inactive to Ascending
   if ($(btnIcon).html() == "" ){
-    console.log("set to ascending");
     $(btnIcon).html(ascendIcon);
 
     if(ascendIcon == upArrow){
@@ -445,10 +452,8 @@ function toggleSortBtn(btnLabel){
     }else{
       sortOrder = "yes";
     }
-
   // Ascending to descending
-}else if ($(btnIcon).html() == ascendIcon){
-    console.log("set to descending");
+  }else if ($(btnIcon).html() == ascendIcon){
     $(btnIcon).html(descendIcon);
 
     if(descendIcon == downArrow){
@@ -456,10 +461,8 @@ function toggleSortBtn(btnLabel){
     }else{
       sortOrder = "no";
     }
-
   // Descending back to inactive
   }else {
-    console.log("back to default");
     $(btnIcon).html("");
     $(btnLabel).removeClass("sortBtnClick");
     $(btnLabel).addClass("sortBtn");
@@ -467,10 +470,8 @@ function toggleSortBtn(btnLabel){
   }
 
   return sortOrder;
-  //console.log("end");
 
 }
-
 
 /******************** Sorting Buttons **********************/
 // sort Order Added
