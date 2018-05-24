@@ -302,8 +302,73 @@ $(document).ready(function(){
 // Show upload panel when upload csv file button is clicked
 $(document).ready(function(){
   $("#uploadBtn").click(function(){
+    //reset upload panel
+    $("#uploadResponsePanel").css({"height": "100px", "margin": "250px auto", "font-size": "30px" });
+    $("#uploadPanel").show();
+    $("#uploadResponsePanel").hide();
     $("#uploadOverlay").slideDown(300);
   });
+});
+
+// Shows name of file selected to be uploaded
+$(document).ready(function(){
+
+		var input	 = $("#fileUpload"),
+			label	 = input.next( 'label' ),
+			labelVal = label.html();
+
+
+		input.on('change', function(e){
+			var fileName = '';
+
+			if( this.files && this.files.length > 1 )
+				fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+      else if( e.target.value )
+				fileName = e.target.value.split( '\\' ).pop();
+
+      if( fileName )
+				//label.find( 'span' ).html( fileName );
+        label.html("<i class='far fa-file-alt'></i> " + fileName);
+			else
+				label.html( labelVal );
+
+      console.log("fileName: " + fileName + "test");
+		});
+
+});
+
+// Handles file upload when upload form is submitted
+$(document).ready(function(e){
+  $("#uploadForm").on('submit', (function(e){
+    e.preventDefault();
+
+    $.ajax({
+      type: 'POST',
+      url: 'php/upload.php',
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      success: function(response){
+        console.log(response);
+        if(response == "200"){
+          $("#uploadPanel").hide();
+          $("#uploadResponsePanel").fadeIn(300);
+          $("#uploadOverlay").delay(1000).fadeOut(500);
+
+          // update entries displayed
+          setTimeout(function(){getData(sortState, orderState);}, 1500);
+        }else{
+          $("#uploadPanel").hide();
+          $("#uploadResponsePanel").css({"height": "300px", "margin": "50px auto", "font-size": "20px" });
+          $("#uploadResponsePanel").fadeIn(300);
+          $("#uploadResponsePanel").html(response);
+
+          $("#uploadOverlay").delay(5000).fadeOut(500);
+        }
+      }
+    }); // end ajax
+  }));
 });
 
 // Hide upload panel when cancel button is clicked

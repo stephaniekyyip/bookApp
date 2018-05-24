@@ -75,7 +75,6 @@ a:hover{
   color: #F9E784;
 }
 
-
 /************ Various Formatting *************/
 .underline{
   border-bottom: 1px solid white;
@@ -127,7 +126,6 @@ a:hover{
   width: 48%;
 }
 
-
 /************ Add Panel *************/
 #addPanel{
   display:none;
@@ -138,7 +136,31 @@ ul{
   margin-bottom: 10px;
 }
 
-/************ Update/ Delete Panels *************/
+/************ Upload Panel *************/
+pre{
+  margin: 5px 0 20px 0;
+  white-space: pre-wrap;       /* css-3 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+pre code{
+  text-align: left;
+  display: block;
+
+  background-color: white;
+  border-radius: 5px;
+  color:#019D6E;
+  opacity: 0.7;
+  padding: 10px;
+}
+
+.marginTop30{
+  margin-top: 30px;
+}
+/************ Update, Delete, and Upload Panels *************/
 #updateOverlay, #deleteOverlay, #uploadOverlay{
   position: fixed;
   height: 100%;
@@ -173,8 +195,8 @@ ul{
 
 #uploadPanel{
   text-align: center;
-  height: 320px;
-  margin: 150px auto;
+  height: 400px;
+  margin: 130px auto;
 }
 
 #addResponse{
@@ -184,7 +206,7 @@ ul{
   color: #F9E784;
 }
 
-#updateSuccessPanel, #deleteResponsePanel{
+#updateSuccessPanel, #deleteResponsePanel, #uploadResponsePanel{
   font-size: 30px;
   max-width: 550px;
   width: 80%;
@@ -248,7 +270,7 @@ input[type=file]{
   font-size: 12px;
 }
 
-/************ File Upload formatting  *************/
+/************ File Upload button formatting  *************/
 .inputFile{
   width: 0.1px;
 	height: 0.1px;
@@ -260,7 +282,7 @@ input[type=file]{
 
 .inputFile + label{
   box-sizing: border-box;
-  margin-top: 20px;
+  margin-top: 30px;
   margin-bottom: 20px;
   padding: 5px 10px 5px 10px;
   font-size: 15px;

@@ -123,21 +123,25 @@
 
       <!-- Upload CSV files-->
       <section id = "uploadOverlay">
+        <div id = "uploadResponsePanel">All books were added!</div>
         <div id = "uploadPanel">
-
-          <form id = "uploadForm" method = "post">
-            Upload a .csv file to add multiple book entries at once. <br><br>
-            Format: <br>Title*, Author First Name*, Author Last Name*, Year Read*,
-            Year Published, Number of Pages, Read for Class? (y/n),
-            Reread? (y/n) <br><br>
+          <form id = "uploadForm" method = "post"  enctype="multipart/form-data"
+            action = "update.php">
+            Upload a .csv file to add multiple book entries at once. <br>
+            <div class = "marginTop30">Formatting:</div>
+            <pre><code>Title*, Author First Name*, Author Last Name*, Year Read*, Year Published, Number of Pages, Read for Class? (y/n), Reread? (y/n)</code></pre>
             The fields indicated by * are required. Non-required fields can be
-            omitted by adding "" as a placeholder.
+            omitted by adding "NULL" as a placeholder.<br>
             <input type="file" name="fileUpload" id="fileUpload"
-              class="inputFile" />
+              class="inputFile" accept="csv/*"/>
             <label for="fileUpload">Choose a file</label>
+            <input type = "submit" name = "submitUploadBtn" class = "btn"
+              id = "submitUploadBtn" value = 'Upload'>
 
+            <div class = "rightSide">
             <input type = "reset" name = "cancel" class = "btn"
               id = "cancelUploadBtn" value = 'Cancel'>
+            </div>
 
           </form>
 
