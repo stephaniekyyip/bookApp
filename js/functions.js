@@ -48,8 +48,9 @@ function getData(sortOption = "none", order = "none"){
       if (response == "404"){
         $("#dataTable").html("Error displaying book entries.");
       }else{
-        $("#dataTable").fadeOut(10);
-        $("#dataTable").fadeIn(500);
+        $("#dataTable").css('visibility', 'hidden');
+        // $("#dataTable").delay(100).css('visibility', 'visible');
+        $("#dataTable").delay(10).css('visibility', 'visible').hide().fadeIn(500);
         $("#dataTable").html(response);
       }
     }
@@ -332,7 +333,6 @@ $(document).ready(function(){
 			else
 				label.html( labelVal );
 
-      console.log("fileName: " + fileName + "test");
 		});
 
 });
@@ -355,21 +355,30 @@ $(document).ready(function(e){
           $("#uploadPanel").hide();
           $("#uploadResponsePanel").fadeIn(300);
           $("#uploadOverlay").delay(1000).fadeOut(500);
+          $("#uploadResponsePanel").text("All books were added!");
 
           // update entries displayed
           setTimeout(function(){getData(sortState, orderState);}, 1500);
         }else{
           $("#uploadPanel").hide();
-          $("#uploadResponsePanel").css({"height": "300px", "margin": "50px auto", "font-size": "20px" });
+          $("#uploadResponsePanel").css({"height": "300px", "margin": "50px auto",
+            "font-size": "20px" });
           $("#uploadResponsePanel").fadeIn(300);
-          $("#uploadResponsePanel").html(response);
 
-          $("#uploadOverlay").delay(5000).fadeOut(500);
+          var okBtn = "<br>Please try again.<br><br><button class = \"btn\" id = \"errorOkBtn\">Ok</button>";
+          $("#uploadResponsePanel").html("Error: <br>" +response + okBtn);
+          // $("#uploadOverlay").delay(5000).fadeOut(500);
         }
       }
     }); // end ajax
   }));
 });
+
+// Hide upload panel when ok button is clicked when there are errors
+$(document).on("click", "#errorOkBtn", function(){
+  $("#uploadOverlay").slideUp(300);
+});
+
 
 // Hide upload panel when cancel button is clicked
 $(document).ready(function(){

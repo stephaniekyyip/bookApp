@@ -123,7 +123,7 @@
 
       <!-- Upload CSV files-->
       <section id = "uploadOverlay">
-        <div id = "uploadResponsePanel">All books were added!</div>
+        <div id = "uploadResponsePanel"></div>
         <div id = "uploadPanel">
           <form id = "uploadForm" method = "post"  enctype="multipart/form-data"
             action = "update.php">

@@ -71,30 +71,30 @@
             $count = 0;
             foreach($inputList as $input => $val){
               $inputList[$input] = $line[$count];
-              // echo "line: $line[$count] \n";
+              // echo "col: $count \n";
               // echo "inputList: $input => $inputList[$input] \n";
 
               // if required input is missing, report error
               if(in_array($input, $requiredList) && $line[$count] == "NULL"){
-                $errList[$input] = "Line $lineCount : Missing required field of $input - $line[$count]";
+                $errList[$input] = "Line $lineCount : Missing required field - $input. Input: $line[$count]";
                 $inputError = TRUE;
               }
 
               // if numeric input is not a number, report error
-              if(in_array($input, $numList) && !is_numeric($line[$count])){
-                $errList[$input] = "Line $lineCount : Invalid input for $input - $line[$count]";
+              if(in_array($input, $numList) && !is_numeric($line[$count]) && $line[$count]!= "NULL"){
+                $errList[$input] = "Line $lineCount : Input must be a number for $input. Input: $line[$count] ";
                 $inputError = TRUE;
               }
 
               // if boolean inputs values are not 'y', 'n', or NULL
               if(($input == "reread" || $input == "for_class") && ($line[$count] != 'y' && $line[$count] != 'n' && $line[$count] != "NULL")){
-                $errList[$input] = "Line $lineCount: Invalid input for $input - $line[$count]";
+                $errList[$input] = "Line $lineCount: Input must be either y or n for $input. Input: $line[$count]";
                 $inputError = TRUE;
               }
 
               // check for valid year inputs
               if(($input == "year_read" || $input == "year_pub") && ($line[$count] != "NULL" && strlen($line[$count]) != 4)){
-                $errList[$input] = "Line $lineCount : Invalid input for $input -  $line[$count]";
+                $errList[$input] = "Line $lineCount : Invalid year for $input. Input: $line[$count]";
                 $inputError = TRUE;
               }
 
@@ -114,7 +114,7 @@
 
               $count = $count + 1;
 
-            }// end foreach
+            } // end foreach
 
             if(!$inputError){ // no input errors
               $needComma = FALSE;
@@ -126,13 +126,10 @@
                 if($needComma){
                   $mysql .= ",";
                 }
-                // check is input val is blank
-                if($val != "NULL"){
-                  $mysql .= $input;
-                  $needComma = TRUE;
-                }else{
-                  $needComma = FALSE;
-                }
+
+                $mysql .= $input;
+
+                $needComma = TRUE;
               }
 
               $mysql .= ") VALUES (";
@@ -152,14 +149,12 @@
                   }else if($val == 'n'){
                     $mysql .= "'0'";
                   }
-                  $needComma = TRUE;
-                }else if($val != "NULL"){ // check if input val is blank
-
+                }else if ($val != "NULL"){ // check if input val is blank
                   $mysql .= "'" . $val . "'";
-                  $needComma = TRUE;
                 }else{ //val is null
-                  $needComma = FALSE;
+                  $mysql .= $val ;
                 }
+                $needComma = TRUE;
               }
 
               $mysql .= ")";

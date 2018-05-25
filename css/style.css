@@ -10,21 +10,19 @@ html, body{
 
   box-sizing: border-box;
   overflow-x: hidden;
+  /* overflow: auto; */
 }
 
-html{
-  overflow: hidden;
+body{
+  overflow: auto;
 }
+
 
 /* header{
   padding: 20px 30px 5px 10px;
   font-size: 15px;
   text-align: right;
 } */
-
-body{
-  overflow: auto;
-}
 
 footer{
   padding-left: 20px;
@@ -149,7 +147,7 @@ pre{
 pre code{
   text-align: left;
   display: block;
-
+  font-size: 18px;
   background-color: white;
   border-radius: 5px;
   color:#019D6E;
@@ -172,6 +170,7 @@ pre code{
   background: rgba(0,0,0,0.8);
   display: none;
   z-index: 2;
+  overflow: auto;
 }
 
 #updatePanel, #deletePanel, #uploadPanel{
@@ -182,9 +181,12 @@ pre code{
   position: relative;
   background:#019D6E;
   border-radius: 5px;
-  margin: 50px auto auto auto;
-  overflow: auto;
+  /* overflow: auto; */
   z-index: 2;
+}
+
+#updatePanel{
+  margin: 30px auto;
 }
 
 #deletePanel{
@@ -219,6 +221,11 @@ pre code{
   margin: 250px auto;
   display: none;
   z-index: 2;
+}
+
+#uploadResponsePanel{
+  overflow: scroll;
+  height: 300px;
 }
 
 #updateFailed{
