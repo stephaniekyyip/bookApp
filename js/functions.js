@@ -304,7 +304,8 @@ $(document).ready(function(){
 $(document).ready(function(){
   $("#uploadBtn").click(function(){
     //reset upload panel
-    $("#uploadResponsePanel").css({"height": "100px", "margin": "250px auto", "font-size": "30px" });
+    $("#uploadResponsePanel").css({"height": "100px", "margin": "250px auto",
+      "font-size": "30px" });
     $("#uploadPanel").show();
     $("#uploadResponsePanel").hide();
     $("#uploadOverlay").slideDown(300);
@@ -386,20 +387,6 @@ $(document).ready(function(){
     $("#uploadOverlay").slideUp(300);
   });
 });
-
-// Show analytics page when reading analytics button is clicked
-// $(document).ready(function(){
-//   $("#analyticsBtn").click(function(){
-//     $("#analyticsOverlay").slideDown(300);
-//   });
-// });
-
-// Hide analytics page when ....... ???
-// $(document).ready(function(){
-//   $("#").click(function(){
-//     $("#analyticsOverlay").slideUp(300);
-//   });
-// });
 
 /***************************** Search *****************************************/
 
