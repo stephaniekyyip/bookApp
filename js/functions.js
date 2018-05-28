@@ -41,19 +41,78 @@ function getData(sortOption = "none", order = "none"){
   $("#dataTable").html("");
 
   $.ajax({
-    url: 'php/display.php',
+    url: 'php/readAll.php',
     data: {sortMenu: sortOption, order: order},
     type: 'get',
     success: function(response){
       if (response == "404"){
         $("#dataTable").html("Error displaying book entries.");
+      }else if(response == "none"){
+        $("#dataTable").html("No books here <i class=\"far fa-frown\"></i>");
       }else{
         $("#dataTable").css('visibility', 'hidden');
-        // $("#dataTable").delay(100).css('visibility', 'visible');
         $("#dataTable").delay(10).css('visibility', 'visible').hide().fadeIn(500);
-        $("#dataTable").html(response);
-      }
-    }
+
+        // console.log(response);
+        var entryData = JSON.parse(response);
+        var table = ""; // Holds the html to display all data entries
+
+        // Converts json object to array if necessary
+        if(!$.isArray(entryData)){
+          entryData = [entryData];
+        }
+
+        // Create HTML for each entry
+        $.each(entryData, function(i, item){
+          // First line of entry: Year Read, edit icon, delete icon
+          table += "<div class = \"year\"> Read in " + item.yearRead
+            + "<span class = \"updateIcons\"><i class=\"fas fa-edit\" value = \" "
+            + item.id + " \"></i> <i class=\"fas fa-trash-alt\" value = \" "
+            + item.id + " \"></i></span></div>";
+
+          // Second line: Book title, author first and last name
+          table += "<div class = \"titleAuthor\">"
+            + item.title + " by " + item.authorFirst + " "
+            +  item.authorLast + "</div>";
+
+          // Rest of entry (optional fields):
+          table += "<div class = \"bookInfo\">";
+
+          // Year published
+          if(item.yearPub !== null){
+            table += "Published in " + item.yearPub + "<br>";
+          }
+
+          // Number of pages
+          if(item.numPgs !== null){
+            table += item.numPgs + " pages <br>";
+          }
+
+          // For Class
+          if(item.forClass !== null){
+            if(item.forClass == "1"){
+              table += "Read for class <i class=\"fas fa-check\"></i><br>";
+            }else{
+              table += "Read for class <i class=\"fas fa-times\"></i><br>";
+            }
+          }
+
+          // Reread
+          if(item.reread !== null){
+            if(item.reread == "1"){
+              table += "Reread <i class=\"fas fa-check\"></i>";
+            }else{
+              table += "Reread <i class=\"fas fa-times\"></i>";
+            }
+          }
+
+          // Divider line at end of entry
+          table += "</div><div class = \"line\"></div>";
+        });
+
+        $("#dataTable").html(table);
+      }// end else (response != error)
+    }//end success
   });
 }
 
@@ -104,7 +163,24 @@ $(document).ready(function(){
           $("#addForm")[0].reset();
           getData(sortState, orderState);
         }else{
-          $("#addResponse").text("Add failed! " + response);
+          console.log(response);
+          var errors = JSON.parse(response);
+          var errFormat = "";
+
+          // Converts json object to array if necessary
+          if(!$.isArray(errors)){
+            errors = [errors];
+          }
+
+          errFormat += "<ul>";
+          for(var item in errors){
+            if(item != ""){
+              errors += "<li>" + errors[item] + "</li>";
+            }
+          }
+          errFormat += "</ul>";
+
+          $("#addResponse").text("Add failed! " + errFormat);
         }
 
       }
@@ -146,7 +222,7 @@ $(document).on("click",".fa-edit", function(){
 
   $.ajax({
     type: 'GET',
-    url: 'php/displayUpdate.php',
+    url: 'php/readOne.php',
     data: {id: entryId},
     success: function(response){
       if(response == "404"){
