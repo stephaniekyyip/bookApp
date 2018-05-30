@@ -21,6 +21,10 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Sanchez" rel="stylesheet">
 
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
   </head>
 
   <body>
@@ -32,7 +36,7 @@
       <section>
         <!-- Button to reveal add form -->
         <button id = "addBtn" class = "btn">Add Book
-          <i class="fab fa-readme" alt = "book icon"></i></button>
+          <i class="fab fa-readme" title = "book icon"></i></button>
 
         <!-- Displays result of attempting to add new entry -->
         <div id = "addResponse"></div>
@@ -44,17 +48,17 @@
               <input type = "text"
               name = "title" value="" required
               oninvalid="setCustomValidity('Please enter the title of the book.')"
-              oninput="setCustomValidity('')"> <br>
+              oninput="setCustomValidity('')"/> <br>
             Author First Name <span class = "requiredFormat">(Required)</span>
               <input type = "text"
-              name = "authorFirst" value=""  required
+              name = "authorFirst" value="" required
               oninvalid="setCustomValidity('Please enter the author's first name.')"
-              oninput="setCustomValidity('')"> <br>
+              oninput="setCustomValidity('')" /> <br>
             Author Last Name <span class = "requiredFormat">(Required)</span>
               <input type = "text"
               name = "authorLast" value=""  required
               oninvalid="setCustomValidity('Please enter the author's last name.')"
-              oninput="setCustomValidity('')"> <br>
+              oninput="setCustomValidity('')"/> <br>
             Year Read <span class = "requiredFormat">(Required)</span>
               <input type = "text"
               name = "yearRead" size = "4" maxlength = "4" value=""
@@ -62,12 +66,12 @@
               oninvalid="setCustomValidity('Please enter a valid year.')"
               oninput="setCustomValidity('')"><br>
             Year Published <input type = "text" size = "4" maxlength = "4"
-              name = "yearPub" name = "yearPub" value="" pattern = "[0-9]{4}"
+              name = "yearPub" value="" pattern = "[0-9]{4}"
               oninvalid="setCustomValidity('Please enter a valid year.')"
-              oninput="setCustomValidity('')"> <br>
+              oninput="setCustomValidity('')"/> <br>
             Number of Pages <input type = "text" name = "numPgs" size = "4" value=""
               pattern = "\d*" oninvalid="setCustomValidity('Please enter a number.')"
-              oninput="setCustomValidity('')"><br>
+              oninput="setCustomValidity('')"/><br>
 
             Read for class?
             <label class = "labelContainer"> Yes <i class="fas fa-check"></i>
@@ -112,12 +116,15 @@
       <section id = "actionBtns">
         <!-- Button link to csv upload -->
         <button class = "btn smallBtn" id = "uploadBtn">Upload CSV File
-          <i class="fas fa-upload" alt = "upload icon"></i></button>
+          <i class="fas fa-upload" title = "upload icon"></i></button>
 
         <!-- Button link to analytics page -->
         <a href = "displayAnalytics.html">
-        <button class = "btn smallBtn" id = "analyticsBtn">Reading Analytics
-          <i class="fas fa-chart-line" alt = "analytics icon"></i></button></a>
+          <button class = "btn smallBtn" id = "analyticsBtn">
+          Reading Analytics
+          <i class="fas fa-chart-line" title = "analytics icon"></i>
+          </button>
+        </a>
       </section>
 
       <!-- Upload CSV files-->
@@ -159,7 +166,7 @@
           <div id = "updateFailed"></div>
 
           <!-- Form for update entry  -->
-          <form method = "put" id = "updateForm" action = "php/update.php">
+          <form method = "post" id = "updateForm" action = "php/update.php">
             Title <span class = "requiredFormat">(Required)</span>
               <input type = "text"
               name = "titleUpdate" id = "titleUpdate" value="" required
@@ -240,7 +247,7 @@
         <div id = "deletePanel">
 
           <!-- Form for delete entry -->
-          <form id = "deleteForm" method = "delete">
+          <form id = "deleteForm" method = "post">
             Are you sure you want to delete this entry? <br><br>
 
             <!-- Form buttons: delete + cancel -->
@@ -296,17 +303,14 @@
 
     </div> <!-- END container -->
 
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
     <!-- JavaScript -->
     <script src = "js/functions.js"></script>
 
-  </body>
+    <footer>
+      Made by Stephanie Yip 2018
+    </footer>
 
-  <footer>
-    Made by Stephanie Yip 2018
-  </footer>
+  </body>
 
 
 </html>
