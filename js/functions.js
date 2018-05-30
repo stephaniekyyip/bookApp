@@ -29,13 +29,36 @@ function scrollBtnFade(){
 window.addEventListener("wheel", scrollBtnFade);
 window.addEventListener("scroll", scrollBtnFade);
 
-/**************************** CRUD Operations ********************************/
+/**************************** CRUD Operations *********************************/
+var entryId; // Stores ID of selected entry (used in Update and Delete)
+
 var sortState; // stores currently selected sorting option
 var orderState; // stores whether sorting is ascending or descending
 
-// Fetch the data from the database
-function getData(sortOption = "none", order = "none"){
+// Formats errors
+function printErr(dbErr){
+  console.log(dbErr);
+  var errors = JSON.parse(dbErr);
+  var errFormat = "";
 
+  // Converts json object to array if necessary
+  if(!$.isArray(errors)){
+    errors = [errors];
+  }
+
+  errFormat += "Error(s): <ul>";
+  $.each(errors, function(i, item){
+    errFormat += "<li>" + item + "</li>";
+  });
+  errFormat += "</ul>";
+
+  return errFormat;
+}
+
+/****************************** Read ******************************************/
+
+// Fetches the data from the database
+function getData(sortOption = "none", order = "none"){
   // console.log("sortOption: " + sortOption);
   // console.log("sortOrder: " + order);
   $("#dataTable").html("");
@@ -53,62 +76,7 @@ function getData(sortOption = "none", order = "none"){
         $("#dataTable").css('visibility', 'hidden');
         $("#dataTable").delay(10).css('visibility', 'visible').hide().fadeIn(500);
 
-        // console.log(response);
-        var entryData = JSON.parse(response);
-        var table = ""; // Holds the html to display all data entries
-
-        // Converts json object to array if necessary
-        if(!$.isArray(entryData)){
-          entryData = [entryData];
-        }
-
-        // Create HTML for each entry
-        $.each(entryData, function(i, item){
-          // First line of entry: Year Read, edit icon, delete icon
-          table += "<div class = \"year\"> Read in " + item.yearRead
-            + "<span class = \"updateIcons\"><i class=\"fas fa-edit\" value = \" "
-            + item.id + " \"></i> <i class=\"fas fa-trash-alt\" value = \" "
-            + item.id + " \"></i></span></div>";
-
-          // Second line: Book title, author first and last name
-          table += "<div class = \"titleAuthor\">"
-            + item.title + " by " + item.authorFirst + " "
-            +  item.authorLast + "</div>";
-
-          // Rest of entry (optional fields):
-          table += "<div class = \"bookInfo\">";
-
-          // Year published
-          if(item.yearPub !== null){
-            table += "Published in " + item.yearPub + "<br>";
-          }
-
-          // Number of pages
-          if(item.numPgs !== null){
-            table += item.numPgs + " pages <br>";
-          }
-
-          // For Class
-          if(item.forClass !== null){
-            if(item.forClass == "1"){
-              table += "Read for class <i class=\"fas fa-check\"></i><br>";
-            }else{
-              table += "Read for class <i class=\"fas fa-times\"></i><br>";
-            }
-          }
-
-          // Reread
-          if(item.reread !== null){
-            if(item.reread == "1"){
-              table += "Reread <i class=\"fas fa-check\"></i>";
-            }else{
-              table += "Reread <i class=\"fas fa-times\"></i>";
-            }
-          }
-
-          // Divider line at end of entry
-          table += "</div><div class = \"line\"></div>";
-        });
+        var table = printData(response);
 
         $("#dataTable").html(table);
       }// end else (response != error)
@@ -116,10 +84,74 @@ function getData(sortOption = "none", order = "none"){
   });
 }
 
+// Gets entries from DB and formats them according to the selected sorting option
+function printData(dbData){
+  // console.log(dbData);
+  var jsonData = JSON.parse(dbData);
+  var table = ""; // Holds the html to display all data entries
+
+  // Converts json object to array if necessary
+  if(!$.isArray(jsonData)){
+    jsonData = [jsonData];
+  }
+
+  // Create HTML for each entry
+  $.each(jsonData, function(i, item){
+    // First line of entry: Year Read, edit icon, delete icon
+    table += "<div class = \"year\"> Read in " + item.yearRead
+      + "<span class = \"updateIcons\"><i class=\"fas fa-edit\" value = \""
+      + item.id + "\"></i> <i class=\"fas fa-trash-alt\" value = \""
+      + item.id + "\"></i></span></div>";
+
+    // Second line: Book title, author first and last name
+    table += "<div class = \"titleAuthor\">"
+      + item.title + " by " + item.authorFirst + " "
+      +  item.authorLast + "</div>";
+
+    // Rest of entry (optional fields):
+    table += "<div class = \"bookInfo\">";
+
+    // Year published
+    if(item.yearPub !== null){
+      table += "Published in " + item.yearPub + "<br>";
+    }
+
+    // Number of pages
+    if(item.numPgs !== null){
+      table += item.numPgs + " pages <br>";
+    }
+
+    // For Class
+    if(item.forClass !== null){
+      if(item.forClass == "1"){
+        table += "Read for class <i class=\"fas fa-check\"></i><br>";
+      }else{
+        table += "Read for class <i class=\"fas fa-times\"></i><br>";
+      }
+    }
+
+    // Reread
+    if(item.reread !== null){
+      if(item.reread == "1"){
+        table += "Reread <i class=\"fas fa-check\"></i>";
+      }else{
+        table += "Reread <i class=\"fas fa-times\"></i>";
+      }
+    }
+
+    // Divider line at end of entry
+    table += "</div><div class = \"line\"></div>";
+  });
+
+  return table;
+}
+
 // Display data fetched from database on page load
 $(document).ready(function(){
   getData();
 });
+
+/****************************** Create ****************************************/
 
 // Adds new entry when Add New Book form is submitted
 $(document).ready(function(){
@@ -164,23 +196,8 @@ $(document).ready(function(){
           getData(sortState, orderState);
         }else{
           console.log(response);
-          var errors = JSON.parse(response);
-          var errFormat = "";
 
-          // Converts json object to array if necessary
-          if(!$.isArray(errors)){
-            errors = [errors];
-          }
-
-          errFormat += "<ul>";
-          for(var item in errors){
-            if(item != ""){
-              errors += "<li>" + errors[item] + "</li>";
-            }
-          }
-          errFormat += "</ul>";
-
-          $("#addResponse").text("Add failed! " + errFormat);
+          $("#addResponse").text("Add failed! " + printErr(response));
         }
 
       }
@@ -204,8 +221,7 @@ $(document).ready(function(){
   });
 });
 
-// Stores ID of selected entry
-var entryId;
+/***************************** Update *****************************************/
 
 // Show update window and data of selected entry when edit button is clicked
 $(document).on("click",".fa-edit", function(){
@@ -215,7 +231,8 @@ $(document).on("click",".fa-edit", function(){
 
   // Reset update panel
   $("#updateFailed").text(""); // clears any previous error messages
-  $("#updatePanel").css({"max-height": "600px"}); // reset height of update form due to error message
+  $("#updatePanel").css({"max-height": "600px"}); // reset height of update form
+  //due to error message
   $("#updateSuccessPanel").css("display", "none"); // hide sucesss panel
   $('#updateForm')[0].reset(); //reset form
   $('#updateOverlay').scrollTop(0); // reset scroll bar to top
@@ -299,6 +316,7 @@ $(document).ready(function(){
         numPgs: $('#numPgsUpdate').val(),
         forClass: forClassVal, reread: rereadVal},
       success: function(response){
+        // console.log(response);
         if(response == "200"){
           $("#updatePanel").css("display", "none"); // hide update form
           $("#updateSuccessPanel").fadeIn(300); // show update success panel
@@ -328,6 +346,8 @@ $(document).ready(function(){
   });
 
 });
+
+/***************************** Delete *****************************************/
 
 // Show delete window when delete button is clicked
 $(document).on("click", ".fa-trash-alt", function(){
@@ -376,6 +396,69 @@ $(document).ready(function(){
   });
 });
 
+/***************************** Upload *****************************************/
+
+// Prints error(s) when uploading CSV files
+function printErrUpload(dbErr){
+  console.log(dbErr);
+  var errors = JSON.parse(dbErr);
+  var errFormat = "";
+  var replaceField; //changes the name of the field to be more user friendly
+  // (vs DB fields)
+
+  // Converts json object to array if necessary
+  if(!$.isArray(errors)){
+    errors = [errors];
+  }
+
+  errFormat += "Error: <ul>";
+  $.each(errors, function(i, item){
+    errFormat += "<li> Line " + item.lineNum + ": ";
+
+    switch(item.field){
+      case "title":
+        replaceField = "Title";
+        break;
+      case "author_first":
+        replaceField = "Author First Name";
+        break;
+      case "author_last":
+        replaceField = "Author Last Name";
+        break;
+      case "year_read":
+        replaceField = "Year Read";
+        break;
+      case "year_pub":
+        replaceField = "Year Published";
+        break;
+      case "num_pgs":
+        replaceField = "Number of Pages";
+        break;
+      case "for_class":
+        replaceField = "Read for Class";
+        break;
+      case "reread":
+        replaceField = "Reread";
+        break;
+    }
+
+    if(item.errType == "required"){
+      errFormat += "Missing required input for " + replaceField;
+    }else if (item.errType == "number"){
+      errFormat += "Input must be a number for " + replaceField;
+    }else if (item.errType == "bool"){
+      errFormat += "Input must be either y, n, or NULL for " + replaceField;
+    }else if (item.errType == "year"){
+      errFormat += "Invalid year input for " + replaceField;
+    }
+
+    errFormat += ". Input: " + item.value + "</li>";
+  });
+  errFormat += "</ul>";
+
+  return errFormat;
+}
+
 // Show upload panel when upload csv file button is clicked
 $(document).ready(function(){
   $("#uploadBtn").click(function(){
@@ -390,17 +473,16 @@ $(document).ready(function(){
 
 // Shows name of file selected to be uploaded
 $(document).ready(function(){
-
 		var input	 = $("#fileUpload"),
 			label	 = input.next( 'label' ),
 			labelVal = label.html();
-
 
 		input.on('change', function(e){
 			var fileName = '';
 
 			if( this.files && this.files.length > 1 )
-				fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+				fileName = ( this.getAttribute( 'data-multiple-caption' ) ||
+          '' ).replace( '{count}', this.files.length );
       else if( e.target.value )
 				fileName = e.target.value.split( '\\' ).pop();
 
@@ -437,16 +519,30 @@ $(document).ready(function(e){
           // update entries displayed
           setTimeout(function(){getData(sortState, orderState);}, 1500);
         }else{
+          var okBtn = "The rest of the lines without errors were added. " +
+          "<br> Please fix the errors and try again." +
+          "<br><br><button class = \"btn\" id = \"errorOkBtn\">Ok</button>";
+
+          if(response == "uploadErr"){
+          $("#uploadResponsePanel").html("File could not be uploaded. Try again.<br>"
+          + okBtn);
+          }else if (response == "invalidFile"){
+            $("#uploadResponsePanel").html("Invalid file type. Try again. <br>"
+            + okBtn);
+          }else if (response == "noFile"){
+            $("#uploadResponsePanel").html("File not detected. Try again.<br>"
+            + okBtn);
+          }else{
+
+            $("#uploadResponsePanel").html(printErrUpload(response) + okBtn);
+          }
           $("#uploadPanel").hide();
           $("#uploadResponsePanel").css({"height": "300px", "margin": "50px auto",
             "font-size": "20px" });
           $("#uploadResponsePanel").fadeIn(300);
 
-          var okBtn = "<br>Please try again.<br><br><button class = \"btn\" id = \"errorOkBtn\">Ok</button>";
-          $("#uploadResponsePanel").html("Error: <br>" +response + okBtn);
-          // $("#uploadOverlay").delay(5000).fadeOut(500);
-        }
-      }
+        } // end else, error
+      }// end success
     }); // end ajax
   }));
 });
@@ -493,12 +589,20 @@ $(document).ready(function(){
       type: 'get',
       success: function(response){
 
-        if(response == "404"){
-          $("#dataTable").html("No results <i class=\"far fa-frown\"></i>");
+        if(response == "404" || response == "none"){
+          $("#dataTable").html("<div class = 'searchResult'>Search results for \"" +
+            $('#searchInput').val() + "\"</div> No results <i class=\"far fa-frown\"></i>");
         }else{
+          var printResults = "";
           $("#dataTable").fadeOut(10);
           $("#dataTable").fadeIn(500);
-          $("#dataTable").html(response);
+
+          printResults += "<div class = 'searchResult'>Search results for \"" +
+            $('#searchInput').val() + "\"</div>";
+
+          printResults += printData(response);
+
+          $("#dataTable").html(printResults);
           setTimeout(deactivateSort, 100); //set sorting options to inactive
         }
       }//end success func
@@ -506,26 +610,6 @@ $(document).ready(function(){
     }); //end ajax
   });
 });
-
-// Show default sorting when user clears search bar by clicking "x"
-// $("#searchInput").on("mouseup", function(){
-//    var $input = $(this),
-//    oldValue = $input.val();
-//
-//    if (oldValue == "") return;
-//
-//    // When this event is fired after clicking on the clear button
-//    // the value is not cleared yet. We have to wait for it.
-//    setTimeout(function(){
-//      var newValue = $input.val();
-//
-//       if (newValue == ""){
-//          // capture the clear
-//          $input.trigger("cleared");
-//          getData();
-//       }
-//     }, 1);
-// });
 
 // Show default sorting when user clears search bar
 $("#searchInput").on('input', function(e){
@@ -535,6 +619,7 @@ $("#searchInput").on('input', function(e){
 });
 
 /****************************** Sorting ***************************************/
+
 // Toggle sort button for Order Added (change button style + add icons)
 // btnLabel is the id of the selected sort button
 function toggleSortBtn(btnLabel){
@@ -610,7 +695,8 @@ function toggleSortBtn(btnLabel){
 
 }
 
-/******************** Sorting Buttons **********************/
+/************************* Sorting  Buttons ***********************************/
+
 // sort Order Added
 $(document).ready(function(){
   $("#sortOrder").click(function(){

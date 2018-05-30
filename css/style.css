@@ -56,11 +56,16 @@ p{
   margin-bottom: 30px;
 }
 
-/* a button {
+button a {
   text-decoration: none;
+  color: #019D6E;
 }
 
-a{
+button a:hover {
+  color: white;
+}
+
+/* a{
   text-decoration: none;
   color: white;
   display: inline;
@@ -226,6 +231,16 @@ pre code{
 #uploadResponsePanel{
   overflow: scroll;
   height: 300px;
+  padding: 40px 20px 20px 20px;
+}
+
+#uploadResponsePanel ul{
+  text-align: left;
+  padding-left: 35px;
+}
+
+#uploadResponsePanel li{
+  padding-bottom: 20px;
 }
 
 #updateFailed{
@@ -500,6 +515,7 @@ select {
 
 #searchForm {
   margin-top: 30px;
+  margin-bottom: 0;
 }
 
 #searchForm ::placeholder{

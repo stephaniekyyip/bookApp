@@ -1,22 +1,22 @@
 <?php
 
-  require_once ('functions.php' );
+/*
+  delete.php
+
+  Deletes selected entry in the database.
+*/
+
+  require_once ('database.php');
+  require_once ('books.php');
+
+  //mysql connection
+  $database = new Database();
+  $conn = $database->connectToDatabase();
+
+  $bookList = new Books($conn);
 
   if(!empty($_POST['id'])){
-    $conn = connectToDatabase();
-
-    $mysql = "DELETE FROM book_list WHERE ID = '";
-    $mysql .= $_POST['id'];
-    $mysql .= "'";
-
-    if($conn->query($mysql) == TRUE){
-      echo "200";
-    }else{
-      echo "404";
-    }
-
-    //Close mySQL connection
-    $conn->close();
+    echo $bookList->delete($_POST['id']);
   }else{
     echo "404";
   }

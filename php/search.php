@@ -1,37 +1,21 @@
 <?php
+  /*
+    search.php
 
-  require_once ('functions.php' );
+    Searches for entries in the database that match the user's search query.
+  */
 
-  $conn = connectToDatabase();
+  require_once ('database.php');
+  require_once ('books.php');
 
-  $inputList = array("title", "author_first" ,"author_last" , "year_read" ,
-    "year_pub", "num_pgs", "for_class", "reread" );
+  //mysql connection
+  $database = new Database();
+  $conn = $database->connectToDatabase();
+
+  $bookList = new Books($conn);
 
   if(!empty($_GET['query'])){
-
-    $mysql = "SELECT * FROM book_list WHERE ";
-    $or = FALSE; //determines whether to add another OR to the statement
-
-    foreach($inputList as $input){
-      if($or){
-        $mysql .= " OR ";
-      }
-
-      $mysql .= $input . " LIKE '%" . test_input($_GET['query']) . "%'";
-
-      $or = TRUE;
-    }
-
-    $mysql .= " OR CONCAT( author_first, ' ', author_last ) LIKE '%" .
-      test_input($_GET['query']) . "%'";
-
-    $results = $conn->query($mysql);
-
-    echo "<div class = 'searchResult'>Search results for " .
-      $_GET['query'] . "</div>";
-
-    printData($results);
-
+    echo $bookList->search($_GET['query']);
   }else{
     echo "404";
   }
