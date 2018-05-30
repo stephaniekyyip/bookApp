@@ -1,10 +1,10 @@
 <?php
 
-/*
-  create.php
-
-  Creates a new entry in the database after validating user input.
-*/
+// ----------------------------------------------------------------------------
+// create.php
+//
+// Creates a new entry in the database after validating user input.
+// ----------------------------------------------------------------------------
 
   require_once ('database.php');
   require_once ('books.php');

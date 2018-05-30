@@ -1,11 +1,11 @@
 <?php
 
-/*
-  readAll.php
-
-  Gets all entries in the database according to the selected sorting
-  option (either user-selected or by default- sorted by most recently added).
-*/
+// ----------------------------------------------------------------------------
+// readAll.php
+//
+// Gets all entries in the database according to the selected sorting
+// option (either user-selected or by default- sorted by most recently added).
+// ----------------------------------------------------------------------------
 
   require_once ('database.php');
   require_once ('books.php');

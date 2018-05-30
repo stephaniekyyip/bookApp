@@ -1,11 +1,11 @@
 <?php
 
-/*
-  database.php
-  
-  Class declaration: Database
-  Creates the connection to the mySQL database.
-*/
+// ----------------------------------------------------------------------------
+// database.php
+//
+// Class declaration: Database
+// Creates the connection to the mySQL database.
+// ----------------------------------------------------------------------------
 
   class Database{
     private $servername = "localhost";

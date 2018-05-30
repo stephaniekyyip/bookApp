@@ -10,19 +10,11 @@ html, body{
 
   box-sizing: border-box;
   overflow-x: hidden;
-  /* overflow: auto; */
 }
 
 body{
   overflow: auto;
 }
-
-
-/* header{
-  padding: 20px 30px 5px 10px;
-  font-size: 15px;
-  text-align: right;
-} */
 
 footer{
   padding-left: 20px;
@@ -56,29 +48,7 @@ p{
   margin-bottom: 30px;
 }
 
-button a {
-  text-decoration: none;
-  color: #019D6E;
-}
-
-button a:hover {
-  color: white;
-}
-
-/* a{
-  text-decoration: none;
-  color: white;
-  display: inline;
-  padding-bottom: 2px;
-  border-bottom: 2px solid white;
-}
-
-a:hover{
-  border: none;
-  color: #F9E784;
-} */
-
-/************ Various Formatting *************/
+/*************************** Various Formatting  ******************************/
 .underline{
   border-bottom: 1px solid white;
 }
@@ -111,17 +81,9 @@ a:hover{
   cursor: pointer;
 }
 
-#addBtn{
-  width: 100%;
-}
-
 .smallBtn{
   margin-top: 20px;
   display:inline;
-}
-
-#uploadBtn{
-  width: 48%;
 }
 
 #analyticsBtn{
@@ -129,41 +91,7 @@ a:hover{
   width: 48%;
 }
 
-/************ Add Panel *************/
-#addPanel{
-  display:none;
-}
-
-ul{
-  padding-left: 20px;
-  margin-bottom: 10px;
-}
-
-/************ Upload Panel *************/
-pre{
-  margin: 5px 0 20px 0;
-  white-space: pre-wrap;       /* css-3 */
-  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-  white-space: -pre-wrap;      /* Opera 4-6 */
-  white-space: -o-pre-wrap;    /* Opera 7 */
-  word-wrap: break-word;       /* Internet Explorer 5.5+ */
-}
-
-pre code{
-  text-align: left;
-  display: block;
-  font-size: 18px;
-  background-color: white;
-  border-radius: 5px;
-  color:#019D6E;
-  opacity: 0.7;
-  padding: 10px;
-}
-
-.marginTop30{
-  margin-top: 30px;
-}
-/************ Update, Delete, and Upload Panels *************/
+/********************** Update, Delete, Upload Panels *************************/
 #updateOverlay, #deleteOverlay, #uploadOverlay{
   position: fixed;
   height: 100%;
@@ -213,6 +141,7 @@ pre code{
   color: #F9E784;
 }
 
+/****************** Update, Delete, Upload Response Panels ********************/
 #updateSuccessPanel, #deleteResponsePanel, #uploadResponsePanel{
   font-size: 30px;
   max-width: 550px;
@@ -247,12 +176,94 @@ pre code{
   font-size: 20px;
 }
 
-.updateSuccessClose, .deleteSuccessClose{
-  text-align: right;
-  margin-right: 10px;
+/******************************* Add Panel ************************************/
+#addPanel{
+  display:none;
 }
 
-/************ Form *************/
+#addBtn{
+  width: 100%;
+}
+
+ul{
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+
+/***************************** Upload Panel ***********************************/
+pre{
+  margin: 5px 0 20px 0;
+  white-space: pre-wrap;       /* css-3 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+pre code{
+  text-align: left;
+  display: block;
+  font-size: 18px;
+  background-color: white;
+  border-radius: 5px;
+  color:#019D6E;
+  opacity: 0.7;
+  padding: 10px;
+}
+
+.marginTop30{
+  margin-top: 30px;
+}
+
+#uploadBtn{
+  width: 48%;
+}
+
+/************************* Display Panel and Data *****************************/
+#displayPanel{
+  margin-top: 30px;
+  font-size: 20px;
+}
+
+#displayPanel form{
+  font-size: 18px;
+}
+
+.updateIcons{
+  float: right;
+  padding-left: 10px;
+}
+
+.fa-edit:hover, .fa-trash-alt:hover, .fa-window-close:hover{
+  color: #F9E784;
+  cursor: pointer;
+}
+
+.line{
+  border-bottom: 1px solid white;
+}
+
+.titleAuthor{
+  margin-top: 5px;
+  font-size: 25px;
+  margin-bottom: 5px;
+}
+
+.year{
+  margin-top: 10px;
+  font-size: 18px;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+
+.bookInfo{
+  font-size: 18px;
+  margin-bottom: 30px;
+  line-height: 24px;
+}
+
+
+/********************************* Forms **************************************/
 form {
   font-size: 20px;
   margin-top: 20px;
@@ -292,7 +303,7 @@ input[type=file]{
   font-size: 12px;
 }
 
-/************ File Upload button formatting  *************/
+/********************** File Upload Button Formatting *************************/
 .inputFile{
   width: 0.1px;
 	height: 0.1px;
@@ -324,7 +335,7 @@ input[type=file]{
   cursor: pointer;
 }
 
-/************ Radio button formatting  *************/
+/************************* Radio Button Formatting ****************************/
 .labelContainer{
   display: inline;
   position: relative;
@@ -395,56 +406,7 @@ input[type=radio]{
   display: none;
 }
 
-/************ Display Data Table *************/
-#displayPanel{
-  margin-top: 30px;
-  font-size: 20px;
-}
-
-#displayPanel form{
-  font-size: 18px;
-}
-
-.updateIcons{
-  float: right;
-  padding-left: 10px;
-}
-
-.fa-edit:hover, .fa-trash-alt:hover, .fa-window-close:hover{
-  color: #F9E784;
-  cursor: pointer;
-}
-
-.line{
-  border-bottom: 1px solid white;
-}
-
-.titleAuthor{
-  margin-top: 5px;
-  font-size: 25px;
-  margin-bottom: 5px;
-}
-
-.year{
-  margin-top: 10px;
-  font-size: 18px;
-  letter-spacing: 2px;
-  font-weight: bold;
-}
-
-.bookInfo{
-  font-size: 18px;
-  margin-bottom: 30px;
-  line-height: 24px;
-}
-
-/************ Sorting Options *************/
-/*#sortMenu{
-  font-family: 'Sanchez', sans-serif;
-  font-size: 14px;
-  color: #019D6E;
-}*/
-
+/***************************** Sorting Options ********************************/
 #sortOptions{
   margin-top: 30px;
   line-height: 20px;
@@ -483,8 +445,7 @@ select {
   font-size: 15px;
 }
 
-/************ Search Bar *************/
-
+/******************************* Search Bar ***********************************/
 #searchBar{
   position: relative;
 }
@@ -531,7 +492,7 @@ select {
   left: 10px;
 }
 
-/************ Back to Top *************/
+/************************* Back to Top Scrolling  *****************************/
 #scrollBtn{
   position: fixed;
   right: 30px;
@@ -553,7 +514,7 @@ select {
   opacity: 1;
 }
 
-/************** Reading Analytics Page ********************/
+/************************* Reading Analytics Page *****************************/
 #analytics{
   font-size: 18px;
   margin: 0 0 20px 0;

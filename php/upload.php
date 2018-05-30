@@ -1,10 +1,11 @@
 <?php
-  /*
-    upload.php
 
-    Creates multiple new entries in the database using a .csv file uploaded
-    by the user.
-  */
+// ----------------------------------------------------------------------------
+// upload.php
+//
+// Creates multiple new entries in the database using a .csv file uploaded
+// by the user.
+// ----------------------------------------------------------------------------
 
   require_once ('database.php');
   require_once ('books.php');

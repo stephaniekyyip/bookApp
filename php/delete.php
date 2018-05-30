@@ -1,10 +1,10 @@
 <?php
 
-/*
-  delete.php
-
-  Deletes selected entry in the database.
-*/
+// ----------------------------------------------------------------------------
+// delete.php
+//
+// Deletes selected entry in the database.
+// ----------------------------------------------------------------------------
 
   require_once ('database.php');
   require_once ('books.php');

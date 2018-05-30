@@ -1,3 +1,4 @@
+/******************************* Scrolling ************************************/
 // Smooth scroll to top when back to top button is clicked
 $(document).ready(function(){
   $("#scrollBtn").click(function(){

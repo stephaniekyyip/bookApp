@@ -1,11 +1,11 @@
 <?php
 
-/*
-  update.php
-
-  Updates the selected entry in the database using user input, if any changes
-  have been made.
-*/
+// ----------------------------------------------------------------------------
+// update.php
+//
+// Updates the selected entry in the database using user input, if any changes
+// have been made.
+// ----------------------------------------------------------------------------
 
   require_once ('database.php');
   require_once ('books.php');

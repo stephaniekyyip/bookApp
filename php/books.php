@@ -1,10 +1,11 @@
 <?php
-/*
-  books.php
 
-  Class declartion: Books
-  Handles CRUD operations to the database.
-*/
+// ----------------------------------------------------------------------------
+// books.php
+//
+// Class declartion: Books
+// Handles CRUD operations to the database.
+// ----------------------------------------------------------------------------
 
   class Books{
     private $tableName = "book_list"; // table in DB
@@ -29,12 +30,16 @@
     private $inputError = FALSE; //check for errors in user input
     public $printErr; //stores error messages
 
-    /* Constructor- Gets connection to mySQL DB. */
+    // ------------------------------------------------------------------------
+    // Constructor- Gets connection to mySQL DB.
+    // ------------------------------------------------------------------------
     public function __construct($db){
       $this->conn = $db;
     }
 
-    /* formatJson($data): Formats DB data in $data into JSON format. */
+    // ------------------------------------------------------------------------
+    // formatJson($data): Formats DB data in $data into JSON format.
+    // ------------------------------------------------------------------------
     private function formatJson($data){
       if($data == "404" ){
         return "404";
@@ -56,7 +61,9 @@
       }
     }
 
-    /* readOne($id): Reads one entry from the DB using the id in $id. */
+    // ------------------------------------------------------------------------
+    // readOne($id): Reads one entry from the DB using the id in $id.
+    // ------------------------------------------------------------------------
     public function readOne($id){
       // SQL for to get selected entry using ID
       $mysql = "SELECT * from $this->tableName WHERE ID = '";
@@ -69,10 +76,11 @@
       return $this->formatJson($data);
     }
 
-    /* readAll($sort, $order): Reads all the entries in the DB and sorts them
-      according to the field in $input and in the direction (ascending/ descending)
-      according to $order.
-    */
+    // ------------------------------------------------------------------------
+    // readAll($sort, $order): Reads all the entries in the DB and sorts them
+    // according to the field in $input and in the direction (ascending/
+    // descending) according to $order.
+    // ------------------------------------------------------------------------
     public function readAll($sort, $order){
       // Sorting options
       if($sort == 'title'){
@@ -128,7 +136,9 @@
       return $this->formatJson($data);
     }
 
-    /*  test_input($data): Sanitizes the user input in $data. */
+    // ------------------------------------------------------------------------
+    //  test_input($data): Sanitizes the user input in $data.
+    // ------------------------------------------------------------------------
     private function test_input($data) {
       $data = trim($data);
       $data = stripslashes($data);
@@ -137,7 +147,9 @@
       return $data;
     }
 
-    /* checkErr(): Checks for any errors, as denoted in the array errList. */
+    // ------------------------------------------------------------------------
+    // checkErr(): Checks for any errors, as denoted in the array errList.
+    // ------------------------------------------------------------------------
     private function checkErr(){
 
        //if there are errors in the user input, print errors
@@ -158,7 +170,10 @@
 
     }
 
-    /* validateInput(): Validates user input for each field and checks for errors. */
+    // ------------------------------------------------------------------------
+    // validateInput(): Validates user input for each field and checks for
+    // any errors.
+    // ------------------------------------------------------------------------
     public function validateInput(){
       // Validate user input and add error messages when necessary
       if(empty($_POST["title"])){
@@ -210,7 +225,9 @@
       return $this->checkErr();
     }
 
-    /* create(): Creates a new entry in the DB using user input. */
+    // ------------------------------------------------------------------------
+    // create(): Creates a new entry in the DB using user input.
+    // ------------------------------------------------------------------------
     public function create(){
       $mysql = "INSERT INTO $this->tableName";
       $mysql .= "(title, author_first, author_last, year_read";
@@ -268,9 +285,10 @@
 
     }
 
-    /* update($updateId): If there are any changes to the entry, updates selected
-      entry with user input using the entry's id in $updateId.
-     */
+    // ------------------------------------------------------------------------
+    // update($updateId): If there are any changes to the entry, updates
+    //  selected entry with user input using the entry's id in $updateId.
+    // ------------------------------------------------------------------------
     public function update($updateId){
       //Query for selected entry using id
       $mysql = "SELECT * from $this->tableName WHERE ID = '";
@@ -290,35 +308,19 @@
         "author_last" => FALSE, "year_read" => FALSE, "year_pub" => FALSE,
         "num_pgs" => FALSE, "for_class" => FALSE, "reread" => FALSE);
 
-      // Check for differences between user input and current values in entry
+
       if ($entryData->num_rows > 0){
         while($row = $entryData->fetch_assoc()){
-          if ($this->title != $row["title"]){
-            $changeList["title"] = TRUE;
+
+          // Check for differences between user input and current values in entry
+          foreach($inputList as $input => $val){
+            if($val != $row[$input]){
+              $changeList[$input] = TRUE;
+            }
           }
-          if($this->authorFirst != $row["author_first"]){
-            $changeList["author_first"] = TRUE;
-          }
-          if($this->authorLast != $row["author_last"]){
-            $changeList["author_last"] = TRUE;
-          }
-          if($this->yearRead != $row["year_read"]){
-            $changeList["year_read"]= TRUE;
-          }
-          if($this->yearPub != $row["year_pub"]){
-            $changeList["year_pub"] = TRUE;
-          }
-          if($this->numPgs != $row["num_pgs"]){
-            $changeList["num_pgs"] = TRUE;
-          }
-          if($this->forClass != $row["for_class"]){
-            $changeList["for_class"] = TRUE;
-          }
-          if($this->reread != $row["reread"]){
-            $changeList["reread"] = TRUE;
-          }
-        } // end while
-      } // end if num_rows > 0
+
+        }
+      }
 
       // Begin SQL update query
       $mysql = "UPDATE $this->tableName SET ";
@@ -360,7 +362,9 @@
       }
     }
 
-    /* delete($deleteId): Deletes entry from database with id of $deleteId */
+    // ------------------------------------------------------------------------
+    // delete($deleteId): Deletes entry from database with id of $deleteId
+    // ------------------------------------------------------------------------
     public function delete($deleteId){
       $mysql = "DELETE FROM $this->tableName WHERE ID = '";
       $mysql .= $deleteId;
@@ -374,7 +378,9 @@
       }
     }
 
-    /* search($query): Searches database for user search query in $query */
+    // ------------------------------------------------------------------------
+    // search($query): Searches database for user search query in $query
+    // ------------------------------------------------------------------------
     public function search($query){
       $inputList = array("title", "author_first" ,"author_last" , "year_read" ,
         "year_pub", "num_pgs", "for_class", "reread" );
@@ -402,9 +408,10 @@
         return $this->formatJson($results);
     }
 
-    /* uploadValidate($inputList): Validates each line of the user uploaded
-       CSV file, where $inputList stores the inputs.
-    */
+    // ------------------------------------------------------------------------
+    // uploadValidate($inputList): Validates each line of the user uploaded
+    // CSV file, where $inputList stores the inputs.
+    // ------------------------------------------------------------------------
     private function uploadValidate(&$inputList, $line, $lineCount, &$uploadErrList){
       // Required inputs
       $requiredList = ["title", "author_first", "author_last", "year_read"];
@@ -412,18 +419,11 @@
       // Numeric inputs
       $numList = ["year_read", "year_pub", "num_pgs"];
       $count = 0; // Keeps track of the current line number in the file
-      // $uploadErrList = array();
 
       // Check for errors for each input in each line of the file and
       // add user inputs to the array, $inputList.
       foreach($inputList as $input => $val){
         $inputList[$input] = $line[$count];
-
-        // echo "field: ";
-        // echo $input;
-        // echo " val: ";
-        // echo $line[$count];
-        // echo "\n";
 
         // if required input is missing, report error
         if(in_array($input, $requiredList) && $line[$count] == "NULL"){
@@ -466,9 +466,10 @@
 
     }
 
-    /* upload($fileName, $tmp): Processes user uploaded CSV file with name
-       $fileName and temp location of $tmp
-    */
+    // ------------------------------------------------------------------------
+    // upload($fileName, $tmp): Processes user uploaded CSV file with name
+    //   $fileName and temp location of $tmp
+    // ------------------------------------------------------------------------
     public function upload($fileName, $tmp){
       // Stores list of user inputs
       $inputList = array("title" => $this->title, "author_first" =>
@@ -574,9 +575,6 @@
 
 
   } //end class
-
-
-
 
 
 ?>
