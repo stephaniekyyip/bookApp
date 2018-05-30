@@ -16,10 +16,9 @@
 
   $bookList = new Books($conn);
 
+  // Read and sort entries from DB according to user sorting choice
   if (!empty($_GET["sortMenu"]) && !empty($_GET["order"])){
-
-    $bookList->readAll($_GET["sortMenu"], $_GET["order"]);
-
+    echo $bookList->readAll($_GET["sortMenu"], $_GET["order"]);
   }else{
     echo "404";
   }

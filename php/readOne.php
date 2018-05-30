@@ -17,10 +17,9 @@
 
   $bookList = new Books($conn);
 
+  // Get selected entry from DB
   if (!empty($_GET['id'])){
-
-    $bookList->readOne($_GET['id']);
-
+    echo $bookList->readOne($_GET['id']);
   }else{
     echo "404";
   }

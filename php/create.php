@@ -1,4 +1,5 @@
 <?php
+
 /*
   create.php
 
@@ -17,10 +18,9 @@
   // Validate user input and check for errors
   $error = $bookList->validateInput();
 
+  // If no errors, create new entry in DB
   if(!$error){
-
     echo $bookList->create();
-
   }else{ // else, print error
     echo $bookList->printErr;
   }
