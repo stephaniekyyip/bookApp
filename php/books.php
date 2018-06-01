@@ -47,10 +47,10 @@
         while($row = $data->fetch_assoc()){
 
           $jsonData[] = array( 'id' => $row["id"],'title' => $row["title"],
-          'authorFirst' => $row["author_first"], 'authorLast' => $row["author_last"],
-          'yearRead' => $row["year_read"], 'yearPub' => $row["year_pub"],
-          'numPgs' => $row["num_pgs"], 'forClass' => $row["for_class"],
-          'reread' => $row["reread"]);
+          'authorFirst' => $row["author_first"],
+          'authorLast' => $row["author_last"],'yearRead' => $row["year_read"],
+          'yearPub' => $row["year_pub"], 'numPgs' => $row["num_pgs"],
+          'forClass' => $row["for_class"],'reread' => $row["reread"]);
 
         } //end while
 
@@ -529,7 +529,8 @@
                    }
 
                    // Change values of forClass and reread to boolean
-                   if(($input == "for_class" || $input == "reread") && $val != "NULL"){
+                   if(($input == "for_class" || $input == "reread") &&
+                   $val != "NULL"){
                      if($val == 'y'){
                        $mysql .= "'1'";
                      }else if($val == 'n'){
