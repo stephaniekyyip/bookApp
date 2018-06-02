@@ -537,19 +537,57 @@ p + .underline {
   margin-bottom: 30px;
 }
 
-.stats{
-  color: #F9E784;
-}
-
-.chart{
+#chart{
   margin-bottom: 30px;
 }
 
-.chart div {
+/* .stats{
+  color: #F9E784;
+}
+
+svg {
+  fill: #F9E784;
+}
+
+text{
   font: 15px 'Sanchez', sans-serif ;
-  background-color: #F9E784;
-  text-align: right;
-  padding: 3px;
-  margin: 8px;
-  color: #019D6E;
+  fill: #019D6E;
+  text-anchor: end;
+} */
+
+/*************************** Data Visualization *******************************/
+
+/* X-axis text + labels on bars */
+.c3-axis-x text, .c3-texts{
+  fill: white;
+  font-family: 'Sanchez', sans-serif;
+  font-size: 15px;
+}
+
+/* Shift data labels on bars up slightly*/
+.c3-texts{
+  transform: translate(0, -4px);
+}
+
+/* Change color of data labels on bars */
+.c3-text{
+  fill: #F9E784 !important;
+}
+
+/* X-axis + tick marks*/
+.c3-axis-x path, .c3-axis-x line{
+  stroke: white;
+  stroke-width: 2;
+}
+
+/* Title of chart */
+.c3-title{
+  font-family: 'Sanchez', sans-serif;
+  fill: white;
+  font-size: 20px;
+}
+
+/* Color of bars */
+.c3-bar{
+  fill: #F9E784 !important;
 }

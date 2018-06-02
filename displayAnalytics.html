@@ -10,6 +10,9 @@
     <meta name = "description" content = "Keep track of all the books you have
       read.">
 
+    <!-- C3.js -->
+    <link href="c3/c3.css" rel="stylesheet"/>
+
     <link rel= "stylesheet" href="css/style.css"/>
 
 
@@ -32,8 +35,7 @@
       <div class = "underline"></div>
 
       <section id = "dataVisuals">
-        <p>Total Books Read Each Year</p>
-        <div class = "chart"></div>
+        <div id = "chart"></div>
       </section>
 
       <section id = "analytics">
@@ -42,17 +44,13 @@
         <li><!-- total books --> _____  books  and _____ <!-- total pages --> pages read since
           <!--earliest year -->_____  .</li>
 
-        <li>Most books were read in _____ <!-- year --> with _____ <!-- num books -->
-          read.</li>
-
         <li>Read the most books by _____ <!-- author first/last  --> with _____
           <!--num books --> books.</li>
 
-        <li>Longest book was _____ <!--book title  --> with _____ <!--num pgs --> pages.</li>
+        <li>Longest book read was _____ <!--book title  --> with _____ <!--num pgs --> pages.</li>
 
         <li>Shortest book read was _____  <!--book title  --> with _____ <!--num pgs -->.</li>
 
-        <li>Most pages were read in _____ <!-- year  -->.</li>
         </ul>
 
       </section>
@@ -78,7 +76,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <!--D3 data visualization -->
-    <script src="http:////d3js.org/d3.v3.min.js"></script>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+
+    <!-- C3.js -->
+    <script src="c3/c3.min.js"></script>
 
     <!-- JavaScript -->
     <script src="js/visualizeData.js"></script>
