@@ -61,6 +61,7 @@
       }
     }
 
+
     // ------------------------------------------------------------------------
     // readOne($id): Reads one entry from the DB using the id in $id.
     // ------------------------------------------------------------------------
@@ -134,6 +135,95 @@
       $data = $this->conn->query($mysql);
 
       return $this->formatJson($data);
+    }
+
+    // ------------------------------------------------------------------------
+    // readAnalyticaValues():
+    // ------------------------------------------------------------------------
+    public function readAnalyticValues(){
+
+      $mysql = "";
+
+      // Get overall total books read, number of pages, and earliest year
+      $mysql .= "SELECT COUNT(id) as total_books, SUM(num_pgs) as total_pgs,
+      MIN(year_read) as earliest_year FROM $this->tableName;";
+
+      // Get overall longest book read + number of pages
+      $mysql.= "SELECT num_pgs as max_pgs, title as max_pgs_title,
+      CONCAT( author_first, ' ', author_last) as author_max_pgs
+      FROM $this->tableName ORDER BY num_pgs DESC LIMIT 1;";
+
+      // Get overall shortest book read + number of pages
+      $mysql .= "SELECT num_pgs as min_pgs, title as min_pgs_title,
+      CONCAT( author_first, ' ', author_last) as author_min_pgs
+      FROM $this->tableName ORDER BY -num_pgs DESC LIMIT 1;";
+
+      //Get number of distinct authors
+      $mysql .= "
+      SELECT COUNT(DISTINCT CONCAT( author_first, ' ', author_last))
+      as num_distinct_authors FROM $this->tableName;";
+
+      // Get overall most read author + number of books read by that author
+      $mysql .= "
+      SELECT DISTINCT CONCAT( author_first, ' ', author_last) as most_author,
+      COUNT(*) as most_author_books FROM $this->tableName GROUP BY
+      CONCAT( author_first, ' ', author_last) HAVING COUNT(*) =
+        (SELECT MAX(c) FROM
+          (SELECT COUNT(title) AS c
+          FROM book_list
+          GROUP BY CONCAT( author_first, ' ', author_last) ) as x)";
+
+      // Query DB
+      if($this->conn->multi_query($mysql)){
+        $count = 0;
+        do{
+          $this->conn->next_result();
+          if($result = $this->conn->store_result()){
+            // Go through each row of the DB result
+            while($row = $result->fetch_row()){
+
+              switch($count){
+                case 0:
+                  // Total books read, number of pages, earliest year
+                  $jsonData[] = array("totalBooks" => $row[0],
+                  "totalPgs" => $row[1],
+                  "earliestYear" => $row[2]);
+                  break;
+                case 1;
+                  // Longest book read + number of pages
+                  $jsonData[] = array("maxPgs" => $row[0],
+                  "maxPgsTitle" => $row[1],
+                  "authorMaxPgs" => $row[2]);
+                  break;
+                case 2:
+                  // Shortest book read + number of pages
+                  $jsonData[] = array("minPgs" => $row[0],
+                  "minPgsTitle" => $row[1],
+                  "authorMinPgs" => $row[2]);
+                  break;
+                case 3:
+                  // Number of distinct authors
+                  $jsonData[] = array("numDistinctAuthors" => $row[0]);
+                  break;
+                default:
+                // Most read author
+                $jsonData[] = array("mostAuthor" => $row[0],
+                "mostAuthorBooks" => $row[1]);
+                break;
+              }
+
+              $count = $count + 1;
+            }
+          }
+          // Free result set
+          $result->free();
+        } while($this->conn->more_results());
+      }else{
+        echo "404";
+      }
+
+      return json_encode($jsonData);
+
     }
 
     // ------------------------------------------------------------------------

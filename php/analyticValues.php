@@ -1,9 +1,9 @@
 <?php
 
 // ----------------------------------------------------------------------------
-// search.php
+// analyticsValues.php
 //
-// Searches for entries in the database that match the user's search query.
+// Gets values for Overall Statistics section.
 // ----------------------------------------------------------------------------
 
   require_once ('database.php');
@@ -15,11 +15,10 @@
 
   $bookList = new Books($conn);
 
-  if(!empty($_GET['query'])){
-    echo $bookList->search($_GET['query']);
-  }else{
-    echo "404";
-  }
-
+//  if(!empty($_GET['stat'])){
+    echo $bookList->readAnalyticValues();
+  // }else{
+  //   echo "404";
+  // }
 
  ?>

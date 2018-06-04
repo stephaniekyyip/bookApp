@@ -512,6 +512,7 @@ select {
 
 #scrollBtn:hover{
   opacity: 1;
+  cursor: pointer;
 }
 
 /************************* Reading Analytics Page *****************************/
@@ -521,7 +522,7 @@ select {
 }
 
 #analytics ul{
-  margin: 0;
+  margin: 10px 0 0 0;
   padding: 0;
 
   list-style-type: none;
@@ -541,19 +542,13 @@ p + .underline {
   margin-bottom: 30px;
 }
 
-/* .stats{
+#dataVisuals{
+  margin-bottom: 30px;
+}
+
+.stats{
   color: #F9E784;
 }
-
-svg {
-  fill: #F9E784;
-}
-
-text{
-  font: 15px 'Sanchez', sans-serif ;
-  fill: #019D6E;
-  text-anchor: end;
-} */
 
 /*************************** Data Visualization *******************************/
 
