@@ -1,21 +1,41 @@
-var chartData = [];
+var myData = []; // Holds chart data in JSON format
 var numBooks= [24,20,26,24,21,25,9,8,1,6,3];
 var year = [2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018];
 
 for(var i = 0; i < numBooks.length; i++ ){
-  chartData.push({
+  myData.push({
     numBooks: numBooks[i],
     year: year[i]
   });
 }
 
-var xLabelSelect; // Current data in x-axis of chart
+var xLabelSelect = "year"; // Current data in x-axis of chart
 var yLabelSelect; // Current data in y-axis of chart
-var chartTitleSelect; // Current title of chart
-var chart; // Holds the chart
+var chart; // Holds the chart itself generated using C3.js
+
+function getChartData(chartTitle, yAxisText){
+  $.ajax({
+    url: 'php/analyticCharts.php',
+    type: 'GET',
+    data: {chartSelect: yLabelSelect},
+    success: function(response){
+      var jsonData = JSON.parse(response);
+
+      // Converts json object to array if necessary
+      if(!$.isArray(jsonData)){
+        jsonData = [jsonData];
+      }
+      // console.log(jsonData);
+
+      createChart(xLabelSelect, yLabelSelect, chartTitle, yAxisText, jsonData);
+
+    }// end success
+  }); // end ajax
+
+}
 
 // Creates the chart
-function createChart(xLabel, yLabel, chartTitle){
+function createChart(xLabel, yLabel, chartTitle, yAxisText, chartData){
   chart = c3.generate({
       data: {
           json: chartData,
@@ -29,7 +49,7 @@ function createChart(xLabel, yLabel, chartTitle){
       },
       bar: {
           width: {
-              ratio: 0.7 // this makes bar width 50% of length between ticks
+              ratio: 0.6 // this makes bar width 50% of length between ticks
           }
       },
        legend: {
@@ -37,10 +57,26 @@ function createChart(xLabel, yLabel, chartTitle){
        },
        axis:{
          x: {
-           type: 'category'
+           type: 'category',
+           label:{
+             text: 'Year',
+             position: 'outer-center'
+           },
+           tick: {
+            // outer: false
+              centered: true
+           }
          },
          y: {
-           show: false
+           //show: false
+           label:{
+             text: yAxisText,
+             position: 'outer-middle'
+           },
+           tick: {
+            // outer: false
+          },
+          inner: true
          }
        },
        tooltip:{
@@ -51,17 +87,21 @@ function createChart(xLabel, yLabel, chartTitle){
        },
        padding: {
          top: 30,
+         bottom: 10
+       },
+       size: {
+         height: 400
        }
   });
 }
 
 // Load total books yearly chart by default
 $(function(){
-  xLabelSelect = "year";
-  yLabelSelect = "numBooks";
-  chartTitleSelect = "Total Books Read Each Year";
+  yLabelSelect = "totalBooks";
+  chartTitle = "Total Books Read Each Year";
 
-  createChart(xLabelSelect, yLabelSelect, chartTitleSelect);
+  getChartData(chartTitle);
+  // createChart(xLabelSelect, yLabelSelect, chartTitleSelect);
 });
 
 /************************** Overall Stats *************************************/
@@ -73,7 +113,6 @@ $(document).ready(function(){
     type: 'GET',
     success: function(response){
       var jsonData = JSON.parse(response);
-      // var table = ""; // Holds the html to display all data entries
 
       // Converts json object to array if necessary
       if(!$.isArray(jsonData)){
@@ -144,33 +183,49 @@ function chartTransition(){
   chart.unload({
     ids: [xLabelSelect, yLabelSelect]
   });
+
+  // chart.flow({
+  //   transition: {
+  //     duration: 500
+  //   }
+  // });
 }
 
 // Generates the chart when clicking the corresponding button
 $(function(){
   // Total books by year
   $("#totalBooksBtn").click(function(){
-    xLabelSelect = "year";
-    yLabelSelect = "numBooks";
-    chartTitleSelect = "Total Books Read Each Year";
+    yLabelSelect = "totalBooks";
+    chartTitle = "Total Books Read Each Year";
+    yAxisText = "Number of Books";
 
     toggleChartBtn("#totalBooksBtn");
-    chartTransition();
-    createChart(xLabelSelect, yLabelSelect, chartTitleSelect);
+    getChartData(chartTitle, yAxisText);
   });
 
   // Total pages by year
   $("#totalPgsBtn").click(function(){
+    yLabelSelect = "totalPgs";
+    chartTitle = "Total Pages Read Each Year";
+    yAxisText = "Number of Pages";
+
     toggleChartBtn("#totalPgsBtn");
+    getChartData(chartTitle, yAxisText);
   });
 
   // Total for class vs not by year
   $("#totalForClassBtn").click(function(){
+    yLabelSelect = "totalForClass";
+    chartTitle = "Total Books Read For Class vs Not for Class Each Year";
+
     toggleChartBtn("#totalForClassBtn");
   });
 
   // Total reread vs not by year
   $("#totalRereadBtn").click(function(){
+    yLabelSelect = "totalReread";
+    chartTitle = "Total Books Reread vs Read for the First Time Each Year";
+
     toggleChartBtn("#totalRereadBtn");
   });
 });

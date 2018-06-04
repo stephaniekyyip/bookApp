@@ -38,7 +38,7 @@
         <div id = "chart"></div>
         <div id = "chartOptions">
           View yearly statistics for: <br>
-          <button class = "sortBtn" id = "totalBooksBtn">Total Books</button>
+          <button class = "sortBtnClick" id = "totalBooksBtn">Total Books</button>
           <button class = "sortBtn" id = "totalPgsBtn">Total Pages</button>
           <button class = "sortBtn" id = "totalForClassBtn">Total Read For Class</button>
           <button class = "sortBtn" id = "totalRereadBtn">Total Reread</button>

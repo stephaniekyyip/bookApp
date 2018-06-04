@@ -516,6 +516,11 @@ select {
 }
 
 /************************* Reading Analytics Page *****************************/
+
+p + .underline {
+  margin-bottom: 30px;
+}
+
 #analytics{
   font-size: 18px;
   margin: 0 0 20px 0;
@@ -534,10 +539,6 @@ select {
   padding-bottom: 40px;
 }
 
-p + .underline {
-  margin-bottom: 30px;
-}
-
 #chart{
   margin-bottom: 30px;
 }
@@ -546,17 +547,32 @@ p + .underline {
   margin-bottom: 30px;
 }
 
+/* Highlight overall stat values */
 .stats{
   color: #F9E784;
 }
 
+#chartOptions{
+  font-size: 18px;
+}
+
 /*************************** Data Visualization *******************************/
 
-/* X-axis text + labels on bars */
-.c3-axis-x text, .c3-texts{
+/* Axis text + labels on bars */
+.c3-axis text, .c3-texts{
   fill: white;
   font-family: 'Sanchez', sans-serif;
   font-size: 15px;
+}
+
+/* Axis labels */
+.c3-axis-y-label, .c3-axis-x-label{
+  fill: #F9E784 !important;
+}
+
+/* Remove value of ticks on the y-axis */
+.c3-axis-y .tick text{
+  display: none;
 }
 
 /* Shift data labels on bars up slightly*/
@@ -569,8 +585,8 @@ p + .underline {
   fill: #F9E784 !important;
 }
 
-/* X-axis + tick marks*/
-.c3-axis-x path, .c3-axis-x line{
+/* Axis + tick marks*/
+.c3-axis path, .c3-axis line{
   stroke: white;
   stroke-width: 2;
 }

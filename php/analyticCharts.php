@@ -1,9 +1,9 @@
 <?php
 
 // ----------------------------------------------------------------------------
-// analyticsValues.php
+// analyticCharts.php
 //
-// Gets values for Overall Statistics section.
+// Gets chart data.
 // ----------------------------------------------------------------------------
 
   require_once ('database.php');
@@ -15,6 +15,10 @@
 
   $bookList = new Books($conn);
 
-  echo $bookList->readAnalyticValues();
+  if(!empty($_GET['chartSelect'])){
+    echo $bookList->readAnalyticCharts($_GET['chartSelect']);
+  }else{
+    echo "404";
+  }
 
  ?>

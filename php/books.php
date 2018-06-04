@@ -138,7 +138,7 @@
     }
 
     // ------------------------------------------------------------------------
-    // readAnalyticaValues():
+    // readAnalyticValues(): Gets overall stats values from DB.
     // ------------------------------------------------------------------------
     public function readAnalyticValues(){
 
@@ -223,6 +223,56 @@
       }
 
       return json_encode($jsonData);
+
+    }
+
+    // ------------------------------------------------------------------------
+    // readAnalyticCharts():
+    // ------------------------------------------------------------------------
+    public function readAnalyticCharts($chartSelect){
+      switch($chartSelect){
+        case "totalBooks":
+          $mysql = "SELECT COUNT(title) as totalBooks, year_read as year FROM
+            $this->tableName GROUP BY year_read;";
+          break;
+
+        case "totalPgs":
+          $mysql = "SELECT SUM(num_pgs) as totalPgs, year_read as year FROM
+            $this->tableName GROUP BY year_read;";
+          break;
+
+        case "totalForClass":
+          $mysql = "SELECT COUNT(for_class) as total_for_class, year_read
+            FROM $this->tableName WHERE for_class = '1' GROUP BY year_read;";
+            $mysql .= "SELECT COUNT(for_class) as total_not_for_class, year_read
+            FROM $this->tableName WHERE for_class = '0' GROUP BY year_read;";
+          break;
+
+        case "totalReread":
+          $mysql = "SELECT COUNT(reread) as total_reread, year_read FROM
+            $this->tableName WHERE reread = '1' GROUP BY year_read;";
+          $mysql .= "SELECT COUNT(reread) as total_not_reread, year_read FROM
+            $this->tableName WHERE reread = '0' GROUP BY year_read;";
+          break;
+      }
+
+      if($chartSelect == "totalForClass" || $chartSelect == "totalReread"){
+
+      }else{
+        $data = $this->conn->query($mysql);
+
+        if ($data->num_rows > 0){
+          while($row = $data->fetch_assoc()){
+            $jsonData[] = $row;
+          } //end while
+
+          return json_encode($jsonData);
+        }else{ //error
+          return "404";
+        }
+
+      } //end chartSelect
+
 
     }
 
