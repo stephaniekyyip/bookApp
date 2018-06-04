@@ -119,7 +119,7 @@
           <i class="fas fa-upload" title = "upload icon"></i></button>
 
         <!-- Button link to analytics page -->
-        <a href = "displayAnalytics.html">
+        <a href = "displayAnalytics.php">
           <button class = "btn smallBtn" id = "analyticsBtn">
           Reading Analytics
           <i class="fas fa-chart-line" title = "analytics icon"></i>
