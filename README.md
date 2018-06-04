@@ -4,11 +4,11 @@ Book Tracker is a web app that keeps track of all the books you have read. This 
 The app uses a variation of the LAMP stack, consisting of Mac OS, Apache, MySQL, and PHP. On the front end, jQuery is used along with C3.js/ D3.js for data visualization.  
 
 ## Features
-- Each book entry can include the title of the book, the author, year read, year published, number of pages, whether the book was read for class, or whether the book was a reread.
-- Multiple ways to sort the book entries, such as in ascending order by title.
-- Search through all the book entries.
+- Each book entry can include the title of the book, the author, year read, year published, number of pages, whether the book was read for class, and whether the book was a reread.
+- Many ways to sort the book entries, i.e in ascending order by title.
+- Search functionality.
 - Add multiple books at once by uploading a CSV file.
-- Reading analytics that provides statistics and visualizations of the user's reading habits.
+- Reading analytics that provide statistics and visualizations of the user's reading habits.
 
 ## Dependencies
 - jQuery (v3.3.1)
