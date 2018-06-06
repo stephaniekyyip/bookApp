@@ -242,36 +242,29 @@
           break;
 
         case "totalForClass":
-          $mysql = "SELECT COUNT(for_class) as total_for_class, year_read
-            FROM $this->tableName WHERE for_class = '1' GROUP BY year_read;";
-            $mysql .= "SELECT COUNT(for_class) as total_not_for_class, year_read
-            FROM $this->tableName WHERE for_class = '0' GROUP BY year_read;";
+          $mysql = "SELECT SUM(IF(for_class LIKE '1',1,0))
+          AS totalForClass, SUM(IF(for_Class LIKE '0',1,0)) AS totalForClassNot,
+          year_read as year FROM $this->tableName GROUP BY year_read;";
           break;
 
         case "totalReread":
-          $mysql = "SELECT COUNT(reread) as total_reread, year_read FROM
-            $this->tableName WHERE reread = '1' GROUP BY year_read;";
-          $mysql .= "SELECT COUNT(reread) as total_not_reread, year_read FROM
-            $this->tableName WHERE reread = '0' GROUP BY year_read;";
+          $mysql = "SELECT SUM(IF(reread LIKE '1',1,0))
+          AS totalReread, SUM(IF(reread LIKE '0',1,0)) AS totalRereadNot,
+          year_read as year FROM $this->tableName GROUP BY year_read;";
           break;
       }
 
-      if($chartSelect == "totalForClass" || $chartSelect == "totalReread"){
+      $data = $this->conn->query($mysql);
 
-      }else{
-        $data = $this->conn->query($mysql);
+      if ($data->num_rows > 0){
+        while($row = $data->fetch_assoc()){
+          $jsonData[] = $row;
+        } //end while
 
-        if ($data->num_rows > 0){
-          while($row = $data->fetch_assoc()){
-            $jsonData[] = $row;
-          } //end while
-
-          return json_encode($jsonData);
-        }else{ //error
-          return "404";
-        }
-
-      } //end chartSelect
+        return json_encode($jsonData);
+      }else{ //error
+        return "404";
+      }
 
 
     }

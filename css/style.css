@@ -75,9 +75,11 @@ p{
 }
 
 .btn:hover{
-  background-color: #019D6E;
+  /* background-color: #019D6E;
   color: white;
-  border-radius: 5px;
+  border-radius: 5px; */
+  background-color: #F9E784;
+  border: 3px solid #F9E784;
   cursor: pointer;
 }
 
@@ -516,7 +518,6 @@ select {
 }
 
 /************************* Reading Analytics Page *****************************/
-
 p + .underline {
   margin-bottom: 30px;
 }
@@ -524,6 +525,7 @@ p + .underline {
 #analytics{
   font-size: 18px;
   margin: 0 0 20px 0;
+  display: none;
 }
 
 #analytics ul{
@@ -536,7 +538,7 @@ p + .underline {
 #analytics ul li{
   margin: 0;
   line-height: 30px;
-  padding-bottom: 40px;
+  padding-bottom: 35px;
 }
 
 #chart{
@@ -545,6 +547,7 @@ p + .underline {
 
 #dataVisuals{
   margin-bottom: 30px;
+  display: none;
 }
 
 /* Highlight overall stat values */
@@ -558,8 +561,8 @@ p + .underline {
 
 /*************************** Data Visualization *******************************/
 
-/* Axis text + labels on bars */
-.c3-axis text, .c3-texts{
+/* Axis text on ticks */
+.c3-axis text{
   fill: white;
   font-family: 'Sanchez', sans-serif;
   font-size: 15px;
@@ -575,9 +578,11 @@ p + .underline {
   display: none;
 }
 
-/* Shift data labels on bars up slightly*/
+/* Data labels above bars */
 .c3-texts{
-  transform: translate(0, -4px);
+  transform: translate(0, -4px); /* Shift data labels on bars up slightly*/
+  font-family: 'Sanchez', sans-serif;
+  font-size: 15px;
 }
 
 /* Change color of data labels on bars */
@@ -598,7 +603,24 @@ p + .underline {
   font-size: 20px;
 }
 
-/* Color of bars */
-.c3-bar{
-  fill: #F9E784 !important;
+/* Chart Legend */
+.c3-legend-item{
+  font-family: 'Sanchez', sans-serif;
+  fill: white;
+  font-size: 15px;
+  transform: translate(0, 10px);
 }
+
+/* Change text color of double bar charts */
+.c3-texts-totalForClassNot .c3-text , .c3-texts-totalRereadNot .c3-text {
+  fill: #FED700 !important;
+}
+
+.c3-legend-item-totalForClass text, .c3-legend-item-totalForClass .c3-legend-item-tile{
+  transform: translate(-10px, 0);
+}
+
+/* Color of bars */
+/* .c3-bar{
+  fill: #F9E784 !important;
+} */

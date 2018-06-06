@@ -80,7 +80,7 @@
       </section>
 
       <!-- <span><a href = "index.php">Go Back</a></span> -->
-      <a href = "index.php"><button class = "btn">
+      <a href = "index.php"><button class = "btn" id ="goBackBtn">
         <i class="fas fa-arrow-left"></i> Go Back</button>
       </a>
       <!--
@@ -102,10 +102,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <!--D3 data visualization -->
-    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
 
     <!-- C3.js -->
-    <script src="c3/c3.min.js"></script>
+    <script src="c3/c3.min.js"></script> <!-- v0.6.1-->
 
     <!-- JavaScript -->
     <script src="js/visualizeData.js"></script>
