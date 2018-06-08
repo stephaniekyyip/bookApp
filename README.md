@@ -13,5 +13,5 @@ The app uses a variation of the LAMP stack, consisting of Mac OS, Apache, MySQL,
 ## Dependencies
 - jQuery (v3.3.1)
 - Data visualization
-  - [C3.js](http://c3js.org) (v4.23)
-  - [D3.js](https://d3js.org/) (v3) (This version is needed for compability with C3.js)
+  - [C3.js](http://c3js.org) (v0.6.1)
+  - [D3.js](https://d3js.org/) (v4) (This version is needed for compability with C3.js)
