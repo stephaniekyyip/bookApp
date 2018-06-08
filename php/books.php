@@ -227,7 +227,7 @@
     }
 
     // ------------------------------------------------------------------------
-    // readAnalyticCharts():
+    // readAnalyticCharts(): Get data for charts from DB.
     // ------------------------------------------------------------------------
     public function readAnalyticCharts($chartSelect){
       switch($chartSelect){
@@ -252,6 +252,13 @@
           AS totalReread, SUM(IF(reread LIKE '0',1,0)) AS totalRereadNot,
           year_read as year FROM $this->tableName GROUP BY year_read;";
           break;
+
+        case "yearReadvsPublished":
+        $mysql = "SELECT year_read as 'Year Read', year_pub as 'Year Published',
+        title as 'Book Title', CONCAT(author_first, ' ', author_last) as '
+        Author' FROM $this->tableName WHERE year_pub != 'NULL' ORDER BY
+        year_read;";
+        break;
       }
 
       $data = $this->conn->query($mysql);

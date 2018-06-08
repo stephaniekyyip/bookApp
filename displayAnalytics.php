@@ -42,6 +42,7 @@
           <button class = "sortBtn" id = "totalPgsBtn">Total Pages</button>
           <button class = "sortBtn" id = "totalForClassBtn">Total Read For Class</button>
           <button class = "sortBtn" id = "totalRereadBtn">Total Reread</button>
+          <button class = "sortBtn" id = "yearReadvsPublishedBtn">Year Read vs Year Published</button>
         </div>
       </section>
 
@@ -92,6 +93,8 @@
       -Number of books read for class, reread X
       -Year with the greatest total pages X
       -Total number of unique authors X
+
+      -Avg pages in a book
 
 
       -->

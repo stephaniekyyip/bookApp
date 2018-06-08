@@ -611,13 +611,82 @@ p + .underline {
   transform: translate(0, 10px);
 }
 
-/* Change text color of double bar charts */
+/* Change text color in double bar charts */
 .c3-texts-totalForClassNot .c3-text , .c3-texts-totalRereadNot .c3-text {
-  fill: #FED700 !important;
+  fill: #DBC02E !important;
+  /* fill: #7BFFF7 !important; */
 }
 
-.c3-legend-item-totalForClass text, .c3-legend-item-totalForClass .c3-legend-item-tile{
-  transform: translate(-10px, 0);
+/* Move legend text + color tile of "Not read For Class" to the right */
+.c3-legend-item-totalForClassNot text,
+.c3-legend-item-totalForClassNot .c3-legend-item-tile{
+  transform: translate(15px, 0);
+}
+
+/* Move legend text + color tile of "Read For the First Time" to the left */
+.c3-legend-item-totalRereadNot text,
+.c3-legend-item-totalRereadNot .c3-legend-item-tile{
+  transform: translate(-30px, 0);
+}
+
+.c3-tooltip{
+  border-radius: 5px;
+}
+
+/* Tooltip table  */
+.c3-tooltip tr{
+  border: none;
+  /* border-radius: 5px; */
+}
+
+/* Tooltip title */
+.c3-tooltip th{
+   background-color: #F9E784;
+   color: #019D6E;
+   border: none;
+   /* border-radius: 5px 5px 0 0; */
+}
+
+/* Tooltip values */
+.c3-tooltip td{
+  color: #019D6E !important;
+  border: none;
+  /* border-radius: 0 0 5px 5px; */
+}
+
+.c3-tooltip .name{
+  background-color: #F9E784 !important;
+  border-right: 1px solid #019D6E !important;
+}
+
+tr.top{
+  border-bottom: 1px solid #019D6E !important;
+}
+
+.c3-tooltip td.value{
+  text-align: left;
+}
+
+#topLeft{
+  border-radius: 5px 0 0 0;
+}
+
+#topRight{
+  border-radius: 0 5px 0 0;
+}
+
+#bottomLeft{
+  border-radius: 0 0 0 5px;
+}
+
+#bottomRight{
+  border-radius: 0 0 5px 0;
+}
+
+
+/* Scatterplot dots  */
+.c3-circle{
+  opacity: 1 !important;
 }
 
 /* Color of bars */

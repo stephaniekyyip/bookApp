@@ -27,7 +27,15 @@ function getChartData(chartTitle, yAxisText){
       }
       console.log(jsonData);
 
-      createChart(xLabelSelect, yLabelSelect, chartTitle, yAxisText, jsonData);
+      console.log(yLabelSelect);
+
+      if(yLabelSelect == "totalForClass" || yLabelSelect == "totalReread"){
+        createDoubleChart(xLabelSelect, yLabelSelect, yLabelSelect + "Not", chartTitle, yAxisText, jsonData);
+      }else if (yLabelSelect == "yearReadvsPublished"){
+        createScatterplot("Year Read", "Year Published", chartTitle, yAxisText, jsonData);
+      }else{
+        createChart(xLabelSelect, yLabelSelect, chartTitle, yAxisText, jsonData);
+      }
 
     }// end success
   }); // end ajax
@@ -36,6 +44,7 @@ function getChartData(chartTitle, yAxisText){
 
 // Creates the chart
 function createChart(xLabel, yLabel, chartTitle, yAxisText, chartData){
+  console.log("generate chart");
   chart = c3.generate({
       data: {
           json: chartData,
@@ -45,7 +54,9 @@ function createChart(xLabel, yLabel, chartTitle, yAxisText, chartData){
             value: [xLabel, yLabel]
           },
           type: 'bar',
-          labels: true
+          labels: {
+            format: function(d){ return d3.format(",")(d); },
+          }
       },
       bar: {
           width: {
@@ -68,13 +79,13 @@ function createChart(xLabel, yLabel, chartTitle, yAxisText, chartData){
            }
          },
          y: {
-           //show: false
+            // type: 'category',
            label:{
              text: yAxisText,
              position: 'outer-middle'
            },
            tick: {
-            // outer: false
+             centered: true
           },
           inner: true
          }
@@ -93,30 +104,12 @@ function createChart(xLabel, yLabel, chartTitle, yAxisText, chartData){
          height: 400
        },
        color: {
-         pattern: ['#F9E784', '#FED700']
+         pattern: ['#F9E784', '#DBC02E']
        }
   });
-}
 
-function getDoubleChartData(chartTitle, yAxisText){
-  $.ajax({
-    url: 'php/analyticCharts.php',
-    type: 'GET',
-    data: {chartSelect: yLabelSelect},
-    success: function(response){
-      var jsonData = JSON.parse(response);
-
-      // Converts json object to array if necessary
-      if(!$.isArray(jsonData)){
-        jsonData = [jsonData];
-      }
-      console.log(jsonData);
-
-      createDoubleChart(xLabelSelect, yLabelSelect, yLabelSelect + "Not", chartTitle, yAxisText, jsonData);
-
-    }// end success
-  }); // end ajax
-
+  // Hide y-axis tick numbers
+  $(".c3-axis-y .tick text").hide();
 }
 
 function createDoubleChart(xLabel, yLabel1, yLabel2, chartTitle, yAxisText, chartData){
@@ -175,7 +168,7 @@ function createDoubleChart(xLabel, yLabel1, yLabel2, chartTitle, yAxisText, char
          height: 400
        },
        color: {
-         pattern: ['#F9E784', '#FED700']
+         pattern: ['#F9E784', '#DBC02E']
        }
   });
 
@@ -186,6 +179,149 @@ function createDoubleChart(xLabel, yLabel1, yLabel2, chartTitle, yAxisText, char
     $(".c3-legend-item-totalForClass text").text("Read For Class");
     $(".c3-legend-item-totalForClassNot text").text("Not Read For Class");
   }
+
+  // Hide y-axis tick numbers
+  $(".c3-axis-y .tick text").hide();
+}
+
+function createScatterplot(xLabel, yLabel1, chartTitle, yAxisText, chartData){
+  var yLabel2 = "Book Title";
+  var yLabel3 = "Author";
+
+  chart = c3.generate({
+      data: {
+          json: chartData,
+          keys:{
+            x: xLabel,
+            y: yLabel1,
+            y2: yLabel2,
+            value: [xLabel, yLabel1, yLabel2, yLabel3]
+          },
+          x: xLabel,
+          type: 'scatter',
+          labels: true
+      },
+       legend: {
+         show: false
+       },
+       axis:{
+         x: {
+         	type: 'category',
+           label:{
+             text: 'Year Read',
+             position: 'outer-center'
+           },
+           tick: {
+            // outer: false
+              centered: true,
+              format: '%Y'
+           }
+         },
+         y: {
+           //show: false
+           type: 'category',
+           label:{
+             text: yAxisText,
+             position: 'outer-middle'
+           },
+           tick: {
+            // outer: false
+          },
+          inner: true
+         }
+       },
+        tooltip:{
+            grouped: true,
+            contents: function (d, defaultTitleFormat, defaultValueFormat, color){
+              const  $$ = this;
+              const config = $$.config;
+              var titleFormat = config.tooltip_format_title || defaultTitleFormat,
+              nameFormat = config.tooltip_format_name || function(name){return name;},
+              valueFormat = config.tooltip_format_value || defaultValueFormat,
+              text, i, title, value, name, bgcolor;
+
+              // const meta = config.data_classes;
+
+              for(i = 0; i < d.length; i++){
+                if (!(d[i] && (d[i].value || d[i].value === 0))) {continue;}
+                if(!text){
+                  title = titleFormat ? titleFormat(d[i].x) : d[i].x;
+                  text = "<table class ='" + $$.CLASS.tooltip + "'>" +
+                  (title || title === 0 ? "<tr class = 'top'><td class = 'name' id = 'topLeft'>"
+                  + "Year Read" + "</td><td id = 'topRight'>" + title
+                  + "</td></tr>" : "");
+                }
+
+                 // const line = d[0].id;
+                 // const properties = meta.classes[line];
+                 // const property = properties ? properties[i] : null;
+                 //
+                 //
+
+                 // if (property){
+                 //   text += "<tr class='" + $$.CLASS.tooltipName + "-" + d[i].id + "'>";
+                 //   text += "<td class='name' id = 'bottomLeft'>Year Read</td>";
+                 //   text += "<td class='value' id = 'bottomRight'>" + property.yearRead + "</td>";
+                 //   text += "</tr>";
+                 //
+                 //   text += "<tr class='" + $$.CLASS.tooltipName + "-" + d[i].id + "'>";
+                 //   text += "<td class='name' id = 'bottomLeft'>Year Published</td>";
+                 //   text += "<td class='value' id = 'bottomRight'>" + "" + "</td>";
+                 //   text += "</tr>";
+                 //
+                 //   text += "<tr class='" + $$.CLASS.tooltipName + "-" + d[i].id + "'>";
+                 //   text += "<td class='name' id = 'bottomLeft'>Book Title</td>";
+                 //   text += "<td class='value' id = 'bottomRight'>" + "" + "</td>";
+                 //   text += "</tr>";
+                 //
+                 // }
+
+                 name = nameFormat(d[i].name);
+                 value = valueFormat(d[i].value, d[i].ratio, d[i].id, d[i].index);
+
+
+                  text += "<tr class='" + $$.CLASS.tooltipName + "-" + d[i].id + " top'>";
+                  text += "<td class='name' >" + name + "</td>";
+                  text += "<td class='value' >" + value + "</td>";
+                  text += "</tr>";
+
+                  text += "<tr class='" + $$.CLASS.tooltipName + "-" + "bookTitle"+ " top'>";
+                  text += "<td class='name' >" + "Book Title" + "</td>";
+                  text += "<td class='value'>" + chartData[d[i].index]['Book Title'] + "</td>";
+                  text += "</tr>";
+
+                  text += "<tr class='" + $$.CLASS.tooltipName + "-" + "author"+ " top'>";
+                  text += "<td class='name' id = 'bottomLeft'>" + "Author" + "</td>";
+                  text += "<td class='value' id = 'bottomRight'>" + chartData[d[i].index]['Author'] + "</td>";
+                  text += "</tr>";
+
+              }
+              return text + "</table>";
+            }
+       },
+       title: {
+         text: chartTitle
+       },
+       padding: {
+         top: 30,
+         bottom: 10
+       },
+       size: {
+         height: 400
+       },
+       color: {
+         pattern: ['#F9E784', '#FDF9E0']
+       },
+       point: {
+       	r: 2.5
+       }
+  });
+
+  // Display y-axis tick numbers
+  $(".c3-axis-y .tick text").show();
+
+  // Change label in Tooltip
+  $(".c3-tooltip tbody tr th").prepend("Year Read: ");
 }
 
 // Load total books yearly chart by default
@@ -232,7 +368,7 @@ $(document).ready(function(){
         switch(i){
           case 0:
             $("#totalBooks").text(item.totalBooks);
-            $("#totalPgs").text(item.totalPgs);
+            $("#totalPgs").text(Number(item.totalPgs).toLocaleString());
             $("#earliestYear").text(item.earliestYear);
             break;
           case 1:
@@ -324,7 +460,7 @@ $(function(){
     var yAxisText = "Number of Books";
 
     toggleChartBtn("#totalForClassBtn");
-    getDoubleChartData(chartTitle, yAxisText);
+    getChartData(chartTitle, yAxisText);
   });
 
   // Total reread vs not by year
@@ -334,6 +470,16 @@ $(function(){
     var yAxisText = "Number of Books";
 
     toggleChartBtn("#totalRereadBtn");
-    getDoubleChartData(chartTitle, yAxisText);
+    getChartData(chartTitle, yAxisText);
+  });
+
+  // Year read vs year published
+  $("#yearReadvsPublishedBtn").click(function(){
+    yLabelSelect = "yearReadvsPublished";
+    var chartTitle = "Year Read vs Year Published For Each Book";
+    var yAxisText = "Year Published";
+
+    toggleChartBtn("#yearReadvsPublishedBtn");
+    getChartData(chartTitle, yAxisText);
   });
 });
