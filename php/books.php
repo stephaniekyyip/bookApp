@@ -8,7 +8,7 @@
 // ----------------------------------------------------------------------------
 
   class Books{
-    private $tableName = "book_list"; // table in DB
+    private $bookTable = "book_list"; // DB table to store books
     private $uploadPath = "../uploads/"; //directory to store uploaded files
     private $conn;
 
@@ -67,7 +67,7 @@
     // ------------------------------------------------------------------------
     public function readOne($id){
       // SQL for to get selected entry using ID
-      $mysql = "SELECT * from $this->tableName WHERE ID = '";
+      $mysql = "SELECT * from $this->bookTable WHERE ID = '";
       $mysql .= $id;
       $mysql .= "'";
 
@@ -85,21 +85,21 @@
     public function readAll($sort, $order){
       // Sorting options
       if($sort == 'title'){
-        $mysql = "SELECT * FROM $this->tableName ORDER BY title";
+        $mysql = "SELECT * FROM $this->bookTable ORDER BY title";
       }else if ($sort == 'author'){
-        $mysql = "SELECT * FROM $this->tableName ORDER BY author_last";
+        $mysql = "SELECT * FROM $this->bookTable ORDER BY author_last";
       }else if ($sort == 'yearRead'){
-        $mysql = "SELECT * FROM $this->tableName ORDER BY year_read";
+        $mysql = "SELECT * FROM $this->bookTable ORDER BY year_read";
       }else if ($sort == 'yearPub'){
-        $mysql = "SELECT * FROM $this->tableName ORDER BY";
+        $mysql = "SELECT * FROM $this->bookTable ORDER BY";
       }else if ($sort == 'numPgs'){
-        $mysql = "SELECT * FROM $this->tableName ORDER BY";
+        $mysql = "SELECT * FROM $this->bookTable ORDER BY";
       }else if($sort == 'forClass'){
-        $mysql = "SELECT * FROM $this->tableName WHERE for_class = ";
+        $mysql = "SELECT * FROM $this->bookTable WHERE for_class = ";
       }else if ($sort == 'reread'){
-        $mysql = "SELECT * FROM $this->tableName WHERE reread =  ";
+        $mysql = "SELECT * FROM $this->bookTable WHERE reread =  ";
       }else{
-        $mysql = "SELECT * FROM $this->tableName ORDER BY id";
+        $mysql = "SELECT * FROM $this->bookTable ORDER BY id";
       }
 
       // Sort descending order (default)
@@ -146,27 +146,27 @@
 
       // Get overall total books read, number of pages, and earliest year
       $mysql .= "SELECT COUNT(id) as total_books, SUM(num_pgs) as total_pgs,
-      MIN(year_read) as earliest_year FROM $this->tableName;";
+      MIN(year_read) as earliest_year FROM $this->bookTable;";
 
       // Get overall longest book read + number of pages
       $mysql.= "SELECT num_pgs as max_pgs, title as max_pgs_title,
       CONCAT( author_first, ' ', author_last) as author_max_pgs
-      FROM $this->tableName ORDER BY num_pgs DESC LIMIT 1;";
+      FROM $this->bookTable ORDER BY num_pgs DESC LIMIT 1;";
 
       // Get overall shortest book read + number of pages
       $mysql .= "SELECT num_pgs as min_pgs, title as min_pgs_title,
       CONCAT( author_first, ' ', author_last) as author_min_pgs
-      FROM $this->tableName ORDER BY -num_pgs DESC LIMIT 1;";
+      FROM $this->bookTable ORDER BY -num_pgs DESC LIMIT 1;";
 
       //Get number of distinct authors
       $mysql .= "
       SELECT COUNT(DISTINCT CONCAT( author_first, ' ', author_last))
-      as num_distinct_authors FROM $this->tableName;";
+      as num_distinct_authors FROM $this->bookTable;";
 
       // Get overall most read author + number of books read by that author
       $mysql .= "
       SELECT DISTINCT CONCAT( author_first, ' ', author_last) as most_author,
-      COUNT(*) as most_author_books FROM $this->tableName GROUP BY
+      COUNT(*) as most_author_books FROM $this->bookTable GROUP BY
       CONCAT( author_first, ' ', author_last) HAVING COUNT(*) =
         (SELECT MAX(c) FROM
           (SELECT COUNT(title) AS c
@@ -233,30 +233,30 @@
       switch($chartSelect){
         case "totalBooks":
           $mysql = "SELECT COUNT(title) as totalBooks, year_read as year FROM
-            $this->tableName GROUP BY year_read;";
+            $this->bookTable GROUP BY year_read;";
           break;
 
         case "totalPgs":
           $mysql = "SELECT SUM(num_pgs) as totalPgs, year_read as year FROM
-            $this->tableName GROUP BY year_read;";
+            $this->bookTable GROUP BY year_read;";
           break;
 
         case "totalForClass":
           $mysql = "SELECT SUM(IF(for_class LIKE '1',1,0))
           AS totalForClass, SUM(IF(for_Class LIKE '0',1,0)) AS totalForClassNot,
-          year_read as year FROM $this->tableName GROUP BY year_read;";
+          year_read as year FROM $this->bookTable GROUP BY year_read;";
           break;
 
         case "totalReread":
           $mysql = "SELECT SUM(IF(reread LIKE '1',1,0))
           AS totalReread, SUM(IF(reread LIKE '0',1,0)) AS totalRereadNot,
-          year_read as year FROM $this->tableName GROUP BY year_read;";
+          year_read as year FROM $this->bookTable GROUP BY year_read;";
           break;
 
         case "yearReadvsPublished":
         $mysql = "SELECT year_read as 'Year Read', year_pub as 'Year Published',
         title as 'Book Title', CONCAT(author_first, ' ', author_last) as '
-        Author' FROM $this->tableName WHERE year_pub != 'NULL' ORDER BY
+        Author' FROM $this->bookTable WHERE year_pub != 'NULL' ORDER BY
         year_read;";
         break;
       }
@@ -369,7 +369,7 @@
     // create(): Creates a new entry in the DB using user input.
     // ------------------------------------------------------------------------
     public function create(){
-      $mysql = "INSERT INTO $this->tableName";
+      $mysql = "INSERT INTO $this->bookTable";
       $mysql .= "(title, author_first, author_last, year_read";
 
       if($this->yearPub != ""){
@@ -431,7 +431,7 @@
     // ------------------------------------------------------------------------
     public function update($updateId){
       //Query for selected entry using id
-      $mysql = "SELECT * from $this->tableName WHERE ID = '";
+      $mysql = "SELECT * from $this->bookTable WHERE ID = '";
       $mysql .= $updateId;
       $mysql .= "'";
       $entryData = $this->conn->query($mysql);
@@ -463,7 +463,7 @@
       }
 
       // Begin SQL update query
-      $mysql = "UPDATE $this->tableName SET ";
+      $mysql = "UPDATE $this->bookTable SET ";
       $needComma = FALSE; // Determines whether a comma is needed in the SQL query
       $isChanged = FALSE; // Checks if any of the user inputs have been changed
 
@@ -506,7 +506,7 @@
     // delete($deleteId): Deletes entry from database with id of $deleteId
     // ------------------------------------------------------------------------
     public function delete($deleteId){
-      $mysql = "DELETE FROM $this->tableName WHERE ID = '";
+      $mysql = "DELETE FROM $this->bookTable WHERE ID = '";
       $mysql .= $deleteId;
       $mysql .= "'";
 
@@ -525,7 +525,7 @@
       $inputList = array("title", "author_first" ,"author_last" , "year_read" ,
         "year_pub", "num_pgs", "for_class", "reread" );
 
-        $mysql = "SELECT * FROM $this->tableName WHERE ";
+        $mysql = "SELECT * FROM $this->bookTable WHERE ";
         $or = FALSE; //determines whether to add another OR to the statement
 
         // Loops through all the fields in DB to search for user query
@@ -645,7 +645,7 @@
                // If no input errors, query DB
                if($this->inputError == FALSE){
                  $needComma = FALSE;
-                 $mysql = "INSERT INTO $this->tableName" . "(";
+                 $mysql = "INSERT INTO $this->bookTable" . "(";
 
                  // Add name of inputs to sql query
                  foreach($inputList as $input => $val){
@@ -677,7 +677,7 @@
                        $mysql .= "'0'";
                      }
                    }else if ($val != "NULL"){ // if input val is not null
-                     $mysql .= "'" . $val . "'";
+                     $mysql .= "\"" . $val . "\"";
                    }else{ //val is null
                      $mysql .= $val ;
                    }

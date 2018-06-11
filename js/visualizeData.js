@@ -27,8 +27,6 @@ function getChartData(chartTitle, yAxisText){
       }
       console.log(jsonData);
 
-      console.log(yLabelSelect);
-
       if(yLabelSelect == "totalForClass" || yLabelSelect == "totalReread"){
         createDoubleChart(xLabelSelect, yLabelSelect, yLabelSelect + "Not", chartTitle, yAxisText, jsonData);
       }else if (yLabelSelect == "yearReadvsPublished"){
@@ -44,7 +42,7 @@ function getChartData(chartTitle, yAxisText){
 
 // Creates the chart
 function createChart(xLabel, yLabel, chartTitle, yAxisText, chartData){
-  console.log("generate chart");
+  // console.log("generate chart");
   chart = c3.generate({
       data: {
           json: chartData,
@@ -101,7 +99,7 @@ function createChart(xLabel, yLabel, chartTitle, yAxisText, chartData){
          bottom: 10
        },
        size: {
-         height: 400
+         height: 500
        },
        color: {
          pattern: ['#F9E784', '#DBC02E']
@@ -113,6 +111,7 @@ function createChart(xLabel, yLabel, chartTitle, yAxisText, chartData){
 }
 
 function createDoubleChart(xLabel, yLabel1, yLabel2, chartTitle, yAxisText, chartData){
+
   chart = c3.generate({
       data: {
           json: chartData,
@@ -155,7 +154,66 @@ function createDoubleChart(xLabel, yLabel1, yLabel2, chartTitle, yAxisText, char
          }
        },
        tooltip:{
-         show: false
+         grouped: true,
+         contents: function (d, defaultTitleFormat, defaultValueFormat, color){
+           const  $$ = this;
+           const config = $$.config;
+           var titleFormat = config.tooltip_format_title || defaultTitleFormat,
+           nameFormat = config.tooltip_format_name || function(name){return name;},
+           valueFormat = config.tooltip_format_value || defaultValueFormat,
+           text, i, title, value, name, bgcolor;
+
+           var yes, no, label;
+           if(yLabelSelect == "totalForClass"){
+             yes = "Read for Class";
+             no = "Not Read for Class";
+           }else{
+             yes = "Reread";
+             no = "Read for the First Time";
+           }
+
+           for(i = 0; i < d.length; i++){
+             if (!(d[i] && (d[i].value || d[i].value === 0))) {continue;}
+             if(!text){
+               title = titleFormat ? titleFormat(d[i].x) : d[i].x;
+               text = "<table class ='" + $$.CLASS.tooltip + "'>" +
+               (title || title === 0 ? "<tr class = 'top'><td class = 'name' id = 'topLeft'>"
+               + "Year" + "</td><td id = 'topRight'>" + title
+               + "</td></tr>" : "");
+             }
+
+              name = nameFormat(d[i].name);
+              value = valueFormat(d[i].value, d[i].ratio, d[i].id, d[i].index);
+
+              if (name == "totalForClass" || name == "totalReread"){
+                label = yes;
+              }else {
+                label = no;
+              }
+
+             text += "<tr class='" + $$.CLASS.tooltipName + "-" + d[0].id + " top'>";
+             text += "<td class='name' >" + label + "</td>";
+             text += "<td class='value'>" + chartData[d[i].index][name] + "</td>";
+             text += "</tr>";
+
+             // text += "<tr class='" + $$.CLASS.tooltipName + "-" + d[0].id + "top'>";
+             // text += "<td class='name' id = 'bottomLeft'>" + name + "</td>";
+             // text += "<td class='value' id = 'bottomRight'>" + value + "</td>";
+             // text += "</tr>";
+
+               // text += "<tr class='" + $$.CLASS.tooltipName + "-" + "bookTitle"+ " top'>";
+               // text += "<td class='name' >" + "Book Title" + "</td>";
+               // text += "<td class='value'>" + chartData[d[i].index]['Book Title'] + "</td>";
+               // text += "</tr>";
+
+               // text += "<tr class='" + $$.CLASS.tooltipName + "-" + "author"+ " top'>";
+               // text += "<td class='name' id = 'bottomLeft'>" + "Author" + "</td>";
+               // text += "<td class='value' id = 'bottomRight'>" + chartData[d[i].index]['Author'] + "</td>";
+               // text += "</tr>";
+
+           }
+           return text + "</table>";
+         }
        },
        title: {
          text: chartTitle
@@ -165,7 +223,7 @@ function createDoubleChart(xLabel, yLabel1, yLabel2, chartTitle, yAxisText, char
          bottom: 10
        },
        size: {
-         height: 400
+         height: 500
        },
        color: {
          pattern: ['#F9E784', '#DBC02E']
@@ -185,8 +243,8 @@ function createDoubleChart(xLabel, yLabel1, yLabel2, chartTitle, yAxisText, char
 }
 
 function createScatterplot(xLabel, yLabel1, chartTitle, yAxisText, chartData){
-  var yLabel2 = "Book Title";
-  var yLabel3 = "Author";
+  // var yLabel2 = "Book Title";
+  // var yLabel3 = "Author";
 
   chart = c3.generate({
       data: {
@@ -194,8 +252,7 @@ function createScatterplot(xLabel, yLabel1, chartTitle, yAxisText, chartData){
           keys:{
             x: xLabel,
             y: yLabel1,
-            y2: yLabel2,
-            value: [xLabel, yLabel1, yLabel2, yLabel3]
+            value: [xLabel, yLabel1]
           },
           x: xLabel,
           type: 'scatter',
@@ -212,20 +269,17 @@ function createScatterplot(xLabel, yLabel1, chartTitle, yAxisText, chartData){
              position: 'outer-center'
            },
            tick: {
-            // outer: false
-              centered: true,
-              format: '%Y'
+              centered: true
            }
          },
          y: {
-           //show: false
-           type: 'category',
            label:{
              text: yAxisText,
              position: 'outer-middle'
            },
            tick: {
-            // outer: false
+             format: d3.format(".4r"),
+             count: 6
           },
           inner: true
          }
@@ -240,8 +294,6 @@ function createScatterplot(xLabel, yLabel1, chartTitle, yAxisText, chartData){
               valueFormat = config.tooltip_format_value || defaultValueFormat,
               text, i, title, value, name, bgcolor;
 
-              // const meta = config.data_classes;
-
               for(i = 0; i < d.length; i++){
                 if (!(d[i] && (d[i].value || d[i].value === 0))) {continue;}
                 if(!text){
@@ -252,48 +304,24 @@ function createScatterplot(xLabel, yLabel1, chartTitle, yAxisText, chartData){
                   + "</td></tr>" : "");
                 }
 
-                 // const line = d[0].id;
-                 // const properties = meta.classes[line];
-                 // const property = properties ? properties[i] : null;
-                 //
-                 //
-
-                 // if (property){
-                 //   text += "<tr class='" + $$.CLASS.tooltipName + "-" + d[i].id + "'>";
-                 //   text += "<td class='name' id = 'bottomLeft'>Year Read</td>";
-                 //   text += "<td class='value' id = 'bottomRight'>" + property.yearRead + "</td>";
-                 //   text += "</tr>";
-                 //
-                 //   text += "<tr class='" + $$.CLASS.tooltipName + "-" + d[i].id + "'>";
-                 //   text += "<td class='name' id = 'bottomLeft'>Year Published</td>";
-                 //   text += "<td class='value' id = 'bottomRight'>" + "" + "</td>";
-                 //   text += "</tr>";
-                 //
-                 //   text += "<tr class='" + $$.CLASS.tooltipName + "-" + d[i].id + "'>";
-                 //   text += "<td class='name' id = 'bottomLeft'>Book Title</td>";
-                 //   text += "<td class='value' id = 'bottomRight'>" + "" + "</td>";
-                 //   text += "</tr>";
-                 //
-                 // }
-
                  name = nameFormat(d[i].name);
                  value = valueFormat(d[i].value, d[i].ratio, d[i].id, d[i].index);
 
 
                   text += "<tr class='" + $$.CLASS.tooltipName + "-" + d[i].id + " top'>";
-                  text += "<td class='name' >" + name + "</td>";
-                  text += "<td class='value' >" + value + "</td>";
+                  text += "<td class='name' id = 'bottomLeft'>" + name + "</td>";
+                  text += "<td class='value' id = 'bottomRight'>" + value + "</td>";
                   text += "</tr>";
 
-                  text += "<tr class='" + $$.CLASS.tooltipName + "-" + "bookTitle"+ " top'>";
-                  text += "<td class='name' >" + "Book Title" + "</td>";
-                  text += "<td class='value'>" + chartData[d[i].index]['Book Title'] + "</td>";
-                  text += "</tr>";
+                  // text += "<tr class='" + $$.CLASS.tooltipName + "-" + "bookTitle"+ " top'>";
+                  // text += "<td class='name' >" + "Book Title" + "</td>";
+                  // text += "<td class='value'>" + chartData[d[i].index]['Book Title'] + "</td>";
+                  // text += "</tr>";
 
-                  text += "<tr class='" + $$.CLASS.tooltipName + "-" + "author"+ " top'>";
-                  text += "<td class='name' id = 'bottomLeft'>" + "Author" + "</td>";
-                  text += "<td class='value' id = 'bottomRight'>" + chartData[d[i].index]['Author'] + "</td>";
-                  text += "</tr>";
+                  // text += "<tr class='" + $$.CLASS.tooltipName + "-" + "author"+ " top'>";
+                  // text += "<td class='name' id = 'bottomLeft'>" + "Author" + "</td>";
+                  // text += "<td class='value' id = 'bottomRight'>" + chartData[d[i].index]['Author'] + "</td>";
+                  // text += "</tr>";
 
               }
               return text + "</table>";
@@ -307,14 +335,14 @@ function createScatterplot(xLabel, yLabel1, chartTitle, yAxisText, chartData){
          bottom: 10
        },
        size: {
-         height: 400
+         height: 500
        },
        color: {
          pattern: ['#F9E784', '#FDF9E0']
        },
        point: {
        	r: 2.5
-       }
+      }
   });
 
   // Display y-axis tick numbers

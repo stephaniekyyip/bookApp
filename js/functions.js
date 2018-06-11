@@ -401,7 +401,7 @@ $(document).ready(function(){
 
 // Prints error(s) when uploading CSV files
 function printErrUpload(dbErr){
-  console.log(dbErr);
+  // console.log(dbErr);
   var errors = JSON.parse(dbErr);
   var errFormat = "";
   var replaceField; //changes the name of the field to be more user friendly
@@ -510,7 +510,7 @@ $(document).ready(function(e){
       cache: false,
       processData: false,
       success: function(response){
-        console.log(response);
+        // console.log(response);
         if(response == "200"){
           $("#uploadPanel").hide();
           $("#uploadResponsePanel").fadeIn(300);

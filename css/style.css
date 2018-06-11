@@ -654,39 +654,49 @@ p + .underline {
   /* border-radius: 0 0 5px 5px; */
 }
 
+/* Labels for data in tooltips */
 .c3-tooltip .name{
   background-color: #F9E784 !important;
   border-right: 1px solid #019D6E !important;
 }
 
+/* Tooltip line */
+.c3-grid .c3-xgrid-focus{
+  opacity: 1 !important;
+  stroke: white;
+}
+
+/* Add lines separating each row in the tooltip */
 tr.top{
   border-bottom: 1px solid #019D6E !important;
 }
 
+/* Data values in tooltip */
 .c3-tooltip td.value{
   text-align: left;
 }
 
+/* Tooltip formatting for rounded corners */
 #topLeft{
   border-radius: 5px 0 0 0;
 }
-
 #topRight{
   border-radius: 0 5px 0 0;
 }
-
 #bottomLeft{
   border-radius: 0 0 0 5px;
 }
-
 #bottomRight{
   border-radius: 0 0 5px 0;
 }
 
-
 /* Scatterplot dots  */
 .c3-circle{
-  opacity: 1 !important;
+  opacity: 0.7 !important;
+}
+
+.c3-axis-y .tick:first-of-type{
+  display: none !important;
 }
 
 /* Color of bars */
