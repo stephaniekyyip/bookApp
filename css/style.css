@@ -92,6 +92,33 @@ p{
   float:right;
   width: 48%;
 }
+/******************************** Nav Bar *************************************/
+nav ul{
+  text-align: right;
+  list-style-type: none;
+}
+
+nav li{
+  padding: 10px;
+  display: inline;
+}
+
+nav li:last-child{
+  padding-right: 20px;
+}
+
+nav li a, #logoutBtn{
+  color: white;
+  text-decoration:none;
+}
+
+nav li a:hover, #logoutBtn:hover{
+  color: #F9E784;
+  cursor: pointer;
+  padding-bottom: 2px;
+  border-bottom: 2px solid #F9E784;
+}
+
 
 /********************** Update, Delete, Upload Panels *************************/
 #updateOverlay, #deleteOverlay, #uploadOverlay{
@@ -276,7 +303,7 @@ form label + label{
   line-height: 38px;
 }
 
-input[type=text]{
+input[type=text], input[type=email], input[type=password]{
   box-sizing: border-box;
   color: #019D6E;
   font-size: 14px;

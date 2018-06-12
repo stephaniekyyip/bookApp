@@ -1,3 +1,7 @@
+<?php
+  session_start();
+?>
+
 <!DOCTYPE HTML>
 <html>
 
@@ -15,7 +19,6 @@
 
     <link rel= "stylesheet" href="css/style.css"/>
 
-
     <!-- Font Awesome Icons -->
     <link rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
@@ -28,6 +31,22 @@
   </head>
 
   <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href = "index.php">Home</a></li>
+          <?php
+            if(isset($_SESSION['user_name'])){
+              echo "<li>Logged in as " . $_SESSION['user_name'] . "</li>";
+              // echo "<li><span id = 'logoutBtn'>Logout</span></li>";
+            }
+          ?>
+          <li><a href = "https://github.com/stephaniekyyip/bookTracker">
+            See on GitHub</a></li>
+        </ul>
+      </nav>
+    </header>
+
     <div class = "container">
       <h1>Reading Analytics</h1>
       <p>Take a look at your reading habits.</p>

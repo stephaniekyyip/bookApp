@@ -1,3 +1,7 @@
+<?php
+  session_start();
+?>
+
 <!DOCTYPE HTML>
 <html>
 
@@ -7,8 +11,8 @@
       viewport-fit=cover" />
 
     <title> Book Tracker </title>
-    <meta name = "description" content = "Keep track of all the books you have
-      read.">
+    <meta name = "description" content = "Keep track of all the books you
+    read.">
 
     <link rel= "stylesheet" href="css/style.css"/>
 
@@ -28,9 +32,30 @@
   </head>
 
   <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href = "index.php" class = "highlightColor">Home</a></li>
+          <?php
+            if(isset($_SESSION['user_name'])){
+              echo "<li>Logged in as " . $_SESSION['user_name'] . "</li>";
+              echo "<li><span id = 'logoutBtn'>Logout</span></li>";
+            }else{
+              echo "
+                <li><a href = 'signupPage.php'>Sign Up</a></li>
+                <li><a href = 'loginPage.php'>Login</a></li>
+              ";
+            }
+          ?>
+          <li><a href = "https://github.com/stephaniekyyip/bookTracker">
+            See on GitHub</a></li>
+        </ul>
+      </nav>
+    </header>
+
     <div class = "container">
       <h1>Book Tracker</h1>
-      <p>Keep track of all the books you have read.</p>
+      <p>Keep track of all the books you read.</p>
 
       <!-- Add New Entry section -->
       <section>

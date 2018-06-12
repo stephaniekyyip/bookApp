@@ -810,3 +810,97 @@ $(document).ready(function(){
     }
   });
 });
+
+
+/************************* Sign Up Form  ***********************************/
+
+$(document).ready(function(){
+  $("#signUpForm").submit(function(event){
+    event.preventDefault();
+
+    $.ajax({
+      url: 'php/Users/signup.php',
+      type: 'POST',
+      data: $("#signUpForm").serialize(),
+      success: function(response){
+        console.log(response);
+
+        if(response != "200"){
+          var jsonData = JSON.parse(response);
+          var errors = "";
+
+          // Converts json object to array if necessary
+          if(!$.isArray(jsonData)){
+            jsonData = [jsonData];
+          }
+
+          $.each(jsonData, function(i){
+            errors += jsonData[i] + "<br>";
+          });
+
+          $('#signUpResponse').html(errors);
+
+        }else{
+          $('#signUpResponse').text('Sign up completed! You can now log into your account.');
+        }
+      }// end success
+    });
+  });
+});
+
+
+// Check if passwords match
+$(function(){
+  $("#signUpPwd, #confirmPwd").on("change", function(){
+    if($("#signUpPwd").val() == $("#confirmPwd").val()){
+      console.log("passwords match");
+      $("#signUpPwd").get(0).setCustomValidity('');
+      $("#confirmPwd").get(0).setCustomValidity('');
+    }else{
+      // console.log("signupVal: " + $("#signUpPwd").val() + "_");
+      // console.log("confirm val: " + $("#confirmPwd").val() + "_");
+      $("#confirmPwd").get(0).setCustomValidity('Passwords do not match.');
+    }
+  });
+
+    $("#signUpPwd, #confirmPwd").on("input", function(){
+      $("#signUpPwd").get(0).setCustomValidity('');
+      $("#confirmPwd").get(0).setCustomValidity('');
+    });
+
+});
+
+/************************* Login Form  ***********************************/
+$(document).ready(function(){
+  $("#loginForm").submit(function(event){
+    event.preventDefault();
+    console.log("submit form\n");
+    $.ajax({
+      url: 'php/Users/login.php',
+      type: 'GET',
+      data: $("#loginForm").serialize(),
+      success: function(response){
+        if(response != "200"){
+          $('#loginResponse').text('Email or password is invalid. Please try again.');
+        }else{
+          $('#loginResponse').text('You are now logged in.');
+                  setTimeout(function(){window.location.replace("index.php");},1000); //refreshes page
+        }
+      }// end success
+    });
+  });
+});
+
+$(function(){
+  $("#logoutBtn").click(function(event){
+      console.log("logout");
+
+      $.ajax({
+        url: 'php/Users/logout.php',
+        type: 'POST',
+        success: function(response){
+          location.reload();
+        }
+      });
+  });
+});
