@@ -15,7 +15,7 @@ var chart; // Holds the chart itself generated using C3.js
 
 function getChartData(chartTitle, yAxisText){
   $.ajax({
-    url: 'php/analyticCharts.php',
+    url: 'php/analytics/analyticCharts.php',
     type: 'GET',
     data: {chartSelect: yLabelSelect},
     success: function(response){
@@ -377,7 +377,7 @@ $(function(){
 // Fills in stats for Overall Stats sections
 $(document).ready(function(){
   $.ajax({
-    url: 'php/analyticValues.php',
+    url: 'php/analytics/analyticValues.php',
     type: 'GET',
     success: function(response){
       var jsonData = JSON.parse(response);

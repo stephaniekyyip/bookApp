@@ -1,12 +1,14 @@
 <?php
 
 // ----------------------------------------------------------------------------
-// delete.php
+// readOne.php
 //
-// Deletes selected entry in the database.
+// Get values of selected entry from database.
+// This allows the user to see what they have previously entered for that entry
+// as they make changes.
 // ----------------------------------------------------------------------------
 
-  require_once ('database.php');
+  require_once ('../database.php');
   require_once ('books.php');
 
   //mysql connection
@@ -15,8 +17,9 @@
 
   $bookList = new Books($conn);
 
-  if(!empty($_POST['id'])){
-    echo $bookList->delete($_POST['id']);
+  // Get selected entry from DB
+  if (!empty($_GET['id'])){
+    echo $bookList->readOne($_GET['id']);
   }else{
     echo "404";
   }

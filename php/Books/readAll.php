@@ -7,7 +7,7 @@
 // option (either user-selected or by default- sorted by most recently added).
 // ----------------------------------------------------------------------------
 
-  require_once ('database.php');
+  require_once ('../database.php');
   require_once ('books.php');
 
   //mysql connection

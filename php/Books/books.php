@@ -4,7 +4,7 @@
 // books.php
 //
 // Class declartion: Books
-// Handles CRUD operations to the database.
+// Handles book CRUD operations to the database.
 // ----------------------------------------------------------------------------
 
   class Books{
@@ -677,7 +677,7 @@
                        $mysql .= "'0'";
                      }
                    }else if ($val != "NULL"){ // if input val is not null
-                     $mysql .= "\"" . $val . "\"";
+                     $mysql .= "\"" . $this->test_input($val) . "\"";
                    }else{ //val is null
                      $mysql .= $val ;
                    }

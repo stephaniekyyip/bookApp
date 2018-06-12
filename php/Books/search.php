@@ -6,7 +6,7 @@
 // Searches for entries in the database that match the user's search query.
 // ----------------------------------------------------------------------------
 
-  require_once ('database.php');
+  require_once ('../database.php');
   require_once ('books.php');
 
   //mysql connection

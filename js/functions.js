@@ -65,7 +65,7 @@ function getData(sortOption = "none", order = "none"){
   $("#dataTable").html("");
 
   $.ajax({
-    url: 'php/readAll.php',
+    url: 'php/Books/readAll.php',
     data: {sortMenu: sortOption, order: order},
     type: 'get',
     success: function(response){
@@ -177,7 +177,7 @@ $(document).ready(function(){
     }
 
     $.ajax({
-      url: 'php/create.php',
+      url: 'php/Books/create.php',
       type: 'POST',
       data: {title: $("input[name=title]").val(),
       authorFirst: $("input[name=authorFirst]").val(),
@@ -240,7 +240,7 @@ $(document).on("click",".fa-edit", function(){
 
   $.ajax({
     type: 'GET',
-    url: 'php/readOne.php',
+    url: 'php/Books/readOne.php',
     data: {id: entryId},
     success: function(response){
       if(response == "404"){
@@ -308,7 +308,7 @@ $(document).ready(function(){
     }
 
     $.ajax({
-      url: 'php/update.php',
+      url: 'php/Books/update.php',
       type: 'post',
       data : { id: entryId, title: $('#titleUpdate').val() ,
         authorFirst: $('#authorFirstUpdate').val(),
@@ -366,7 +366,7 @@ $(document).ready(function(){
     event.preventDefault();
 
     $.ajax({
-      url: 'php/delete.php',
+      url: 'php/Books/delete.php',
       data: {id: entryId},
       type: 'post',
       success: function(response){
@@ -504,7 +504,7 @@ $(document).ready(function(e){
 
     $.ajax({
       type: 'POST',
-      url: 'php/upload.php',
+      url: 'php/Books/upload.php',
       data: new FormData(this),
       contentType: false,
       cache: false,
@@ -585,7 +585,7 @@ $(document).ready(function(){
     event.preventDefault();
 
     $.ajax({
-      url: 'php/search.php',
+      url: 'php/Books/search.php',
       data: {query: $('#searchInput').val()},
       type: 'get',
       success: function(response){

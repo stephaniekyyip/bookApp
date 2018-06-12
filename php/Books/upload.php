@@ -7,7 +7,7 @@
 // by the user.
 // ----------------------------------------------------------------------------
 
-  require_once ('database.php');
+  require_once ('../database.php');
   require_once ('books.php');
 
   //mysql connection
