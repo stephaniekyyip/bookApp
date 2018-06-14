@@ -5,7 +5,8 @@
 //
 // Deletes selected entry in the database.
 // ----------------------------------------------------------------------------
-
+  session_start();
+  
   require_once ('../database.php');
   require_once ('books.php');
 

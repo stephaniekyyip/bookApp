@@ -67,9 +67,8 @@
     // ------------------------------------------------------------------------
     public function readOne($id){
       // SQL for to get selected entry using ID
-      $mysql = "SELECT * from $this->bookTable WHERE ID = '";
-      $mysql .= $id;
-      $mysql .= "'";
+      $mysql = "SELECT * FROM $this->bookTable WHERE id = '$id' AND user_id ='";
+      $mysql .= $_SESSION['user_id'] . "'";
 
       // Query database for selected entry
       $data = $this->conn->query($mysql);
@@ -83,28 +82,31 @@
     // descending) according to $order.
     // ------------------------------------------------------------------------
     public function readAll($sort, $order){
+
+      $mysql = "SELECT * FROM $this->bookTable WHERE user_id = '";
+      $mysql .= $_SESSION['user_id'] . "' ";
+
       // Sorting options
       if($sort == 'title'){
-        $mysql = "SELECT * FROM $this->bookTable ORDER BY title";
+        $mysql .= "ORDER BY title";
       }else if ($sort == 'author'){
-        $mysql = "SELECT * FROM $this->bookTable ORDER BY author_last";
+        $mysql .= "ORDER BY author_last";
       }else if ($sort == 'yearRead'){
-        $mysql = "SELECT * FROM $this->bookTable ORDER BY year_read";
+        $mysql .= "ORDER BY year_read";
       }else if ($sort == 'yearPub'){
-        $mysql = "SELECT * FROM $this->bookTable ORDER BY";
+        $mysql .= "ORDER BY";
       }else if ($sort == 'numPgs'){
-        $mysql = "SELECT * FROM $this->bookTable ORDER BY";
+        $mysql .= "ORDER BY";
       }else if($sort == 'forClass'){
-        $mysql = "SELECT * FROM $this->bookTable WHERE for_class = ";
+        $mysql .= "AND for_class = ";
       }else if ($sort == 'reread'){
-        $mysql = "SELECT * FROM $this->bookTable WHERE reread =  ";
+        $mysql .= "AND reread =  ";
       }else{
-        $mysql = "SELECT * FROM $this->bookTable ORDER BY id";
+        $mysql .= "ORDER BY id";
       }
 
       // Sort descending order (default)
       if($order == "descend" || $sort == "none"){
-
         // Move entries to the end of sort if yearPub or numPgs is not defined
         if($sort == 'yearPub'){
           $mysql .= " year_pub DESC";
@@ -113,9 +115,7 @@
         }else{
           $mysql .= " DESC";
         }
-
       }else if ($order == "ascend"){ // Sort ascending order
-
         // Move entries to the end of sort if yearPub or numPgs is not defined
         if($sort == 'yearPub'){
           $mysql .= " -year_pub DESC";
@@ -124,7 +124,6 @@
         }else{
           $mysql .= " ASC";
         }
-
       }else if($order == "yes"){ // Sorting "yes": for_class & reread
         $mysql .= "1";
       }else if ($order == "no"){ // Sorting "no": for_class & reread
@@ -142,87 +141,101 @@
     // ------------------------------------------------------------------------
     public function readAnalyticValues(){
 
-      $mysql = "";
+      // Check if there are any entries for the user
+      $mysql = "SELECT * FROM $this->bookTable where user_id = '" .
+      $_SESSION['user_id'] . "'";
 
-      // Get overall total books read, number of pages, and earliest year
-      $mysql .= "SELECT COUNT(id) as total_books, SUM(num_pgs) as total_pgs,
-      MIN(year_read) as earliest_year FROM $this->bookTable;";
+      $check = $this->conn->query($mysql);
 
-      // Get overall longest book read + number of pages
-      $mysql.= "SELECT num_pgs as max_pgs, title as max_pgs_title,
-      CONCAT( author_first, ' ', author_last) as author_max_pgs
-      FROM $this->bookTable ORDER BY num_pgs DESC LIMIT 1;";
+      if($check->num_rows == 0){
+        return "404";
+      }else{ //No errors, continue queries to DB
+        $mysql = "";
 
-      // Get overall shortest book read + number of pages
-      $mysql .= "SELECT num_pgs as min_pgs, title as min_pgs_title,
-      CONCAT( author_first, ' ', author_last) as author_min_pgs
-      FROM $this->bookTable ORDER BY -num_pgs DESC LIMIT 1;";
+        // Get overall total books read, number of pages, and earliest year
+        $mysql .= "SELECT COUNT(id) as total_books, SUM(num_pgs) as total_pgs,
+        MIN(year_read) as earliest_year FROM $this->bookTable WHERE user_id ='"
+        . $_SESSION['user_id'] . "';";
 
-      //Get number of distinct authors
-      $mysql .= "
-      SELECT COUNT(DISTINCT CONCAT( author_first, ' ', author_last))
-      as num_distinct_authors FROM $this->bookTable;";
+        // Get overall longest book read + number of pages
+        $mysql.= "SELECT num_pgs as max_pgs, title as max_pgs_title,
+        CONCAT( author_first, ' ', author_last) as author_max_pgs
+        FROM $this->bookTable WHERE user_id = '" . $_SESSION['user_id'] .
+        "' ORDER BY num_pgs DESC LIMIT 1;";
 
-      // Get overall most read author + number of books read by that author
-      $mysql .= "
-      SELECT DISTINCT CONCAT( author_first, ' ', author_last) as most_author,
-      COUNT(*) as most_author_books FROM $this->bookTable GROUP BY
-      CONCAT( author_first, ' ', author_last) HAVING COUNT(*) =
-        (SELECT MAX(c) FROM
-          (SELECT COUNT(title) AS c
-          FROM book_list
-          GROUP BY CONCAT( author_first, ' ', author_last) ) as x)";
+        // Get overall shortest book read + number of pages
+        $mysql .= "SELECT num_pgs as min_pgs, title as min_pgs_title,
+        CONCAT( author_first, ' ', author_last) as author_min_pgs
+        FROM $this->bookTable WHERE user_id = '" . $_SESSION['user_id'] .
+        "' ORDER BY -num_pgs DESC LIMIT 1;";
 
-      // Query DB
-      if($this->conn->multi_query($mysql)){
-        $count = 0;
-        do{
-          $this->conn->next_result();
-          if($result = $this->conn->store_result()){
-            // Go through each row of the DB result
-            while($row = $result->fetch_row()){
+        //Get number of distinct authors
+        $mysql .= "
+        SELECT COUNT(DISTINCT CONCAT( author_first, ' ', author_last))
+        as num_distinct_authors FROM $this->bookTable WHERE user_id = '" .
+        $_SESSION['user_id'] . "';";
 
-              switch($count){
-                case 0:
-                  // Total books read, number of pages, earliest year
-                  $jsonData[] = array("totalBooks" => $row[0],
-                  "totalPgs" => $row[1],
-                  "earliestYear" => $row[2]);
+        // Get overall most read author + number of books read by that author
+        $mysql .= "
+        SELECT DISTINCT CONCAT( author_first, ' ', author_last) as most_author,
+        COUNT(*) as most_author_books FROM $this->bookTable WHERE user_id = '" .
+        $_SESSION['user_id'] . "' GROUP BY
+        CONCAT( author_first, ' ', author_last) HAVING COUNT(*) =
+          (SELECT MAX(c) FROM
+            (SELECT COUNT(title) AS c
+            FROM book_list WHERE user_id = '" . $_SESSION['user_id'] .
+            "'GROUP BY CONCAT( author_first, ' ', author_last) ) as x);";
+
+        // Query DB
+        if($this->conn->multi_query($mysql)){
+          $count = 0;
+          do{
+            $this->conn->next_result();
+            if($result = $this->conn->store_result()){
+              // Go through each row of the DB result
+              while($row = $result->fetch_row()){
+
+                switch($count){
+                  case 0:
+                    // Total books read, number of pages, earliest year
+                    $jsonData[] = array("totalBooks" => $row[0],
+                    "totalPgs" => $row[1],
+                    "earliestYear" => $row[2]);
+                    break;
+                  case 1;
+                    // Longest book read + number of pages
+                    $jsonData[] = array("maxPgs" => $row[0],
+                    "maxPgsTitle" => $row[1],
+                    "authorMaxPgs" => $row[2]);
+                    break;
+                  case 2:
+                    // Shortest book read + number of pages
+                    $jsonData[] = array("minPgs" => $row[0],
+                    "minPgsTitle" => $row[1],
+                    "authorMinPgs" => $row[2]);
+                    break;
+                  case 3:
+                    // Number of distinct authors
+                    $jsonData[] = array("numDistinctAuthors" => $row[0]);
+                    break;
+                  default:
+                  // Most read author
+                  $jsonData[] = array("mostAuthor" => $row[0],
+                  "mostAuthorBooks" => $row[1]);
                   break;
-                case 1;
-                  // Longest book read + number of pages
-                  $jsonData[] = array("maxPgs" => $row[0],
-                  "maxPgsTitle" => $row[1],
-                  "authorMaxPgs" => $row[2]);
-                  break;
-                case 2:
-                  // Shortest book read + number of pages
-                  $jsonData[] = array("minPgs" => $row[0],
-                  "minPgsTitle" => $row[1],
-                  "authorMinPgs" => $row[2]);
-                  break;
-                case 3:
-                  // Number of distinct authors
-                  $jsonData[] = array("numDistinctAuthors" => $row[0]);
-                  break;
-                default:
-                // Most read author
-                $jsonData[] = array("mostAuthor" => $row[0],
-                "mostAuthorBooks" => $row[1]);
-                break;
+                }
+
+                $count = $count + 1;
               }
-
-              $count = $count + 1;
             }
-          }
-          // Free result set
-          $result->free();
-        } while($this->conn->more_results());
-      }else{
-        echo "404";
+            // Free result set
+            $result->free();
+          } while($this->conn->more_results());
+          return json_encode($jsonData);
+        }else{
+          return "404";
+        }
       }
-
-      return json_encode($jsonData);
 
     }
 
@@ -233,42 +246,56 @@
       switch($chartSelect){
         case "totalBooks":
           $mysql = "SELECT COUNT(title) as totalBooks, year_read as year FROM
-            $this->bookTable GROUP BY year_read;";
+            $this->bookTable WHERE user_id = '". $_SESSION['user_id'] .
+            "' GROUP BY year_read;";
           break;
 
         case "totalPgs":
           $mysql = "SELECT SUM(num_pgs) as totalPgs, year_read as year FROM
-            $this->bookTable GROUP BY year_read;";
+            $this->bookTable WHERE user_id = '". $_SESSION['user_id'] .
+            "' GROUP BY year_read;";
           break;
 
         case "totalForClass":
           $mysql = "SELECT SUM(IF(for_class LIKE '1',1,0))
           AS totalForClass, SUM(IF(for_Class LIKE '0',1,0)) AS totalForClassNot,
-          year_read as year FROM $this->bookTable GROUP BY year_read;";
+          year_read as year FROM $this->bookTable WHERE user_id = '".
+          $_SESSION['user_id'] . "' GROUP BY year_read;";
           break;
 
         case "totalReread":
           $mysql = "SELECT SUM(IF(reread LIKE '1',1,0))
           AS totalReread, SUM(IF(reread LIKE '0',1,0)) AS totalRereadNot,
-          year_read as year FROM $this->bookTable GROUP BY year_read;";
+          year_read as year FROM $this->bookTable WHERE user_id = '".
+          $_SESSION['user_id'] . "' GROUP BY year_read;";
           break;
 
         case "yearReadvsPublished":
         $mysql = "SELECT year_read as 'Year Read', year_pub as 'Year Published',
         title as 'Book Title', CONCAT(author_first, ' ', author_last) as '
-        Author' FROM $this->bookTable WHERE year_pub != 'NULL' ORDER BY
-        year_read;";
+        Author' FROM $this->bookTable WHERE year_pub != 'NULL' AND user_id = '" .
+        $_SESSION['user_id'] . "' ORDER BY year_read;";
         break;
       }
 
       $data = $this->conn->query($mysql);
 
+      $checkForNull = 0; // checks for NULL values in any of the rows
+
       if ($data->num_rows > 0){
         while($row = $data->fetch_assoc()){
           $jsonData[] = $row;
+
+          if($chartSelect != "yearReadvsPublished" && is_null($row[$chartSelect])){
+            $checkForNull = $checkForNull + 1;
+          }
         } //end while
 
-        return json_encode($jsonData);
+        if ($checkForNull == $data->num_rows){
+          return "404";
+        }else{
+          return json_encode($jsonData);
+        }
       }else{ //error
         return "404";
       }
@@ -370,7 +397,7 @@
     // ------------------------------------------------------------------------
     public function create(){
       $mysql = "INSERT INTO $this->bookTable";
-      $mysql .= "(title, author_first, author_last, year_read";
+      $mysql .= "(user_id, title, author_first, author_last, year_read";
 
       if($this->yearPub != ""){
         $mysql .= ", year_pub";
@@ -388,8 +415,10 @@
         $mysql .= ", reread";
       }
 
-      $mysql .= ") VALUES ('$this->title', '$this->authorFirst',
-        '$this->authorLast', '$this->yearRead'";
+      $mysql .= ") VALUES ('";
+      $mysql .= $_SESSION['user_id'];
+      $mysql .= "', '$this->title',
+      '$this->authorFirst','$this->authorLast', '$this->yearRead'";
 
       if($this->yearPub != ""){
         $mysql .= ", '$this->yearPub'";
@@ -525,7 +554,8 @@
       $inputList = array("title", "author_first" ,"author_last" , "year_read" ,
         "year_pub", "num_pgs", "for_class", "reread" );
 
-        $mysql = "SELECT * FROM $this->bookTable WHERE ";
+        $mysql = "SELECT * FROM $this->bookTable WHERE user_id = '";
+        $mysql .= $_SESSION['user_id'] . "' AND(";
         $or = FALSE; //determines whether to add another OR to the statement
 
         // Loops through all the fields in DB to search for user query
@@ -540,7 +570,7 @@
         // Concatenates the fields for author first and last name to better
         // search for the author's full name
         $mysql .= " OR CONCAT( author_first, ' ', author_last ) LIKE '%" .
-          $this->test_input($query) . "%'";
+        $this->test_input($query) . "%')";
 
         // Query DB
         $results = $this->conn->query($mysql);
@@ -645,10 +675,11 @@
                // If no input errors, query DB
                if($this->inputError == FALSE){
                  $needComma = FALSE;
-                 $mysql = "INSERT INTO $this->bookTable" . "(";
+                 $mysql = "INSERT INTO $this->bookTable" . "(user_id,";
 
                  // Add name of inputs to sql query
                  foreach($inputList as $input => $val){
+                   // Adds comma if needed
                    if($needComma){
                     $mysql .= ",";
                    }
@@ -657,7 +688,7 @@
                    $needComma = TRUE;
                  }
 
-                 $mysql .= ") VALUES (";
+                 $mysql .= ") VALUES ('" . $_SESSION['user_id'] . "'";
                  $needComma = FALSE;
 
                  // Add input values to sql query

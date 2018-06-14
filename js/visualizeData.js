@@ -19,15 +19,39 @@ function getChartData(chartTitle, yAxisText){
     type: 'GET',
     data: {chartSelect: yLabelSelect},
     success: function(response){
+      // console.log(response);
       var jsonData = JSON.parse(response);
 
       // Converts json object to array if necessary
       if(!$.isArray(jsonData)){
         jsonData = [jsonData];
       }
-      console.log(jsonData);
+      // console.log(jsonData);
 
-      if(yLabelSelect == "totalForClass" || yLabelSelect == "totalReread"){
+      var errMsg; // Store error msg to display instead of the chart
+
+      if (response == "404"){ //No data yet, so chart can't be displayed
+        switch(yLabelSelect){
+          case "yearReadvsPublished":
+            errMsg = "the year published to your book entries";
+            break;
+          case "totalPgs":
+            errMsg = "the number of pages to your book entries";
+            break;
+          case "totalForClass":
+            errMsg = "to your books entries whether the books were read for class or not"
+            break;
+          case "totalReread":
+            errMsg = "to your books entries whether the books were a reread or not";
+            break;
+          case "totalBooks":
+            errMsg = "some book entries";
+            break;
+        }
+        // Error message
+        $("#chart").html("<span class = 'highlightColor'>Please go back and add "
+        + errMsg + " to see this chart.</span>");
+      }else if (yLabelSelect == "totalForClass" || yLabelSelect == "totalReread"){
         createDoubleChart(xLabelSelect, yLabelSelect, yLabelSelect + "Not", chartTitle, yAxisText, jsonData);
       }else if (yLabelSelect == "yearReadvsPublished"){
         createScatterplot("Year Read", "Year Published", chartTitle, yAxisText, jsonData);
@@ -359,7 +383,6 @@ $(function(){
   yAxisText = "Number of Books";
 
   getChartData(chartTitle, yAxisText);
-  // createChart(xLabelSelect, yLabelSelect, chartTitleSelect);
 });
 
 // Fade in analytics section on load
@@ -380,51 +403,66 @@ $(document).ready(function(){
     url: 'php/analytics/analyticValues.php',
     type: 'GET',
     success: function(response){
-      var jsonData = JSON.parse(response);
 
-      // Converts json object to array if necessary
-      if(!$.isArray(jsonData)){
-        jsonData = [jsonData];
-      }
+      if(response == "404"){
+        $("#analytics").html("Please add some book entries to see statistics here.");
+      }else{
+        var jsonData = JSON.parse(response);
 
-      var mostAuthorList = "";
-      var mostAuthorBooks;
-      var needComma = 0;
-
-      // Add stats to page
-      $.each(jsonData, function (i, item){
-        switch(i){
-          case 0:
-            $("#totalBooks").text(item.totalBooks);
-            $("#totalPgs").text(Number(item.totalPgs).toLocaleString());
-            $("#earliestYear").text(item.earliestYear);
-            break;
-          case 1:
-            $("#maxPgsTitle").text(item.maxPgsTitle);
-            $("#maxPgs").text(item.maxPgs);
-            $("#authorMaxPgs").text(item.authorMaxPgs);
-            break;
-          case 2:
-            $("#minPgsTitle").text(item.minPgsTitle);
-            $("#minPgs").text(item.minPgs);
-            $("#authorMinPgs").text(item.authorMinPgs);
-            break;
-          case 3:
-            $("#numDistinctAuthors").text(item.numDistinctAuthors);
-            break;
-          case 4:
-            $("#mostAuthorBooks").text(item.mostAuthorBooks);
-          default:
-            if(needComma == 1){
-              mostAuthorList += ", ";
-            }
-            mostAuthorList += item.mostAuthor;
-            needComma = 1;
-            break;
+        // Converts json object to array if necessary
+        if(!$.isArray(jsonData)){
+          jsonData = [jsonData];
         }
-      }); // end each
 
-      $("#mostAuthor").text(mostAuthorList);
+        var mostAuthorList = "";
+        var mostAuthorBooks;
+        var needComma = 0;
+
+        // Add stats to page
+        $.each(jsonData, function (i, item){
+          switch(i){
+            case 0:
+              $("#totalBooks").text(item.totalBooks);
+              $("#totalPgs").text(Number(item.totalPgs).toLocaleString());
+              $("#earliestYear").text(item.earliestYear);
+              break;
+            case 1:
+              if(item.maxPgs > 0){
+                $("#max").show();
+                $("#maxPgsTitle").text(item.maxPgsTitle);
+                $("#maxPgs").text(item.maxPgs);
+                $("#authorMaxPgs").text(item.authorMaxPgs);
+              }else{
+                $("#max").hide();
+              }
+              break;
+            case 2:
+              if(item.minPgs > 0){
+                $("#min").show();
+                $("#minPgsTitle").text(item.minPgsTitle);
+                $("#minPgs").text(item.minPgs);
+                $("#authorMinPgs").text(item.authorMinPgs);
+              }else{
+                $("#min").hide();
+              }
+              break;
+            case 3:
+              $("#numDistinctAuthors").text(item.numDistinctAuthors);
+              break;
+            case 4:
+              $("#mostAuthorBooks").text(item.mostAuthorBooks);
+            default:
+              if(needComma == 1){
+                mostAuthorList += ", ";
+              }
+              mostAuthorList += item.mostAuthor;
+              needComma = 1;
+              break;
+          }
+        }); // end each
+
+        $("#mostAuthor").text(mostAuthorList);
+      }
 
     } // end success
   }); // end ajax

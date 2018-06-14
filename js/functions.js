@@ -884,7 +884,7 @@ $(document).ready(function(){
           $('#loginResponse').text('Email or password is invalid. Please try again.');
         }else{
           $('#loginResponse').text('You are now logged in.');
-                  setTimeout(function(){window.location.replace("index.php");},1000); //refreshes page
+          setTimeout(function(){window.location.replace("welcome.php");},1000); //refreshes page
         }
       }// end success
     });
@@ -899,7 +899,7 @@ $(function(){
         url: 'php/Users/logout.php',
         type: 'POST',
         success: function(response){
-          location.reload();
+          window.location.replace("index.php");
         }
       });
   });

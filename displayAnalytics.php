@@ -8,7 +8,7 @@
   <head>
     <meta charset = "UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1,
-      viewport-fit=cover" />
+      viewport-fit=cover">
 
     <title> Book Tracker | Reading Analytics</title>
     <meta name = "description" content = "Keep track of all the books you have
@@ -38,7 +38,7 @@
           <?php
             if(isset($_SESSION['user_name'])){
               echo "<li>Logged in as " . $_SESSION['user_name'] . "</li>";
-              // echo "<li><span id = 'logoutBtn'>Logout</span></li>";
+              echo "<li><span id = 'logoutBtn'>Logout</span></li>";
             }
           ?>
           <li><a href = "https://github.com/stephaniekyyip/bookTracker">
@@ -76,20 +76,20 @@
 
         <li>
           Read books from <span id = "numDistinctAuthors" class = "stats">
-          </span> authors.
+          </span> author(s).
         </li>
 
         <li>
           Read the most books by <span id = "mostAuthor" class = "stats"></span>
           with <span id = "mostAuthorBooks" class = "stats"></span> books.</li>
 
-        <li>
+        <li id = "max">
           Longest book read was <span id = "maxPgsTitle" class = "stats"></span>
           by <span id = "authorMaxPgs" class = "stats"></span> with
           <span id = "maxPgs" class = "stats"></span> pages.
         </li>
 
-        <li>
+        <li id = "min">
           Shortest book read was <span id = "minPgsTitle" class = "stats"></span>
           by <span id = "authorMinPgs" class = "stats"></span> with
           <span id = "minPgs" class = "stats"></span> pages.

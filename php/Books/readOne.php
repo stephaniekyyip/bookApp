@@ -7,7 +7,8 @@
 // This allows the user to see what they have previously entered for that entry
 // as they make changes.
 // ----------------------------------------------------------------------------
-
+  session_start();
+  
   require_once ('../database.php');
   require_once ('books.php');
 

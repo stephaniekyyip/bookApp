@@ -6,7 +6,8 @@
 // Updates the selected entry in the database using user input, if any changes
 // have been made.
 // ----------------------------------------------------------------------------
-
+  session_start();
+  
   require_once ('../database.php');
   require_once ('books.php');
 

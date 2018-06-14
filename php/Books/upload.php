@@ -6,7 +6,7 @@
 // Creates multiple new entries in the database using a .csv file uploaded
 // by the user.
 // ----------------------------------------------------------------------------
-
+  session_start();
   require_once ('../database.php');
   require_once ('books.php');
 
