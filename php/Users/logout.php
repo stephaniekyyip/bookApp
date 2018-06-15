@@ -10,8 +10,8 @@ require_once ('../database.php');
 require_once ('users.php');
 
 // mysql connection
-$database = new Database();
-$conn = $database->connectToDatabase();
+// $database = new Database();
+// $conn = $database->connectToDatabase();
 
 $usersList = new Users($conn);
 

@@ -6,13 +6,13 @@
 // Creates a new entry in the database after validating user input.
 // ----------------------------------------------------------------------------
   session_start();
-  
+
   require_once ('../database.php');
   require_once ('books.php');
 
   // mysql connection
-  $database = new Database();
-  $conn = $database->connectToDatabase();
+  // $database = new Database();
+  // $conn = $database->connectToDatabase();
 
   $bookList = new Books($conn);
 
