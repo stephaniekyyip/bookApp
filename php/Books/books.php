@@ -9,7 +9,7 @@
 
   class Books{
     private $bookTable = "book_list"; // DB table to store books
-    private $uploadPath = "../uploads/"; //directory to store uploaded files
+    private $uploadPath = "../../uploads/"; //directory to store uploaded files
     private $conn;
 
     // User input fields
