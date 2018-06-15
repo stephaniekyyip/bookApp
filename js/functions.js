@@ -140,7 +140,7 @@ function printData(dbData){
 
 // Display data fetched from database on page load
 $(document).ready(function(){
-  getData();
+  // getData();
 });
 
 /****************************** Create ****************************************/
