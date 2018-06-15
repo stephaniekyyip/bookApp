@@ -64,6 +64,7 @@ function getData(sortOption = "none", order = "none"){
     data: {sortMenu: sortOption, order: order},
     type: 'get',
     success: function(response){
+      console.log(response);
       if (response == "404"){
         $("#dataTable").html("Error displaying book entries.");
       }else if(response == "none"){
