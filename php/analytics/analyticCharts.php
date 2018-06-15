@@ -6,13 +6,13 @@
 // Gets chart data.
 // ----------------------------------------------------------------------------
   session_start();
-  
+
   require_once ('../database.php');
   require_once ('../Books/books.php');
 
   //mysql connection
-  $database = new Database();
-  $conn = $database->connectToDatabase();
+  // $database = new Database();
+  // $conn = $database->connectToDatabase();
 
   $bookList = new Books($conn);
 
