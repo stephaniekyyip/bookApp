@@ -15,11 +15,9 @@ function scrollBtnFade(){
 
   // User scrolls to bottom of page
   if (document.body.scrollHeight == document.body.scrollTop + window.innerHeight){
-    // $("#scrollBtn").html('<i class="fas fa-arrow-up"></i>');
 
   // User scrolls past top of page
   }else if(ypos > 100 ){
-      // $("#scrollBtn").html('<i class="fas fa-arrow-down"></i>');
       $("#scrollBtn").fadeIn(300);
 
   // User at top of page
@@ -38,7 +36,6 @@ var orderState; // stores whether sorting is ascending or descending
 
 // Formats errors
 function printErr(dbErr){
-  console.log(dbErr);
   var errors = JSON.parse(dbErr);
   var errFormat = "";
 
@@ -47,6 +44,7 @@ function printErr(dbErr){
     errors = [errors];
   }
 
+  // Prints errors in <ul>
   errFormat += "Error(s): <ul>";
   $.each(errors, function(i, item){
     errFormat += "<li>" + item + "</li>";
@@ -57,11 +55,8 @@ function printErr(dbErr){
 }
 
 /****************************** Read ******************************************/
-
 // Fetches the data from the database
 function getData(sortOption = "none", order = "none"){
-  // console.log("sortOption: " + sortOption);
-  // console.log("sortOrder: " + order);
   $("#dataTable").html("");
 
   $.ajax({
@@ -87,7 +82,6 @@ function getData(sortOption = "none", order = "none"){
 
 // Gets entries from DB and formats them according to the selected sorting option
 function printData(dbData){
-  // console.log(dbData);
   var jsonData = JSON.parse(dbData);
   var table = ""; // Holds the html to display all data entries
 
@@ -101,8 +95,8 @@ function printData(dbData){
     // First line of entry: Year Read, edit icon, delete icon
     table += "<div class = \"year\"> Read in " + item.yearRead
       + "<span class = \"updateIcons\"><i class=\"fas fa-edit\" value = \""
-      + item.id + "\"></i> <i class=\"fas fa-trash-alt\" value = \""
-      + item.id + "\"></i></span></div>";
+      + item.id + "\" title = \"Edit\"></i> <i class=\"fas fa-trash-alt\" value = \""
+      + item.id + "\" title = \"Delete\"></i></span></div>";
 
     // Second line: Book title, author first and last name
     table += "<div class = \"titleAuthor\">"
@@ -116,12 +110,10 @@ function printData(dbData){
     if(item.yearPub !== null){
       table += "Published in " + item.yearPub + "<br>";
     }
-
     // Number of pages
     if(item.numPgs !== null){
       table += item.numPgs + " pages <br>";
     }
-
     // For Class
     if(item.forClass !== null){
       if(item.forClass == "1"){
@@ -130,7 +122,6 @@ function printData(dbData){
         table += "Read for class <i class=\"fas fa-times\"></i><br>";
       }
     }
-
     // Reread
     if(item.reread !== null){
       if(item.reread == "1"){
@@ -139,7 +130,6 @@ function printData(dbData){
         table += "Reread <i class=\"fas fa-times\"></i>";
       }
     }
-
     // Divider line at end of entry
     table += "</div><div class = \"line\"></div>";
   });
@@ -163,6 +153,7 @@ $(document).ready(function(){
 
     var forClassVal, rereadVal;
 
+    // Change For Class + Reread values to bool
     if($('#forClassYesAdd').is(':checked')){
       forClassVal = "1";
     }
@@ -190,14 +181,13 @@ $(document).ready(function(){
         $("#addResponse").show();
 
         if(response == "200"){
+          // Display success msg + refresh data from DB
           $("#addPanel").hide();
           $("#addResponse").text("Added " + $("input[name=title]").val() + "!");
           $("#addResponse").delay(2000).fadeOut('5000');
           $("#addForm")[0].reset();
           getData(sortState, orderState);
         }else{
-          console.log(response);
-
           $("#addResponse").text("Add failed! " + printErr(response));
         }
 
@@ -317,7 +307,6 @@ $(document).ready(function(){
         numPgs: $('#numPgsUpdate').val(),
         forClass: forClassVal, reread: rereadVal},
       success: function(response){
-        // console.log(response);
         if(response == "200"){
           $("#updatePanel").css("display", "none"); // hide update form
           $("#updateSuccessPanel").fadeIn(300); // show update success panel
@@ -401,11 +390,10 @@ $(document).ready(function(){
 
 // Prints error(s) when uploading CSV files
 function printErrUpload(dbErr){
-  // console.log(dbErr);
+  console.log(dbErr);
   var errors = JSON.parse(dbErr);
   var errFormat = "";
-  var replaceField; //changes the name of the field to be more user friendly
-  // (vs DB fields)
+  var replaceField; //changes the name of the field to be more user friendly (vs DB fields)
 
   // Converts json object to array if necessary
   if(!$.isArray(errors)){
@@ -464,7 +452,7 @@ function printErrUpload(dbErr){
 $(document).ready(function(){
   $("#uploadBtn").click(function(){
     //reset upload panel
-    $("#uploadResponsePanel").css({"height": "100px", "margin": "250px auto",
+    $("#uploadResponsePanel").css({"margin": "250px auto",
       "font-size": "30px" });
     $("#uploadPanel").show();
     $("#uploadResponsePanel").hide();
@@ -488,7 +476,6 @@ $(document).ready(function(){
 				fileName = e.target.value.split( '\\' ).pop();
 
       if( fileName )
-				//label.find( 'span' ).html( fileName );
         label.html("<i class='far fa-file-alt'></i> " + fileName);
 			else
 				label.html( labelVal );
@@ -510,7 +497,6 @@ $(document).ready(function(e){
       cache: false,
       processData: false,
       success: function(response){
-        // console.log(response);
         if(response == "200"){
           $("#uploadPanel").hide();
           $("#uploadResponsePanel").fadeIn(300);
@@ -823,7 +809,6 @@ $(document).ready(function(){
       type: 'POST',
       data: $("#signUpForm").serialize(),
       success: function(response){
-        console.log(response);
 
         if(response != "200"){
           var jsonData = JSON.parse(response);
@@ -853,12 +838,9 @@ $(document).ready(function(){
 $(function(){
   $("#signUpPwd, #confirmPwd").on("change", function(){
     if($("#signUpPwd").val() == $("#confirmPwd").val()){
-      console.log("passwords match");
       $("#signUpPwd").get(0).setCustomValidity('');
       $("#confirmPwd").get(0).setCustomValidity('');
     }else{
-      // console.log("signupVal: " + $("#signUpPwd").val() + "_");
-      // console.log("confirm val: " + $("#confirmPwd").val() + "_");
       $("#confirmPwd").get(0).setCustomValidity('Passwords do not match.');
     }
   });
@@ -874,7 +856,6 @@ $(function(){
 $(document).ready(function(){
   $("#loginForm").submit(function(event){
     event.preventDefault();
-    console.log("submit form\n");
     $.ajax({
       url: 'php/Users/login.php',
       type: 'GET',
@@ -884,7 +865,8 @@ $(document).ready(function(){
           $('#loginResponse').text('Email or password is invalid. Please try again.');
         }else{
           $('#loginResponse').text('You are now logged in.');
-          setTimeout(function(){window.location.replace("welcome.php");},1000); //refreshes page
+          // Redirect user to welcome page
+          setTimeout(function(){window.location.replace("welcome.php");},1000);
         }
       }// end success
     });
@@ -893,7 +875,6 @@ $(document).ready(function(){
 
 $(function(){
   $("#logoutBtn").click(function(event){
-      console.log("logout");
 
       $.ajax({
         url: 'php/Users/logout.php',

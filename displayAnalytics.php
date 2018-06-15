@@ -3,18 +3,18 @@
 ?>
 
 <!DOCTYPE HTML>
-<html>
+<html lang = "en">
 
   <head>
     <meta charset = "UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1,
       viewport-fit=cover">
 
-    <title> Book Tracker | Reading Analytics</title>
+    <title>Book Tracker | Reading Analytics</title>
     <meta name = "description" content = "Keep track of all the books you have
       read.">
 
-    <!-- C3.js -->
+    <!-- C3 CSS -->
     <link href="c3/c3.css" rel="stylesheet"/>
 
     <link rel= "stylesheet" href="css/style.css"/>
@@ -28,14 +28,29 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Sanchez" rel="stylesheet">
 
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--D3 data visualization -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+    <!-- C3 JS-->
+    <script src="c3/c3.min.js"></script> <!-- v0.6.1-->
+
+    <!-- JavaScript -->
+    <script src="js/visualizeData.js"></script>
+    <script src = "js/functions.js"></script>
+
   </head>
 
   <body>
     <header>
+      <!-- Nav bar -->
       <nav>
         <ul>
           <li><a href = "index.php">Home</a></li>
           <?php
+            // Add user's name + logout option when user is logged in
             if(isset($_SESSION['user_name'])){
               echo "<li>Logged in as " . $_SESSION['user_name'] . "</li>";
               echo "<li><span id = 'logoutBtn'>Logout</span></li>";
@@ -53,8 +68,12 @@
 
       <div class = "underline"></div>
 
-      <section id = "dataVisuals">
+      <div id = "dataVisuals">
+
+        <!-- Visual chart to be filled by C3.js-->
         <div id = "chart"></div>
+
+        <!-- Options to select different charts -->
         <div id = "chartOptions">
           View yearly statistics for: <br>
           <button class = "sortBtnClick" id = "totalBooksBtn">Total Books</button>
@@ -63,81 +82,54 @@
           <button class = "sortBtn" id = "totalRereadBtn">Total Reread</button>
           <button class = "sortBtn" id = "yearReadvsPublishedBtn">Year Read vs Year Published</button>
         </div>
-      </section>
+      </div>
 
-      <section id = "analytics">
+      <!-- Overall statistics values  -->
+      <div id = "analytics">
         Overall Statistics:
         <ul>
         <li>
-          <span id = "totalBooks" class = "stats"></span>  books and
-          <span id = "totalPgs" class = "stats"></span> pages read since
-          <span id = "earliestYear" class = "stats"></span>.
+          <span id = "totalBooks" class = "highlightColor"></span>  books and
+          <span id = "totalPgs" class = "highlightColor"></span> pages read since
+          <span id = "earliestYear" class = "highlightColor"></span>.
         </li>
 
         <li>
-          Read books from <span id = "numDistinctAuthors" class = "stats">
+          Read books from <span id = "numDistinctAuthors" class = "highlightColor">
           </span> author(s).
         </li>
 
         <li>
-          Read the most books by <span id = "mostAuthor" class = "stats"></span>
-          with <span id = "mostAuthorBooks" class = "stats"></span> books.</li>
+          Read the most books by <span id = "mostAuthor" class = "highlightColor"></span>
+          with <span id = "mostAuthorBooks" class = "highlightColor"></span> books.</li>
 
         <li id = "max">
-          Longest book read was <span id = "maxPgsTitle" class = "stats"></span>
-          by <span id = "authorMaxPgs" class = "stats"></span> with
-          <span id = "maxPgs" class = "stats"></span> pages.
+          Longest book read was <span id = "maxPgsTitle" class = "highlightColor"></span>
+          by <span id = "authorMaxPgs" class = "highlightColor"></span> with
+          <span id = "maxPgs" class = "highlightColor"></span> pages.
         </li>
 
         <li id = "min">
-          Shortest book read was <span id = "minPgsTitle" class = "stats"></span>
-          by <span id = "authorMinPgs" class = "stats"></span> with
-          <span id = "minPgs" class = "stats"></span> pages.
+          Shortest book read was <span id = "minPgsTitle" class = "highlightColor"></span>
+          by <span id = "authorMinPgs" class = "highlightColor"></span> with
+          <span id = "minPgs" class = "highlightColor"></span> pages.
         </li>
 
         </ul>
 
-      </section>
+      </div>
 
-      <!-- <span><a href = "index.php">Go Back</a></span> -->
-      <a href = "index.php"><button class = "btn" id ="goBackBtn">
-        <i class="fas fa-arrow-left"></i> Go Back</button>
+      <!-- Back to Homepage button -->
+      <a href = "index.php" class = "btn" id ="goBackBtn">
+        <i class="fas fa-arrow-left"></i> Go Back
       </a>
-      <!--
-      -Total books read in total years inputted (diff between low/ high years) X
-      -Most/ least books read in a year X
-      -Most books read by an author X
-      -Longest book, shortest book (numPgs) X
-      -Time between year read and year published
-      -Number of books read for class, reread X
-      -Year with the greatest total pages X
-      -Total number of unique authors X
-
-      -Avg pages in a book
-
-
-      -->
 
     </div>
 
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <!--D3 data visualization -->
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-
-    <!-- C3.js -->
-    <script src="c3/c3.min.js"></script> <!-- v0.6.1-->
-
-    <!-- JavaScript -->
-    <script src="js/visualizeData.js"></script>
-    <script src = "js/functions.js"></script>
-
+    <footer>
+      Made by Stephanie Yip 2018
+    </footer>
   </body>
-
-  <footer>
-    Made by Stephanie Yip 2018
-  </footer>
 
 
 </html>

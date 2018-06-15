@@ -688,7 +688,7 @@
                    $needComma = TRUE;
                  }
 
-                 $mysql .= ") VALUES ('" . $_SESSION['user_id'] . "'";
+                 $mysql .= ") VALUES ('" . $_SESSION['user_id'] . "', ";
                  $needComma = FALSE;
 
                  // Add input values to sql query

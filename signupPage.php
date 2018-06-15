@@ -3,7 +3,7 @@
 ?>
 
 <!DOCTYPE HTML>
-<html>
+<html lang = "en">
 
   <head>
     <meta charset = "UTF-8">
@@ -25,6 +25,12 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Sanchez" rel="stylesheet">
 
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- JavaScript -->
+    <script src = "js/functions.js"></script>
+
   </head>
 
   <body>
@@ -43,8 +49,6 @@
     <div class = "container">
       <h1>Sign Up</h1>
       <p>Create a new account to begin tracking your reading.</p>
-
-      <!-- <div class = "underline"></div> -->
 
       <div id = "signUpResponse" class = "highlightColor"></div>
 
@@ -66,17 +70,12 @@
 
     </div>
 
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <!-- JavaScript -->
-    <script src = "js/functions.js"></script>
+    <footer>
+      Made by Stephanie Yip 2018
+    </footer>
 
   </body>
 
-  <footer>
-    Made by Stephanie Yip 2018
-  </footer>
 
 
 </html>

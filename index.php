@@ -1,16 +1,15 @@
 <?php
   session_start();
 
-
+  // Redirect to welcome page if logged in
   if(isset($_SESSION['user_name'])){
     header('Location:welcome.php');
     exit();
   }
-
 ?>
 
 <!DOCTYPE HTML>
-<html>
+<html lang = "en">
 
   <head>
     <meta charset = "UTF-8">
@@ -40,14 +39,16 @@
 
   <body>
     <header>
+      <!-- Nav bar -->
       <nav>
         <ul>
           <li><a href = "index.php" class = "highlightColor">Home</a></li>
           <?php
+            // Show user's name + log out option if logged in
             if(isset($_SESSION['user_name'])){
               echo "<li>Logged in as " . $_SESSION['user_name'] . "</li>";
               echo "<li><span id = 'logoutBtn'>Logout</span></li>";
-            }else{
+            }else{ //else, show signup + login pages
               echo "
                 <li><a href = 'signupPage.php'>Sign Up</a></li>
                 <li><a href = 'loginPage.php'>Login</a></li>
@@ -60,6 +61,7 @@
       </nav>
     </header>
 
+    <!-- Default index page w/ signup + login options -->
     <div class = "container centered">
       <h1>Book Tracker</h1>
       <p>Keep track of all the books you read.</p>
@@ -71,12 +73,7 @@
       <h2>Already have an account?</h2>
       <a href = "loginPage.php" class = "btn fullWidth">Login</a>
 
-
-
     </div> <!-- END container -->
-
-    <!-- JavaScript -->
-    <!-- <script src = "js/functions.js"></script> -->
 
     <footer>
       Made by Stephanie Yip 2018

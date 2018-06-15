@@ -1,14 +1,3 @@
-var myData = []; // Holds chart data in JSON format
-var numBooks= [24,20,26,24,21,25,9,8,1,6,3];
-var year = [2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018];
-
-for(var i = 0; i < numBooks.length; i++ ){
-  myData.push({
-    numBooks: numBooks[i],
-    year: year[i]
-  });
-}
-
 var xLabelSelect = "year"; // Current data in x-axis of chart
 var yLabelSelect; // Current data in y-axis of chart
 var chart; // Holds the chart itself generated using C3.js
@@ -19,14 +8,12 @@ function getChartData(chartTitle, yAxisText){
     type: 'GET',
     data: {chartSelect: yLabelSelect},
     success: function(response){
-      // console.log(response);
       var jsonData = JSON.parse(response);
 
       // Converts json object to array if necessary
       if(!$.isArray(jsonData)){
         jsonData = [jsonData];
       }
-      // console.log(jsonData);
 
       var errMsg; // Store error msg to display instead of the chart
 
@@ -66,7 +53,6 @@ function getChartData(chartTitle, yAxisText){
 
 // Creates the chart
 function createChart(xLabel, yLabel, chartTitle, yAxisText, chartData){
-  // console.log("generate chart");
   chart = c3.generate({
       data: {
           json: chartData,
@@ -82,7 +68,7 @@ function createChart(xLabel, yLabel, chartTitle, yAxisText, chartData){
       },
       bar: {
           width: {
-              ratio: 0.4 // this makes bar width 50% of length between ticks
+              ratio: 0.4 // this makes bar width 40% of length between ticks
           }
       },
        legend: {
@@ -96,12 +82,10 @@ function createChart(xLabel, yLabel, chartTitle, yAxisText, chartData){
              position: 'outer-center'
            },
            tick: {
-            // outer: false
               centered: true
            }
          },
          y: {
-            // type: 'category',
            label:{
              text: yAxisText,
              position: 'outer-middle'
@@ -161,18 +145,15 @@ function createDoubleChart(xLabel, yLabel1, yLabel2, chartTitle, yAxisText, char
              position: 'outer-center'
            },
            tick: {
-            // outer: false
               centered: true
            }
          },
          y: {
-           //show: false
            label:{
              text: yAxisText,
              position: 'outer-middle'
            },
            tick: {
-            // outer: false
           },
           inner: true
          }
@@ -219,22 +200,6 @@ function createDoubleChart(xLabel, yLabel1, yLabel2, chartTitle, yAxisText, char
              text += "<td class='name' >" + label + "</td>";
              text += "<td class='value'>" + chartData[d[i].index][name] + "</td>";
              text += "</tr>";
-
-             // text += "<tr class='" + $$.CLASS.tooltipName + "-" + d[0].id + "top'>";
-             // text += "<td class='name' id = 'bottomLeft'>" + name + "</td>";
-             // text += "<td class='value' id = 'bottomRight'>" + value + "</td>";
-             // text += "</tr>";
-
-               // text += "<tr class='" + $$.CLASS.tooltipName + "-" + "bookTitle"+ " top'>";
-               // text += "<td class='name' >" + "Book Title" + "</td>";
-               // text += "<td class='value'>" + chartData[d[i].index]['Book Title'] + "</td>";
-               // text += "</tr>";
-
-               // text += "<tr class='" + $$.CLASS.tooltipName + "-" + "author"+ " top'>";
-               // text += "<td class='name' id = 'bottomLeft'>" + "Author" + "</td>";
-               // text += "<td class='value' id = 'bottomRight'>" + chartData[d[i].index]['Author'] + "</td>";
-               // text += "</tr>";
-
            }
            return text + "</table>";
          }
@@ -267,9 +232,6 @@ function createDoubleChart(xLabel, yLabel1, yLabel2, chartTitle, yAxisText, char
 }
 
 function createScatterplot(xLabel, yLabel1, chartTitle, yAxisText, chartData){
-  // var yLabel2 = "Book Title";
-  // var yLabel3 = "Author";
-
   chart = c3.generate({
       data: {
           json: chartData,
@@ -337,16 +299,6 @@ function createScatterplot(xLabel, yLabel1, chartTitle, yAxisText, chartData){
                   text += "<td class='value' id = 'bottomRight'>" + value + "</td>";
                   text += "</tr>";
 
-                  // text += "<tr class='" + $$.CLASS.tooltipName + "-" + "bookTitle"+ " top'>";
-                  // text += "<td class='name' >" + "Book Title" + "</td>";
-                  // text += "<td class='value'>" + chartData[d[i].index]['Book Title'] + "</td>";
-                  // text += "</tr>";
-
-                  // text += "<tr class='" + $$.CLASS.tooltipName + "-" + "author"+ " top'>";
-                  // text += "<td class='name' id = 'bottomLeft'>" + "Author" + "</td>";
-                  // text += "<td class='value' id = 'bottomRight'>" + chartData[d[i].index]['Author'] + "</td>";
-                  // text += "</tr>";
-
               }
               return text + "</table>";
             }
@@ -404,6 +356,7 @@ $(document).ready(function(){
     type: 'GET',
     success: function(response){
 
+      // If no entries, show error message
       if(response == "404"){
         $("#analytics").html("Please add some book entries to see statistics here.");
       }else{
@@ -433,7 +386,7 @@ $(document).ready(function(){
                 $("#maxPgs").text(item.maxPgs);
                 $("#authorMaxPgs").text(item.authorMaxPgs);
               }else{
-                $("#max").hide();
+                $("#max").hide(); //Hide stat if no values in DB
               }
               break;
             case 2:
@@ -443,7 +396,7 @@ $(document).ready(function(){
                 $("#minPgs").text(item.minPgs);
                 $("#authorMinPgs").text(item.authorMinPgs);
               }else{
-                $("#min").hide();
+                $("#min").hide(); //Hide stat if no values in DB
               }
               break;
             case 3:
@@ -489,12 +442,6 @@ function chartTransition(){
   chart.unload({
     ids: [xLabelSelect, yLabelSelect]
   });
-
-  // chart.flow({
-  //   transition: {
-  //     duration: 500
-  //   }
-  // });
 }
 
 // Generates the chart when clicking the corresponding button

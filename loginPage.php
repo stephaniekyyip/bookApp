@@ -3,7 +3,7 @@
 ?>
 
 <!DOCTYPE HTML>
-<html>
+<html lang = "en">
 
   <head>
     <meta charset = "UTF-8">
@@ -53,8 +53,6 @@
       <h1>Login</h1>
       <p>Log back in to continue tracking your books.</p>
 
-      <!-- <div class = "underline"></div> -->
-
       <div id = "loginResponse" class = "highlightColor"></div>
 
       <form id = "loginForm" method = "post" action = "php/login.php">
@@ -76,11 +74,11 @@
     <!-- JavaScript -->
     <script src = "js/functions.js"></script>
 
-  </body>
+    <footer>
+      Made by Stephanie Yip 2018
+    </footer>
 
-  <footer>
-    Made by Stephanie Yip 2018
-  </footer>
+  </body>
 
 
 </html>
