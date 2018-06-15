@@ -52,7 +52,7 @@
 
       <div id = "signUpResponse" class = "highlightColor"></div>
 
-      <form id = "signUpForm" method = "post" action = "php/signup.php">
+      <form id = "signUpForm" method = "post" action = "php/Users/signup.php">
         Name <span class = "requiredFormat">(Required)</span> <br>
         <input type = "text" name = "signUpName" id = "signUpName" required pattern = "[A-Za-z ]+"
           oninvalid="setCustomValidity('Please enter a valid name (only letters).')"

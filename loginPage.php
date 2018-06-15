@@ -55,7 +55,7 @@
 
       <div id = "loginResponse" class = "highlightColor"></div>
 
-      <form id = "loginForm" method = "post" action = "php/login.php">
+      <form id = "loginForm" method = "post" action = "php/Users/login.php">
         E-mail <br>
         <input type = "email" name = "loginEmail" id = "loginEmail" required/><br>
         Password  <br>

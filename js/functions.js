@@ -809,7 +809,7 @@ $(document).ready(function(){
       type: 'POST',
       data: $("#signUpForm").serialize(),
       success: function(response){
-
+        console.log(response);
         if(response != "200"){
           var jsonData = JSON.parse(response);
           var errors = "";
@@ -861,6 +861,7 @@ $(document).ready(function(){
       type: 'GET',
       data: $("#loginForm").serialize(),
       success: function(response){
+        console.log(response);
         if(response != "200"){
           $('#loginResponse').text('Email or password is invalid. Please try again.');
         }else{
