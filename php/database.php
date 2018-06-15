@@ -15,11 +15,11 @@
     // private $password = "";
 
     //mySQL DB connection for heroku via ClearDB
-    private $cleardb_url = parse_url(getenv("CLEARDB_DATABASE_URL"));
-    private $servername = $cleardb_url["host"];
-    private $username = $cleardb_url["user"];
-    private $password = $cleardb_url["pass"];
-    private $db_name = substr($cleardb_url["path"],1);
+    public $url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+    public $servername = $url["host"];
+    public $username = $url["user"];
+    public $password = $url["pass"];
+    public $db_name = substr($url["path"], 1);
 
     public $conn;
 
