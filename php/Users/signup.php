@@ -23,3 +23,5 @@
   }else{
     echo $usersList->create();
   }
+
+?>
