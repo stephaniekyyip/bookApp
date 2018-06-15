@@ -1,7 +1,56 @@
+/******************************* Reset CSS ************************************/
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
 
-html, body{
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video  {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section  {
+	display: block;
+}
+body  {
+	line-height: 1;
+}
+ol, ul  {
+	list-style: none;
+}
+blockquote, q  {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after  {
+	content: '';
+	content: none;
+}
+table  {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/***************************** Rest of CSS ***** ******************************/
+html, body {
   font-family: 'Sanchez', sans-serif !important;
-  /*letter-spacing: 1px;*/
   background-color: #019D6E;
   color:white;
   width: 100%;
@@ -12,12 +61,12 @@ html, body{
   box-sizing: border-box;
 }
 
-body{
+body {
   display: flex;
   flex-direction: column;
 }
 
-footer{
+footer {
   padding-left: 20px;
   padding-bottom: 10px;
   padding-top: 10px;
@@ -27,58 +76,62 @@ footer{
   left: 0;
 }
 
-.container{
+header {
+  padding: 15px 15px 15px 15px;
+}
+
+.container {
   box-sizing: border-box;
   margin: 30px auto auto auto;
 	width: 50%;
 	padding-bottom: 30px;
 }
 
-h1{
+h1 {
   font-size: 40px;
   margin-bottom: 0;
 }
 
-h2{
+h2 {
   font-size: 20px;
   margin-bottom: 10px;
 }
 
 /* Login/ Signup buttons*/
-a + h2{
+a + h2 {
   margin-top: 30px;
 }
 
-p{
+p {
   font-size: 20px;
   margin-top: 10px;
   margin-bottom: 30px;
 }
 
 /*************************** Various Formatting  ******************************/
-.underline{
+.underline {
   border-bottom: 1px solid white;
 }
 
-.rightSide{
+.rightSide {
   margin-right: 0;
   margin-left: auto;
   text-align: right;
 }
 
-.centered{
+.centered {
   text-align: center;
 }
 
-.highlightColor{
+.highlightColor {
   color: #F9E784;
 }
 
-a.btn{
+a.btn {
   text-decoration: none;
 }
 
-.btn{
+.btn {
   font-size: 15px;
   color: #019D6E;
   background-color: white;
@@ -89,59 +142,60 @@ a.btn{
   border-radius: 5px;
 }
 
-.btn:hover{
-  /* background-color: #019D6E;
-  color: white;
-  border-radius: 5px; */
+.btn:hover {
   background-color: #F9E784;
   border: 3px solid #F9E784;
   cursor: pointer;
 }
 
-.smallBtn{
+.smallBtn {
   margin-top: 20px;
   display:inline;
 }
 
-#analyticsBtn{
+#analyticsBtn {
   float:right;
   width: 48%;
+  text-align: center;
+  padding: 6px 13px 8px 13px;
 }
 
-.fullWidth{
+.fullWidth {
   width: 100%;
   display: block;
 }
+
+#notFound h2 {
+  margin-bottom: 50px;
+}
+#notFound {
+  margin-top: 100px;
+}
 /******************************** Nav Bar *************************************/
-nav ul{
+nav ul {
   text-align: right;
   list-style-type: none;
 }
 
-nav li{
+nav li {
   padding: 10px;
   display: inline;
 }
 
-nav li:last-child{
-  padding-right: 20px;
-}
-
-nav li a, #logoutBtn{
+nav li a, #logoutBtn {
   color: white;
   text-decoration:none;
 }
 
-nav li a:hover, #logoutBtn:hover{
+nav li a:hover, #logoutBtn:hover {
   color: #F9E784;
   cursor: pointer;
   padding-bottom: 2px;
   border-bottom: 2px solid #F9E784;
 }
 
-
 /********************** Update, Delete, Upload Panels *************************/
-#updateOverlay, #deleteOverlay, #uploadOverlay{
+#updateOverlay, #deleteOverlay, #uploadOverlay {
   position: fixed;
   height: 100%;
   width: 100%;
@@ -155,7 +209,7 @@ nav li a:hover, #logoutBtn:hover{
   overflow: auto;
 }
 
-#updatePanel, #deletePanel, #uploadPanel{
+#updatePanel, #deletePanel, #uploadPanel {
   max-width: 550px;
   width: 80%;
   max-height: 600px;
@@ -163,27 +217,26 @@ nav li a:hover, #logoutBtn:hover{
   position: relative;
   background:#019D6E;
   border-radius: 5px;
-  /* overflow: auto; */
   z-index: 2;
 }
 
-#updatePanel{
+#updatePanel {
   margin: 30px auto;
 }
 
-#deletePanel{
+#deletePanel {
   text-align: center;
   height: 120px;
   margin: 250px auto;
 }
 
-#uploadPanel{
+#uploadPanel {
   text-align: center;
-  height: 400px;
+  /* height: 400px; */
   margin: 130px auto;
 }
 
-#addResponse{
+#addResponse {
   font-size: 25px;
   margin-top: 20px;
   display: none;
@@ -191,7 +244,7 @@ nav li a:hover, #logoutBtn:hover{
 }
 
 /****************** Update, Delete, Upload Response Panels ********************/
-#updateSuccessPanel, #deleteResponsePanel, #uploadResponsePanel{
+#updateSuccessPanel, #deleteResponsePanel, #uploadResponsePanel {
   font-size: 30px;
   max-width: 550px;
   width: 80%;
@@ -206,41 +259,41 @@ nav li a:hover, #logoutBtn:hover{
   z-index: 2;
 }
 
-#uploadResponsePanel{
+#uploadResponsePanel {
   overflow: scroll;
   height: 300px;
   padding: 40px 20px 20px 20px;
 }
 
-#uploadResponsePanel ul{
+#uploadResponsePanel ul {
   text-align: left;
   padding-left: 35px;
 }
 
-#uploadResponsePanel li{
+#uploadResponsePanel li {
   padding-bottom: 20px;
 }
 
-#updateFailed{
+#updateFailed {
   font-size: 20px;
 }
 
 /******************************* Add Panel ************************************/
-#addPanel{
+#addPanel {
   display:none;
 }
 
-#addBtn{
+#addBtn {
   width: 100%;
 }
 
-ul{
+ul {
   padding-left: 20px;
   margin-bottom: 10px;
 }
 
 /***************************** Upload Panel ***********************************/
-pre{
+pre {
   margin: 5px 0 20px 0;
   white-space: pre-wrap;       /* css-3 */
   white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
@@ -249,7 +302,7 @@ pre{
   word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
 
-pre code{
+pre code {
   text-align: left;
   display: block;
   font-size: 18px;
@@ -260,70 +313,75 @@ pre code{
   padding: 10px;
 }
 
-.marginTop30{
+.marginTop30 {
   margin-top: 30px;
 }
 
-#uploadBtn{
+#uploadBtn {
   width: 48%;
 }
 
 /************************* Display Panel and Data *****************************/
-#displayPanel{
+#displayPanel {
   margin-top: 30px;
   font-size: 20px;
 }
 
-#displayPanel form{
+#displayPanel form {
   font-size: 18px;
 }
 
-.updateIcons{
+.updateIcons {
   float: right;
   padding-left: 10px;
 }
 
-.fa-edit:hover, .fa-trash-alt:hover, .fa-window-close:hover{
+.fa-edit:hover, .fa-trash-alt:hover, .fa-window-close:hover {
   color: #F9E784;
   cursor: pointer;
 }
 
-.line{
+.line {
   border-bottom: 1px solid white;
 }
 
-.titleAuthor{
+.titleAuthor {
   margin-top: 5px;
   font-size: 25px;
   margin-bottom: 5px;
 }
 
-.year{
+.year {
   margin-top: 10px;
+  margin-bottom: 10px;
   font-size: 18px;
   letter-spacing: 2px;
   font-weight: bold;
 }
 
-.bookInfo{
+.bookInfo {
   font-size: 18px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   line-height: 24px;
+}
+
+.line + .year {
+  margin-top: 20px;
 }
 
 
 /********************************* Forms **************************************/
-form {
+form  {
   font-size: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
 }
 
-form label + label{
+form label + label {
   line-height: 38px;
 }
 
-input[type=text], input[type=email], input[type=password]{
+input[type=text], input[type=email], input[type=password] {
   box-sizing: border-box;
   color: #019D6E;
   font-size: 14px;
@@ -337,7 +395,7 @@ input[type=text], input[type=email], input[type=password]{
   width: 100%;
 }
 
-input[type=file]{
+input[type=file] {
   font-family: 'Sanchez', sans-serif !important;
   font-size: 15px;
   box-sizing: border-box;
@@ -348,12 +406,12 @@ input[type=file]{
   padding: 5px;
 }
 
-.requiredFormat{
+.requiredFormat {
   font-size: 12px;
 }
 
 /********************** File Upload Button Formatting *************************/
-.inputFile{
+.inputFile {
   width: 0.1px;
 	height: 0.1px;
 	opacity: 0;
@@ -362,7 +420,7 @@ input[type=file]{
 	z-index: -1;
 }
 
-.inputFile + label{
+.inputFile + label {
   box-sizing: border-box;
   margin-top: 30px;
   margin-bottom: 20px;
@@ -375,17 +433,17 @@ input[type=file]{
   border-radius: 5px;
 }
 
- .inputFile + label:hover{
+ .inputFile + label:hover {
   background-color: #019D6E;
   color: white;
 }
 
-.inputFile + label{
+.inputFile + label {
   cursor: pointer;
 }
 
 /************************* Radio Button Formatting ****************************/
-.labelContainer{
+.labelContainer {
   display: inline;
   position: relative;
   padding-left: 27px;
@@ -401,13 +459,13 @@ input[type=file]{
   font-size: 20px;
 }
 
-.labelContainer input{
+.labelContainer input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
 }
 
-.checkmark {
+.checkmark  {
   position: absolute;
   top: 3px;
   left: 3px;
@@ -428,7 +486,7 @@ input[type=file]{
 }
 
 /* Create the indicator (the dot/circle - hidden when not checked) */
-.checkmark:after {
+.checkmark:after  {
   content: "";
   position: absolute;
   display: none;
@@ -449,14 +507,12 @@ input[type=file]{
 	background: #019D6E;
 }
 
-input[type=radio]{
-  /*margin-bottom: 15px;
-  margin-right: 15px;*/
+input[type=radio] {
   display: none;
 }
 
 /***************************** Sorting Options ********************************/
-#sortOptions{
+#sortOptions {
   margin-top: 30px;
   line-height: 20px;
 }
@@ -468,7 +524,7 @@ select {
   color: #019D6E;
 }
 
-.sortBtn{
+.sortBtn {
   border: 2px solid white;
   margin-right: 10px;
   margin-top: 10px;
@@ -479,11 +535,11 @@ select {
   font-size: 15px;
 }
 
-.sortBtn:hover{
+.sortBtn:hover {
   cursor: pointer;
 }
 
-.sortBtnClick{
+.sortBtnClick {
   border: 2px solid white;
   margin-right: 10px;
   margin-top: 10px;
@@ -495,23 +551,21 @@ select {
 }
 
 /******************************* Search Bar ***********************************/
-#searchBar{
+#searchBar {
   position: relative;
 }
 
-.searchResult{
+.searchResult {
   color: #F9E784;
   font-size: 25px;
   margin-bottom: 10px;
 }
 
-#searchForm input[type=search]{
+#searchForm input[type=search] {
   border: 3px solid white;
-  /* background-color: #019D6E; */
   box-sizing: border-box;
   font-size: 14px;
   padding: 5px 5px 5px 35px;
-  /* color: white; */
   color: #019D6E;
   outline: none;
   font-family: 'Sanchez', sans-serif !important;
@@ -523,26 +577,24 @@ select {
   width: 100%;
 }
 
-#searchForm {
+#searchForm  {
   margin-top: 30px;
   margin-bottom: 0;
 }
 
-#searchForm ::placeholder{
-  /* color: white; */
+#searchForm ::placeholder {
   opacity: 0.5;
 }
 
-#searchBar i{
+#searchBar i {
   color: #019D6E;
-  /* color: white; */
   position: absolute;
   top: 8px;
   left: 8px;
 }
 
 /************************* Back to Top Scrolling  *****************************/
-#scrollBtn{
+#scrollBtn {
   position: fixed;
   right: 30px;
   bottom: 30px;
@@ -555,100 +607,95 @@ select {
   display: none;
 }
 
-#scrollBtn:hover{
+#scrollBtn:hover {
   color: #F9E784;
   opacity: 1;
   cursor: pointer;
 }
 
 /************************* Reading Analytics Page *****************************/
-p + .underline {
+p + .underline  {
   margin-bottom: 30px;
 }
 
-#analytics{
+#analytics {
   font-size: 18px;
   margin: 0 0 20px 0;
   display: none;
 }
 
-#analytics ul{
+#analytics ul {
   margin: 10px 0 0 0;
   padding: 0;
 
   list-style-type: none;
 }
 
-#analytics ul li{
+#analytics ul li {
   margin: 0;
   line-height: 30px;
   padding-bottom: 35px;
 }
 
-#chart{
+#chart {
   margin-bottom: 30px;
 }
 
-#dataVisuals{
+#dataVisuals {
   margin-bottom: 30px;
   display: none;
 }
 
-/* Highlight overall stat values */
-.stats{
-  color: #F9E784;
-}
-
-#chartOptions{
+#chartOptions {
   font-size: 18px;
 }
 
 /*************************** Data Visualization *******************************/
 
 /* Axis text on ticks */
-.c3-axis text{
+.c3-axis text {
   fill: white;
   font-family: 'Sanchez', sans-serif;
   font-size: 15px;
 }
 
 /* Axis labels */
-.c3-axis-y-label, .c3-axis-x-label{
+.c3-axis-y-label, .c3-axis-x-label {
   fill: #F9E784 !important;
 }
 
 /* Remove value of ticks on the y-axis */
-.c3-axis-y .tick text{
+.c3-axis-y .tick text {
   display: none;
 }
 
 /* Data labels above bars */
-.c3-texts{
+.c3-texts {
   transform: translate(0, -4px); /* Shift data labels on bars up slightly*/
   font-family: 'Sanchez', sans-serif;
   font-size: 15px;
 }
 
 /* Change color of data labels on bars */
-.c3-text{
+.c3-text {
   fill: #F9E784 !important;
 }
 
 /* Axis + tick marks*/
-.c3-axis path, .c3-axis line{
+.c3-axis path, .c3-axis line {
   stroke: white;
   stroke-width: 2;
 }
 
 /* Title of chart */
-.c3-title{
+.c3-title {
   font-family: 'Sanchez', sans-serif;
   fill: white;
   font-size: 20px;
 }
 
 /* Chart Legend */
-.c3-legend-item{
+.c3-legend-item {
   font-family: 'Sanchez', sans-serif;
   fill: white;
   font-size: 15px;
@@ -656,94 +703,137 @@ p + .underline {
 }
 
 /* Change text color in double bar charts */
-.c3-texts-totalForClassNot .c3-text , .c3-texts-totalRereadNot .c3-text {
+.c3-texts-totalForClassNot .c3-text , .c3-texts-totalRereadNot .c3-text  {
   fill: #DBC02E !important;
   /* fill: #7BFFF7 !important; */
 }
 
 /* Move legend text + color tile of "Not read For Class" to the right */
 .c3-legend-item-totalForClassNot text,
-.c3-legend-item-totalForClassNot .c3-legend-item-tile{
+.c3-legend-item-totalForClassNot .c3-legend-item-tile {
   transform: translate(15px, 0);
 }
 
 /* Move legend text + color tile of "Read For the First Time" to the left */
 .c3-legend-item-totalRereadNot text,
-.c3-legend-item-totalRereadNot .c3-legend-item-tile{
+.c3-legend-item-totalRereadNot .c3-legend-item-tile {
   transform: translate(-30px, 0);
 }
 
-.c3-tooltip{
+.c3-tooltip {
   border-radius: 5px;
 }
 
 /* Tooltip table  */
-.c3-tooltip tr{
+.c3-tooltip tr {
   border: none;
   /* border-radius: 5px; */
 }
 
 /* Tooltip title */
-.c3-tooltip th{
+.c3-tooltip th {
    background-color: #F9E784;
    color: #019D6E;
    border: none;
-   /* border-radius: 5px 5px 0 0; */
 }
 
 /* Tooltip values */
-.c3-tooltip td{
+.c3-tooltip td {
   color: #019D6E !important;
   border: none;
-  /* border-radius: 0 0 5px 5px; */
 }
 
 /* Labels for data in tooltips */
-.c3-tooltip .name{
+.c3-tooltip .name {
   background-color: #F9E784 !important;
   border-right: 1px solid #019D6E !important;
 }
 
 /* Tooltip line */
-.c3-grid .c3-xgrid-focus{
+.c3-grid .c3-xgrid-focus {
   opacity: 1 !important;
   stroke: white;
 }
 
 /* Add lines separating each row in the tooltip */
-tr.top{
+tr.top {
   border-bottom: 1px solid #019D6E !important;
 }
 
 /* Data values in tooltip */
-.c3-tooltip td.value{
+.c3-tooltip td.value {
   text-align: left;
 }
 
 /* Tooltip formatting for rounded corners */
-#topLeft{
+#topLeft {
   border-radius: 5px 0 0 0;
 }
-#topRight{
+#topRight {
   border-radius: 0 5px 0 0;
 }
-#bottomLeft{
+#bottomLeft {
   border-radius: 0 0 0 5px;
 }
-#bottomRight{
+#bottomRight {
   border-radius: 0 0 5px 0;
 }
 
 /* Scatterplot dots  */
-.c3-circle{
+.c3-circle {
   opacity: 0.7 !important;
 }
 
-.c3-axis-y .tick:first-of-type{
+.c3-axis-y .tick:first-of-type {
   display: none !important;
 }
 
 /* Color of bars */
-/* .c3-bar{
+/* .c3-bar {
   fill: #F9E784 !important;
 } */
+
+/********************** Responsive Media Queries  *****************************/
+@media only screen and (max-width: 800px) {
+  .container{
+    width: 80%;
+  }
+
+  nav ul {
+    text-align: center;
+    line-height: 20px;
+    padding-left: 0;
+  }
+
+  nav li{
+    padding: 5px;
+  }
+
+  footer{
+    text-align: center;
+    padding-left: 0;
+  }
+
+  header{
+    padding: 15px 15px 15px 15px;
+  }
+
+  h1, p{
+    text-align: center;
+  }
+
+  #scrollBtn{
+    right: 15px;
+    bottom: 15px;
+  }
+
+}
+
+@media only screen and (max-width: 500px) {
+
+  #scrollBtn{
+    right: 3px;
+    bottom: 8px;
+  }
+
+}
