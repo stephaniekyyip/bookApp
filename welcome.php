@@ -70,7 +70,7 @@
 
       <!-- Form for adding a new entry -->
       <div id = "addPanel">
-        <form id = "addForm" action = "php/create.php" method = "post">
+        <form id = "addForm" action = "php/Books/create.php" method = "post">
           Title <span class = "requiredFormat">(Required)</span>
             <input type = "text"
             name = "title" value="" required
@@ -156,7 +156,7 @@
         <div id = "uploadResponsePanel"></div>
         <div id = "uploadPanel">
           <form id = "uploadForm" method = "post"  enctype="multipart/form-data"
-            action = "update.php">
+            action = "php/Books/upload.php">
             Upload a .csv file to add multiple book entries at once. <br>
             <div class = "marginTop30">Formatting:</div>
             <pre><code>Title*, Author First Name*, Author Last Name*, Year Read*, Year Published, Number of Pages, Read for Class? (y/n), Reread? (y/n)</code></pre>
@@ -187,7 +187,7 @@
           <div id = "updateFailed"></div>
 
           <!-- Form for update entry  -->
-          <form method = "post" id = "updateForm" action = "php/update.php">
+          <form method = "post" id = "updateForm" action = "php/Books/update.php">
             Title <span class = "requiredFormat">(Required)</span>
               <input type = "text"
               name = "titleUpdate" id = "titleUpdate" value="" required
@@ -305,7 +305,7 @@
 
       <!-- Search Bar section -->
       <div id = "searchBar">
-        <form id = "searchForm" method = "get" action= "php/search.php">
+        <form id = "searchForm" method = "get" action= "php/Books/search.php">
           <input type = "search" placeholder = "Type to search . . ."
             id = "searchInput" name = "searchInput" required
             oninvalid="setCustomValidity('Please enter a search query')">
