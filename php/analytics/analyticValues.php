@@ -11,8 +11,8 @@
   require_once ('../Books/books.php');
 
   //mysql connection
-  $database = new Database();
-  $conn = $database->connectToDatabase();
+  // $database = new Database();
+  // $conn = $database->connectToDatabase();
 
   $bookList = new Books($conn);
 

@@ -64,7 +64,6 @@ function getData(sortOption = "none", order = "none"){
     data: {sortMenu: sortOption, order: order},
     type: 'get',
     success: function(response){
-      console.log(response);
       if (response == "404"){
         $("#dataTable").html("Error displaying book entries.");
       }else if(response == "none"){
@@ -391,7 +390,6 @@ $(document).ready(function(){
 
 // Prints error(s) when uploading CSV files
 function printErrUpload(dbErr){
-  console.log(dbErr);
   var errors = JSON.parse(dbErr);
   var errFormat = "";
   var replaceField; //changes the name of the field to be more user friendly (vs DB fields)
@@ -810,7 +808,6 @@ $(document).ready(function(){
       type: 'POST',
       data: $("#signUpForm").serialize(),
       success: function(response){
-        console.log(response);
         if(response != "200"){
           var jsonData = JSON.parse(response);
           var errors = "";
@@ -862,7 +859,6 @@ $(document).ready(function(){
       type: 'GET',
       data: $("#loginForm").serialize(),
       success: function(response){
-        console.log(response);
         if(response != "200"){
           $('#loginResponse').text('Email or password is invalid. Please try again.');
         }else{
