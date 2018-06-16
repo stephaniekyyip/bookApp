@@ -127,6 +127,7 @@
 
     <!-- JavaScript -->
     <script src="js/visualizeData.js"></script>
+    <script src="js/functions.js"></script>
   </body>
 
 
