@@ -14,7 +14,7 @@
     <meta name = "description" content = "Keep track of all the books you
       read.">
 
-    <link rel= "stylesheet" href="css/style.css"/>
+    <link rel= "stylesheet" href="css/style.min.css"/>
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet"
@@ -24,12 +24,6 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Sanchez" rel="stylesheet">
-
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <!-- JavaScript -->
-    <script src = "js/functions.js"></script>
 
   </head>
 
@@ -54,25 +48,35 @@
 
       <form id = "signUpForm" method = "post" action = "php/Users/signup.php">
         Name <span class = "requiredFormat">(Required)</span> <br>
-        <input type = "text" name = "signUpName" id = "signUpName" required pattern = "[A-Za-z ]+"
-          oninvalid="setCustomValidity('Please enter a valid name (only letters).')"
-          oninput="setCustomValidity('')"/><br>
+        <input type = "text" name = "signUpName" id = "signUpName" required
+          pattern = "[A-Za-z ]+"/><br>
         E-mail <span class = "requiredFormat">(Required)</span> <br>
-        <input type = "email" name = "signUpEmail" id = "signUpEmail" required/><br>
+        <input type = "email" name = "signUpEmail" id = "signUpEmail" required/>
+        <br>
         Password <span class = "requiredFormat">(Required)</span> <br>
-        <input type = "password" name = "signUpPwd" id = "signUpPwd" required/><br>
+        <input type = "password" name = "signUpPwd" id = "signUpPwd" required/>
+        <br>
         Confirm Password <span class = "requiredFormat">(Required)</span> <br>
-        <input type = "password" name = "confirmPwd" id = "confirmPwd" required/><br>
+        <input type = "password" name = "confirmPwd" id = "confirmPwd" required/>
+        <br>
         <div class = "rightSide">
-          <input type = "submit" name = "submit" id = "signupSubmit" class = "btn" value = "Sign Up"/>
+          <input type = "submit" name = "submit" id = "signupSubmit" class = "btn"
+          value = "Sign Up"/>
         </div>
       </form>
 
     </div>
 
     <footer>
-      Made by Stephanie Yip 2018
+      Made by <a href = "http://stephaniekyyip.github.io">Stephanie Yip</a> 2018
     </footer>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- JavaScript -->
+    <script src = "js/functions.js"></script>
+
 
   </body>
 

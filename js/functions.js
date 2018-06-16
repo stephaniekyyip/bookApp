@@ -1,3 +1,9 @@
+// ----------------------------------------------------------------------------
+// functions.js
+//
+// General jQuery/ JS functions for Book Tracker.
+// ----------------------------------------------------------------------------
+
 /******************************* Scrolling ************************************/
 // Smooth scroll to top when back to top button is clicked
 $(document).ready(function(){
@@ -144,6 +150,58 @@ $(document).ready(function(){
 
 /****************************** Create ****************************************/
 
+// Check for vaid inputs in add form
+$(function(){
+  // Title
+  $("#addTitle").on("invalid", function(){
+    $("#addTitle").get(0).setCustomValidity('Please enter the title of the book.');
+  });
+  $("#addTitle").on("input", function(){
+    $("#addTitle").get(0).setCustomValidity('');
+  });
+
+  // Author First
+  $("#addAuthorFirst").on("invalid", function(){
+    $("#addAuthorFirst").get(0).setCustomValidity("Please enter the author's first name.");
+  });
+  $("#addAuthorFirst").on("input", function(){
+    $("#addAuthorFirst").get(0).setCustomValidity("");
+  });
+
+  // Author Last
+  $("#addAuthorLast").on("invalid", function(){
+    $("#addAuthorLast").get(0).setCustomValidity("Please enter the author's last name.");
+  });
+  $("#addAuthorLast").on("input", function(){
+    $("#addAuthorLast").get(0).setCustomValidity("");
+  });
+
+  // Year Read
+  $("#addYearRead").on("invalid", function(){
+    $("#addYearRead").get(0).setCustomValidity('Please enter a valid year.');
+  });
+  $("#addYearRead").on("input", function(){
+    $("#addYearRead").get(0).setCustomValidity('');
+  });
+
+  // Year Published
+  $("#addYearPub").on("invalid", function(){
+    $("#addYearPub").get(0).setCustomValidity('Please enter a valid year.');
+  });
+  $("#addYearPub").on("input", function(){
+    $("#addYearPub").get(0).setCustomValidity('');
+  });
+
+  // Number of Pages
+  $("#addNumPgs").on("invalid", function(){
+    $("#addNumPgs").get(0).setCustomValidity('Please enter a number.');
+  });
+  $("#addNumPgs").on("input", function(){
+    $("#addNumPgs").get(0).setCustomValidity('');
+  });
+
+});
+
 // Adds new entry when Add New Book form is submitted
 $(document).ready(function(){
   $("#addForm").submit(function(event){
@@ -213,6 +271,57 @@ $(document).ready(function(){
 });
 
 /***************************** Update *****************************************/
+
+// Check for valid input in update form
+$(function(){
+  // Title
+  $("#titleUpdate").on("invalid", function(){
+    $("#titleUpdate").get(0).setCustomValidity('Please enter the title of the book.');
+  });
+  $("#titleUpdate").on("input", function(){
+    $("#titleUpdate").get(0).setCustomValidity('');
+  });
+
+  // Author First Name
+  $("#authorFirstUpdate").on("invalid", function(){
+    $("#authorFirstUpdate").get(0).setCustomValidity("Please enter the author's first name.");
+  });
+  $("#authorFirstUpdate").on("input", function(){
+    $("#authorFirstUpdate").get(0).setCustomValidity('');
+  });
+
+  // Author Last Name
+  $("#authorLastUpdate").on("invalid", function(){
+    $("#authorLastUpdate").get(0).setCustomValidity("Please enter the author's last name.");
+  });
+  $("#authorLastUpdate").on("input", function(){
+    $("#authorLastUpdate").get(0).setCustomValidity("");
+  });
+
+  // Year Read
+  $("#yearReadUpdate").on("invalid", function(){
+    $("#yearReadUpdate").get(0).setCustomValidity('Please enter a valid year.');
+  });
+  $("#yearReadUpdate").on("input", function(){
+    $("#yearReadUpdate").get(0).setCustomValidity('');
+  });
+
+  // Year Published
+  $("#yearPubUpdate").on("invalid", function(){
+    $("#yearPubUpdate").get(0).setCustomValidity('Please enter a valid year.');
+  });
+  $("#yearPubUpdate").on("input", function(){
+    $("#yearPubUpdate").get(0).setCustomValidity('');
+  });
+
+  // Number of Pages
+  $("#numPgsUpdate").on("invalid", function(){
+    $("#numPgsUpdate").get(0).setCustomValidity('Please enter a number.');
+  });
+  $("#numPgsUpdate").on("input", function(){
+    $("#numPgsUpdate").get(0).setCustomValidity('');
+  });
+});
 
 // Show update window and data of selected entry when edit button is clicked
 $(document).on("click",".fa-edit", function(){
@@ -548,6 +657,16 @@ $(document).ready(function(){
 
 /***************************** Search *****************************************/
 
+// Check for a search query
+$(function(){
+  $("#searchInput").on("invalid", function (){
+    $("#searchInput").get(0).setCustomValidity('Please enter a search query');
+  });
+  $("#searchInput").on("input", function (){
+    $("#searchInput").get(0).setCustomValidity('');
+  });
+});
+
 // Set any active sorting button to inactive when search is used
 function deactivateSort(){
   // Change all sorting buttons to inactive style
@@ -798,7 +917,7 @@ $(document).ready(function(){
 
 
 /************************* Sign Up Form  ***********************************/
-
+// Submits signup form via AJAX
 $(document).ready(function(){
   $("#signUpForm").submit(function(event){
     event.preventDefault();
@@ -831,8 +950,19 @@ $(document).ready(function(){
   });
 });
 
+// Check for valid name in signup form
+$(function(){
+  $("#signUpName").on("invalid", function(){
+    $("#signUpName").get(0).setCustomValidity('Please enter a valid name (only letters).');
+  });
 
-// Check if passwords match
+  $("#signUpName").on("input", function(){
+    $("#signUpName").get(0).setCustomValidity('');
+  });
+
+});
+
+// Check if passwords match in signup form
 $(function(){
   $("#signUpPwd, #confirmPwd").on("change", function(){
     if($("#signUpPwd").val() == $("#confirmPwd").val()){
@@ -851,6 +981,7 @@ $(function(){
 });
 
 /************************* Login Form  ***********************************/
+// Submits login form via AJAX
 $(document).ready(function(){
   $("#loginForm").submit(function(event){
     event.preventDefault();
@@ -871,9 +1002,9 @@ $(document).ready(function(){
   });
 });
 
+// Logs user out and redirects to home page.
 $(function(){
   $("#logoutBtn").click(function(event){
-
       $.ajax({
         url: 'php/Users/logout.php',
         type: 'POST',

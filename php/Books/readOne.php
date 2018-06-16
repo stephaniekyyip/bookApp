@@ -12,10 +12,6 @@
   require_once ('../database.php');
   require_once ('books.php');
 
-  //mysql connection
-  // $database = new Database();
-  // $conn = $database->connectToDatabase();
-
   $bookList = new Books($conn);
 
   // Get selected entry from DB

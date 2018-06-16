@@ -14,7 +14,7 @@
     <meta name = "description" content = "Keep track of all the books you
     read.">
 
-    <link rel= "stylesheet" href="css/style.css"/>
+    <link rel= "stylesheet" href="css/style.min.css"/>
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet"
@@ -24,13 +24,6 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Sanchez" rel="stylesheet">
-
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <!-- JavaScript -->
-    <script src = "js/functions.js"></script>
-
   </head>
 
   <body>
@@ -73,32 +66,21 @@
         <form id = "addForm" action = "php/Books/create.php" method = "post">
           Title <span class = "requiredFormat">(Required)</span>
             <input type = "text"
-            name = "title" value="" required
-            oninvalid="setCustomValidity('Please enter the title of the book.')"
-            oninput="setCustomValidity('')"/> <br>
+            name = "title" id = "addTitle" value="" required/> <br>
           Author First Name <span class = "requiredFormat">(Required)</span>
             <input type = "text"
-            name = "authorFirst" value="" required
-            oninvalid="setCustomValidity('Please enter the author's first name.')"
-            oninput="setCustomValidity('')" /> <br>
+            name = "authorFirst" id = "addAuthorFirst" value="" required/> <br>
           Author Last Name <span class = "requiredFormat">(Required)</span>
             <input type = "text"
-            name = "authorLast" value=""  required
-            oninvalid="setCustomValidity('Please enter the author's last name.')"
-            oninput="setCustomValidity('')"/> <br>
+            name = "authorLast" id = "addAuthorLast" value=""  required/> <br>
           Year Read <span class = "requiredFormat">(Required)</span>
             <input type = "text"
-            name = "yearRead" size = "4" maxlength = "4" value=""
-            pattern = "[0-9]{4}" required
-            oninvalid="setCustomValidity('Please enter a valid year.')"
-            oninput="setCustomValidity('')"><br>
+            name = "yearRead" id = "addYearRead" size = "4" maxlength = "4" value=""
+            pattern = "[0-9]{4}" required><br>
           Year Published <input type = "text" size = "4" maxlength = "4"
-            name = "yearPub" value="" pattern = "[0-9]{4}"
-            oninvalid="setCustomValidity('Please enter a valid year.')"
-            oninput="setCustomValidity('')"/> <br>
-          Number of Pages <input type = "text" name = "numPgs" size = "4" value=""
-            pattern = "\d*" oninvalid="setCustomValidity('Please enter a number.')"
-            oninput="setCustomValidity('')"/><br>
+            name = "yearPub" id = "addYearPub" value="" pattern = "[0-9]{4}"/> <br>
+          Number of Pages <input type = "text" name = "numPgs" id = "addNumPgs"
+            size = "4" value="" pattern = "\d*" /><br>
 
           Read for class?
           <label class = "labelContainer"> Yes <i class="fas fa-check"></i>
@@ -190,37 +172,30 @@
           <form method = "post" id = "updateForm" action = "php/Books/update.php">
             Title <span class = "requiredFormat">(Required)</span>
               <input type = "text"
-              name = "titleUpdate" id = "titleUpdate" value="" required
-              oninvalid="setCustomValidity('Please enter the title of the book.')"
-              oninput="setCustomValidity('')"> <br>
+              name = "titleUpdate" id = "titleUpdate" value="" required/> <br>
+
             Author's First Name <span class = "requiredFormat">(Required)</span>
               <input type = "text"
               name = "authorFirstUpdate" id = "authorFirstUpdate" value=""
-              required
-              oninvalid="setCustomValidity('Please enter the author's first name.')"
-              oninput="setCustomValidity('')"> <br>
+              required/> <br>
+
             Author's Last Name <span class = "requiredFormat">(Required)</span>
               <input type = "text"
               name = "authorLastUpdate" id = "authorLastUpdate" value=""
-              required
-              oninvalid="setCustomValidity('Please enter the author's last name.')"
-              oninput="setCustomValidity('')"> <br>
+              required/> <br>
+
             Year Read <span class = "requiredFormat">(Required)</span>
               <input type = "text"
               name = "yearReadUpdate" id = "yearReadUpdate" size = "4"
-              maxlength = "4" value="" required pattern = "[0-9]{4}"
-              oninvalid="setCustomValidity('Please enter a valid year.')"
-              oninput="setCustomValidity('')"> <br>
+              maxlength = "4" value="" required pattern = "[0-9]{4}"/> <br>
+
             Year Published <input type = "text" size = "4" maxlength = "4"
               name = "yearPubUpdate" id = "yearPubUpdate" value=""
-              pattern = "[0-9]{4}"
-              oninvalid="setCustomValidity('Please enter a valid year.')"
-              oninput="setCustomValidity('')"> <br>
+              pattern = "[0-9]{4}"/> <br>
+
             Number of Pages <input type = "text" name = "numPgsUpdate"
               id = "numPgsUpdate"
-              size = "4" value="" pattern = "\d*"
-              oninvalid="setCustomValidity('Please enter a number.')"
-              oninput="setCustomValidity('')"><br>
+              size = "4" value="" pattern = "\d*"/><br>
 
             Read for class?
             <label class = "labelContainer"> Yes <i class="fas fa-check"></i>
@@ -307,8 +282,7 @@
       <div id = "searchBar">
         <form id = "searchForm" method = "get" action= "php/Books/search.php">
           <input type = "search" placeholder = "Type to search . . ."
-            id = "searchInput" name = "searchInput" required
-            oninvalid="setCustomValidity('Please enter a search query')">
+            id = "searchInput" name = "searchInput" required>
           <i class="fas fa-search"></i>
         </form>
       </div>
@@ -324,8 +298,15 @@
     </section> <!-- END container -->
 
     <footer>
-      Made by Stephanie Yip 2018
+      Made by <a href = "http://stephaniekyyip.github.io">Stephanie Yip</a> 2018
     </footer>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- JavaScript -->
+    <script src = "js/functions.js"></script>
+
 
   </body>
 

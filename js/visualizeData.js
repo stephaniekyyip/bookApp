@@ -1,7 +1,15 @@
+// ----------------------------------------------------------------------------
+// visualizeData.js
+//
+// Functions for data visualization charts in displayAnalytics.php
+// ----------------------------------------------------------------------------
+
+
 var xLabelSelect = "year"; // Current data in x-axis of chart
 var yLabelSelect; // Current data in y-axis of chart
 var chart; // Holds the chart itself generated using C3.js
 
+// Gets chart data from the DB
 function getChartData(chartTitle, yAxisText){
   $.ajax({
     url: 'php/analytics/analyticCharts.php',
@@ -118,6 +126,7 @@ function createChart(xLabel, yLabel, chartTitle, yAxisText, chartData){
   $(".c3-axis-y .tick text").hide();
 }
 
+// Creates the double bar chart for the For Class + Reread charts.
 function createDoubleChart(xLabel, yLabel1, yLabel2, chartTitle, yAxisText, chartData){
 
   chart = c3.generate({
@@ -231,6 +240,7 @@ function createDoubleChart(xLabel, yLabel1, yLabel2, chartTitle, yAxisText, char
   $(".c3-axis-y .tick text").hide();
 }
 
+// Creates the chart for the Year Read vs Year Published scatterplot
 function createScatterplot(xLabel, yLabel1, chartTitle, yAxisText, chartData){
   chart = c3.generate({
       data: {

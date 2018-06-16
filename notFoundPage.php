@@ -15,7 +15,7 @@
     <meta name = "description" content = "Keep track of all the books you
     read.">
 
-    <link rel= "stylesheet" href="css/style.css"/>
+    <link rel= "stylesheet" href="css/style.min.css"/>
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet"
@@ -25,10 +25,6 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Sanchez" rel="stylesheet">
-
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
 
   </head>
 
@@ -56,7 +52,7 @@
 
     <div class = "container centered" id = "notFound">
       <h1>404</h1>
-      <h2>Page not found</h2>
+      <h2>Page Not Found</h2>
 
       <a href = "index.php"><button class = "btn" id ="goBackBtn">
         <i class="fas fa-arrow-left"></i> Back to Home </button>
@@ -64,7 +60,7 @@
     </div> <!-- END container -->
 
     <footer>
-      Made by Stephanie Yip 2018
+      Made by <a href = "http://stephaniekyyip.github.io">Stephanie Yip</a> 2018
     </footer>
 
   </body>

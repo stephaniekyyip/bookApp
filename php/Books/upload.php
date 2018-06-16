@@ -10,12 +10,7 @@
   require_once ('../database.php');
   require_once ('books.php');
 
-  //mysql connection
-  // $database = new Database();
-  // $conn = $database->connectToDatabase();
-
   $bookList = new Books($conn);
-
 
   if ($_FILES['fileUpload']){
     $file= $_FILES['fileUpload']['name'];

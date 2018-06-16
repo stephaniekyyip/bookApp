@@ -1,1 +1,2 @@
-ErrorDocument 404 http://localhost/bookApp/notFoundPage.php
+#ErrorDocument 404 http://localhost/bookApp/notFoundPage.php
+ErrorDocument 404 https://still-scrubland-90743.herokuapp.com/notFoundPage.php

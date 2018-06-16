@@ -10,10 +10,6 @@
   require_once ('../database.php');
   require_once ('books.php');
 
-  // mysql connection
-  // $database = new Database();
-  // $conn = $database->connectToDatabase();
-
   $bookList = new Books($conn);
 
   // Validate user input and check for errors

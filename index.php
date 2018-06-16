@@ -20,7 +20,7 @@
     <meta name = "description" content = "Keep track of all the books you
     read.">
 
-    <link rel= "stylesheet" href="css/style.css"/>
+    <link rel= "stylesheet" href="css/style.min.css"/>
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet"
@@ -76,7 +76,7 @@
     </div> <!-- END container -->
 
     <footer>
-      Made by Stephanie Yip 2018
+      Made by <a href = "http://stephaniekyyip.github.io">Stephanie Yip</a> 2018
     </footer>
 
   </body>

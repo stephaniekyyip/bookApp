@@ -1,5 +1,7 @@
 /******************************* Reset CSS ************************************/
+
 /* http://meyerweb.com/eric/tools/css/reset/
+
    v2.0 | 20110126
    License: none (public domain)
 */
@@ -16,43 +18,49 @@ table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
-time, mark, audio, video  {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section  {
-	display: block;
+footer, header, hgroup, menu, nav, section {
+  display: block;
 }
-body  {
-	line-height: 1;
+
+body {
+  line-height: 1;
 }
-ol, ul  {
-	list-style: none;
+
+ol, ul {
+  list-style: none;
 }
-blockquote, q  {
-	quotes: none;
+
+blockquote, q {
+  quotes: none;
 }
+
 blockquote:before, blockquote:after,
-q:before, q:after  {
-	content: '';
-	content: none;
+q:before, q:after {
+  content: '';
+  content: none;
 }
-table  {
-	border-collapse: collapse;
-	border-spacing: 0;
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 /***************************** Rest of CSS ***** ******************************/
 html, body {
   font-family: 'Sanchez', sans-serif !important;
   background-color: #019D6E;
-  color:white;
+  color: white;
   width: 100%;
   height: 100%;
   margin: 0;
@@ -67,8 +75,8 @@ body {
 }
 
 footer {
-  padding-left: 20px;
-  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-bottom: 17px;
   padding-top: 10px;
   font-size: 15px;
   bottom: 0;
@@ -83,8 +91,8 @@ header {
 .container {
   box-sizing: border-box;
   margin: 30px auto auto auto;
-	width: 50%;
-	padding-bottom: 30px;
+  width: 50%;
+  padding-bottom: 30px;
 }
 
 h1 {
@@ -97,7 +105,7 @@ h2 {
   margin-bottom: 10px;
 }
 
-/* Login/ Signup buttons*/
+/* Login/ Signup buttons */
 a + h2 {
   margin-top: 30px;
 }
@@ -106,6 +114,11 @@ p {
   font-size: 20px;
   margin-top: 10px;
   margin-bottom: 30px;
+}
+
+/* 404 page */
+h1 + h2 {
+  margin-top: 20px;
 }
 
 /*************************** Various Formatting  ******************************/
@@ -150,11 +163,11 @@ a.btn {
 
 .smallBtn {
   margin-top: 20px;
-  display:inline;
+  display: inline;
 }
 
 #analyticsBtn {
-  float:right;
+  float: right;
   width: 48%;
   text-align: center;
   padding: 6px 13px 8px 13px;
@@ -168,9 +181,11 @@ a.btn {
 #notFound h2 {
   margin-bottom: 50px;
 }
+
 #notFound {
   margin-top: 100px;
 }
+
 /******************************** Nav Bar *************************************/
 nav ul {
   text-align: right;
@@ -182,20 +197,31 @@ nav li {
   display: inline;
 }
 
-nav li a, #logoutBtn {
+nav li a,
+#logoutBtn,
+footer a {
   color: white;
-  text-decoration:none;
+  text-decoration: none;
 }
 
-nav li a:hover, #logoutBtn:hover {
+nav li a:hover,
+#logoutBtn:hover,
+footer a:hover {
   color: #F9E784;
   cursor: pointer;
   padding-bottom: 2px;
   border-bottom: 2px solid #F9E784;
 }
 
+nav .highlightColor {
+  padding-bottom: 2px;
+  border-bottom: 2px solid #F9E784;
+}
+
 /********************** Update, Delete, Upload Panels *************************/
-#updateOverlay, #deleteOverlay, #uploadOverlay {
+#updateOverlay,
+#deleteOverlay,
+#uploadOverlay {
   position: fixed;
   height: 100%;
   width: 100%;
@@ -209,13 +235,15 @@ nav li a:hover, #logoutBtn:hover {
   overflow: auto;
 }
 
-#updatePanel, #deletePanel, #uploadPanel {
+#updatePanel,
+#deletePanel,
+#uploadPanel {
   max-width: 550px;
   width: 80%;
   max-height: 600px;
   padding: 20px;
   position: relative;
-  background:#019D6E;
+  background: #019D6E;
   border-radius: 5px;
   z-index: 2;
 }
@@ -232,7 +260,6 @@ nav li a:hover, #logoutBtn:hover {
 
 #uploadPanel {
   text-align: center;
-  /* height: 400px; */
   margin: 130px auto;
 }
 
@@ -244,14 +271,16 @@ nav li a:hover, #logoutBtn:hover {
 }
 
 /****************** Update, Delete, Upload Response Panels ********************/
-#updateSuccessPanel, #deleteResponsePanel, #uploadResponsePanel {
+#updateSuccessPanel,
+#deleteResponsePanel,
+#uploadResponsePanel {
   font-size: 30px;
   max-width: 550px;
   width: 80%;
   height: 100px;
   position: relative;
   padding-top: 50px;
-  background:#019D6E;
+  background: #019D6E;
   border-radius: 5px;
   text-align: center;
   margin: 250px auto;
@@ -280,7 +309,7 @@ nav li a:hover, #logoutBtn:hover {
 
 /******************************* Add Panel ************************************/
 #addPanel {
-  display:none;
+  display: none;
 }
 
 #addBtn {
@@ -308,7 +337,7 @@ pre code {
   font-size: 18px;
   background-color: white;
   border-radius: 5px;
-  color:#019D6E;
+  color: #019D6E;
   opacity: 0.7;
   padding: 10px;
 }
@@ -336,7 +365,9 @@ pre code {
   padding-left: 10px;
 }
 
-.fa-edit:hover, .fa-trash-alt:hover, .fa-window-close:hover {
+.fa-edit:hover,
+.fa-trash-alt:hover,
+.fa-window-close:hover {
   color: #F9E784;
   cursor: pointer;
 }
@@ -369,9 +400,9 @@ pre code {
   margin-top: 20px;
 }
 
-
 /********************************* Forms **************************************/
-form  {
+
+form {
   font-size: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -381,7 +412,9 @@ form label + label {
   line-height: 38px;
 }
 
-input[type=text], input[type=email], input[type=password] {
+input[type=text],
+input[type=email],
+input[type=password] {
   box-sizing: border-box;
   color: #019D6E;
   font-size: 14px;
@@ -413,11 +446,11 @@ input[type=file] {
 /********************** File Upload Button Formatting *************************/
 .inputFile {
   width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
 
 .inputFile + label {
@@ -431,30 +464,26 @@ input[type=file] {
   display: inline-block;
   border: 3px solid white;
   border-radius: 5px;
+  cursor: pointer;
 }
 
- .inputFile + label:hover {
+.inputFile + label:hover {
   background-color: #019D6E;
   color: white;
 }
 
-.inputFile + label {
-  cursor: pointer;
-}
-
 /************************* Radio Button Formatting ****************************/
+
 .labelContainer {
   display: inline;
   position: relative;
   padding-left: 27px;
   margin-bottom: 12px;
   cursor: pointer;
-  font-size: 22px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-
   margin-left: 15px;
   font-size: 20px;
 }
@@ -465,7 +494,7 @@ input[type=file] {
   cursor: pointer;
 }
 
-.checkmark  {
+.checkmark {
   position: absolute;
   top: 3px;
   left: 3px;
@@ -486,25 +515,25 @@ input[type=file] {
 }
 
 /* Create the indicator (the dot/circle - hidden when not checked) */
-.checkmark:after  {
+.checkmark::after {
   content: "";
   position: absolute;
   display: none;
 }
 
 /* Show the indicator (dot/circle) when checked */
-.labelContainer input:checked ~ .checkmark:after {
+.labelContainer input:checked ~ .checkmark::after {
   display: block;
 }
 
 /* Style the indicator (dot/circle) */
-.labelContainer .checkmark:after {
+.labelContainer .checkmark::after {
   top: 5px;
-	left: 5px;
-	width: 8px;
-	height: 8px;
-	border-radius: 50%;
-	background: #019D6E;
+  left: 5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #019D6E;
 }
 
 input[type=radio] {
@@ -571,13 +600,13 @@ select {
   font-family: 'Sanchez', sans-serif !important;
   margin-bottom: 0;
   margin-top: 0;
-  margin-right: 0px;
+  margin-right: 0;
   border-radius: 5px;
   position: relative;
   width: 100%;
 }
 
-#searchForm  {
+#searchForm {
   margin-top: 30px;
   margin-bottom: 0;
 }
@@ -601,7 +630,6 @@ select {
   color: white;
   font-size: 25px;
   opacity: 0.7;
-
   border: none;
   background: none;
   display: none;
@@ -614,7 +642,7 @@ select {
 }
 
 /************************* Reading Analytics Page *****************************/
-p + .underline  {
+p + .underline {
   margin-bottom: 30px;
 }
 
@@ -627,7 +655,6 @@ p + .underline  {
 #analytics ul {
   margin: 10px 0 0 0;
   padding: 0;
-
   list-style-type: none;
 }
 
@@ -660,7 +687,8 @@ p + .underline  {
 }
 
 /* Axis labels */
-.c3-axis-y-label, .c3-axis-x-label {
+.c3-axis-y-label,
+.c3-axis-x-label {
   fill: #F9E784 !important;
 }
 
@@ -671,7 +699,7 @@ p + .underline  {
 
 /* Data labels above bars */
 .c3-texts {
-  transform: translate(0, -4px); /* Shift data labels on bars up slightly*/
+  transform: translate(0, -4px); /* Shift data labels on bars up slightly */
   font-family: 'Sanchez', sans-serif;
   font-size: 15px;
 }
@@ -681,8 +709,9 @@ p + .underline  {
   fill: #F9E784 !important;
 }
 
-/* Axis + tick marks*/
-.c3-axis path, .c3-axis line {
+/* Axis + tick marks */
+.c3-axis path,
+.c3-axis line {
   stroke: white;
   stroke-width: 2;
 }
@@ -703,9 +732,9 @@ p + .underline  {
 }
 
 /* Change text color in double bar charts */
-.c3-texts-totalForClassNot .c3-text , .c3-texts-totalRereadNot .c3-text  {
+.c3-texts-totalForClassNot .c3-text,
+.c3-texts-totalRereadNot .c3-text {
   fill: #DBC02E !important;
-  /* fill: #7BFFF7 !important; */
 }
 
 /* Move legend text + color tile of "Not read For Class" to the right */
@@ -727,14 +756,13 @@ p + .underline  {
 /* Tooltip table  */
 .c3-tooltip tr {
   border: none;
-  /* border-radius: 5px; */
 }
 
 /* Tooltip title */
 .c3-tooltip th {
-   background-color: #F9E784;
-   color: #019D6E;
-   border: none;
+  background-color: #F9E784;
+  color: #019D6E;
+  border: none;
 }
 
 /* Tooltip values */
@@ -769,12 +797,15 @@ tr.top {
 #topLeft {
   border-radius: 5px 0 0 0;
 }
+
 #topRight {
   border-radius: 0 5px 0 0;
 }
+
 #bottomLeft {
   border-radius: 0 0 0 5px;
 }
+
 #bottomRight {
   border-radius: 0 0 5px 0;
 }
@@ -789,13 +820,14 @@ tr.top {
 }
 
 /* Color of bars */
+
 /* .c3-bar {
   fill: #F9E784 !important;
 } */
 
 /********************** Responsive Media Queries  *****************************/
 @media only screen and (max-width: 800px) {
-  .container{
+  .container {
     width: 80%;
   }
 
@@ -805,35 +837,33 @@ tr.top {
     padding-left: 0;
   }
 
-  nav li{
+  nav li {
     padding: 5px;
   }
 
-  footer{
+  footer {
     text-align: center;
     padding-left: 0;
   }
 
-  header{
+  header {
     padding: 15px 15px 15px 15px;
   }
 
-  h1, p{
+  h1,
+  p {
     text-align: center;
   }
 
-  #scrollBtn{
+  #scrollBtn {
     right: 15px;
     bottom: 15px;
   }
-
 }
 
 @media only screen and (max-width: 500px) {
-
-  #scrollBtn{
+  #scrollBtn {
     right: 3px;
     bottom: 8px;
   }
-
 }

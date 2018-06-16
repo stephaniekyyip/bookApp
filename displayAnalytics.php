@@ -17,7 +17,7 @@
     <!-- C3 CSS -->
     <link href="c3/c3.css" rel="stylesheet"/>
 
-    <link rel= "stylesheet" href="css/style.css"/>
+    <link rel= "stylesheet" href="css/style.min.css"/>
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet"
@@ -27,19 +27,6 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Sanchez" rel="stylesheet">
-
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <!--D3 data visualization -->
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-
-    <!-- C3 JS-->
-    <script src="c3/c3.min.js"></script> <!-- v0.6.1-->
-
-    <!-- JavaScript -->
-    <script src="js/visualizeData.js"></script>
-    <script src = "js/functions.js"></script>
 
   </head>
 
@@ -121,14 +108,26 @@
 
       <!-- Back to Homepage button -->
       <a href = "index.php" class = "btn" id ="goBackBtn">
-        <i class="fas fa-arrow-left"></i> Go Back
-      </a>
+      <i class="fas fa-arrow-left"></i> Go Back</a>
 
     </div>
 
     <footer>
-      Made by Stephanie Yip 2018
+      Made by <a href = "http://stephaniekyyip.github.io">Stephanie Yip</a> 2018
     </footer>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!--D3 data visualization -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+    <!-- C3 JS-->
+    <script src="c3/c3.min.js"></script> <!-- v0.6.1-->
+
+    <!-- JavaScript -->
+    <script src="js/visualizeData.js"></script>
+    <script src = "js/functions.js"></script>
   </body>
 
 

@@ -11,10 +11,6 @@
   require_once ('../database.php');
   require_once ('books.php');
 
-  //mysql connection
-  // $database = new Database();
-  // $conn = $database->connectToDatabase();
-
   $bookList = new Books($conn);
 
   // Read and sort entries from DB according to user sorting choice
