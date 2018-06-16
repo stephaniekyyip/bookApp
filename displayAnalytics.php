@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css?family=Sanchez" rel="stylesheet">
 
     <!-- C3 CSS -->
-    <!-- <link href="c3/c3.min.css" rel="stylesheet"/> -->
+    <link href="c3/c3.min.css" rel="stylesheet"/>
 
     <link rel= "stylesheet" href="css/style.min.css"/>
 
