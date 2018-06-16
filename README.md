@@ -3,8 +3,11 @@ Book Tracker is a web app that keeps track of all the books you have read. This 
 
 This app uses a tech stack consisting of Apache, MySQL, and PHP. On the front end, jQuery is used along with C3.js/ D3.js for data visualization.  
 
-## Demo
-View live demo [here](https://still-scrubland-90743.herokuapp.com/)
+## Try It Out
+See the live app [here](https://still-scrubland-90743.herokuapp.com/).
+<br>
+<img src = "https://github.com/stephaniekyyip/bookTracker/blob/master/bookTrackerScreenshot.png" width = "600px"></img>
+<br>
 
 ## Features
 - Each book entry can include the title of the book, author, year read, year published, number of pages, whether the book was read for class or not, and whether the book was a reread or not.
