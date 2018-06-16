@@ -17,7 +17,10 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Sanchez" rel="stylesheet">
 
-    <link rel= "stylesheet" href="css/dataStyle.min.css"/>
+    <!-- C3 CSS -->
+    <!-- <link href="c3/c3.min.css" rel="stylesheet"/> -->
+
+    <link rel= "stylesheet" href="css/style.min.css"/>
 
   </head>
 
@@ -106,9 +109,6 @@
     <footer>
       Made by <a href = "http://stephaniekyyip.github.io">Stephanie Yip</a> 2018
     </footer>
-
-    <!-- C3 CSS -->
-    <!-- <link href="c3/c3.min.css" rel="stylesheet"/> -->
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet"
