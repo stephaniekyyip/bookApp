@@ -1,2 +1,3 @@
 #ErrorDocument 404 http://localhost/bookApp/notFoundPage.php
 ErrorDocument 404 https://still-scrubland-90743.herokuapp.com/notFoundPage.php
+AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/x-javascript

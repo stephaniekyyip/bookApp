@@ -950,14 +950,31 @@ $(document).ready(function(){
   });
 });
 
-// Check for valid name in signup form
+// Check for valid inputs in signup form
 $(function(){
+
+  // Name
   $("#signUpName").on("invalid", function(){
     $("#signUpName").get(0).setCustomValidity('Please enter a valid name (only letters).');
   });
-
   $("#signUpName").on("input", function(){
     $("#signUpName").get(0).setCustomValidity('');
+  });
+
+  // Password
+  $("#signUpPwd").on("invalid", function(){
+    $("#signUpPwd").get(0).setCustomValidity('Please enter a password.');
+  });
+  $("#signUpPwd").on("input", function(){
+    $("#signUpPwd").get(0).setCustomValidity('');
+  });
+
+  // Confirm Password
+  $("#confirmPwd").on("invalid", function(){
+    $("#confirmPwd").get(0).setCustomValidity('Please confirm your password.');
+  });
+  $("#confirmPwd").on("input", function(){
+    $("#confirmPwd").get(0).setCustomValidity('');
   });
 
 });
@@ -981,6 +998,20 @@ $(function(){
 });
 
 /************************* Login Form  ***********************************/
+
+// Check for valid inputs in login form
+$(function(){
+
+  //Password
+  $("#loginPwd").on("invalid", function(){
+    $("#loginPwd").get(0).setCustomValidity('Please enter your password.');
+  });
+  $("#loginPwd").on("input", function(){
+    $("#loginPwd").get(0).setCustomValidity('');
+  });
+
+});
+
 // Submits login form via AJAX
 $(document).ready(function(){
   $("#loginForm").submit(function(event){
