@@ -8,7 +8,9 @@ See the live app [here](https://still-scrubland-90743.herokuapp.com/).
 <br>
 Download some sample CSV files [here](https://github.com/stephaniekyyip/bookTracker/tree/master/csv_files) to test the upload feature.
 <br>
-<img src = "https://github.com/stephaniekyyip/bookTracker/blob/master/bookTrackerScreenshot.png" width = "600px"></img>
+<br>
+#### Home Page
+<img src = "https://github.com/stephaniekyyip/bookTracker/blob/master/bookTrackerScreenshot.png" width = "800px"></img>
 <br>
 
 ## Features
