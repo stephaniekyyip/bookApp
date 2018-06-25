@@ -15,8 +15,15 @@ Download some sample CSV files [here](https://github.com/stephaniekyyip/bookTrac
 
 ## Features
 - Create a new account or log back into an existing account.
-- Each book entry can include the title of the book, author, year read, year published, number of pages, whether the book was read for class or not, and whether the book was a reread or not.
-- Different ways to sort the book entries, i.e in ascending order by title.
+- Add, edit, and delete entries. Each book entry contains:
+  - Book title
+  - Author
+  - Year Read
+  - Number of Pages
+  - Year Published
+  - Was the book read for class?
+  - Was the book a reread?
+- Different ways to sort the book entries, including alphabetically by author or in order added to the app. 
 - Search functionality.
 - Ability to add multiple books at once by uploading a CSV file.
 - Reading analytics that provide statistics and data visualizations of the user's reading habits.
