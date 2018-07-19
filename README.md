@@ -10,7 +10,11 @@ Download some sample CSV files [here](https://github.com/stephaniekyyip/bookTrac
 <br>
 <br>
 #### Home Page
-<img src = "https://github.com/stephaniekyyip/bookTracker/blob/master/bookTrackerScreenshot.png" width = "800px"></img>
+<img src = "https://github.com/stephaniekyyip/bookTracker/blob/master/bookTrackerScreenshot.png" width = "600px"></img>
+<br>
+
+#### Reading Analytics Page
+<img src = "https://github.com/stephaniekyyip/bookTracker/blob/master/bookTrackerAnalytics.png" width = "600px"></img>
 <br>
 
 ## Features
