@@ -23,12 +23,12 @@ Download some sample CSV files [here](https://github.com/stephaniekyyip/bookTrac
   - Year Published
   - Was the book read for class?
   - Was the book a reread?
-- Different ways to sort the book entries, including alphabetically by author or in order added to the app. 
+- Different ways to sort the book entries, such as alphabetically by author or in order from newest to oldest.
 - Search functionality.
 - Ability to add multiple books at once by uploading a CSV file.
 - Reading analytics that provide statistics and data visualizations of the user's reading habits.
 
-## Dependencies
+## Libraries Used
 - jQuery (v3.3.1)
 - Data visualization
   - [C3.js](http://c3js.org) (v0.6.1)
