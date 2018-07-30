@@ -9,6 +9,9 @@ See the live app [here](https://still-scrubland-90743.herokuapp.com/).
 Download some sample CSV files [here](https://github.com/stephaniekyyip/bookTracker/tree/master/csv_files) to test the upload feature.
 <br>
 <br>
+Create a new account, log in, and add a few books to get started. You can also upload one of the CSV files linked above to see the app working with a more complete set of book entries.
+<br>
+<br>
 #### Home Page
 <img src = "https://github.com/stephaniekyyip/bookTracker/blob/master/bookTrackerScreenshot.png" width = "600px"></img>
 <br>
